@@ -1,0 +1,23 @@
+{
+  "name": "guards",
+  "version": "1.0.0",
+  "description": "Guards",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yael1996/Guards.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yael1996/Guards/issues"
+  },
+  "homepage": "https://github.com/yael1996/Guards#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "request": "^2.88.0"
+  }
+}
