@@ -1,10 +1,13 @@
-import { geneticalgorithm } from "../../node_modules/geneticalgorithm";
+declare var require: any;
+
+var geneticalgorithm = require("geneticalgorithm");
 import { CrossOver } from "./crossOver";
 import { Fitness } from "./fitness";
 import { Mutation } from "./mutation";
 
 export class geneticAlgorithm {
   private config;
+  private algorithm;
 
   constructor() {
     this.config = {
@@ -14,11 +17,12 @@ export class geneticAlgorithm {
       population: [],
       populationSize: 250 // defaults to 100
     };
+
+    this.algorithm = geneticalgorithm(this.config);
   }
 
   public run() {
-    var geneticalgorithm = geneticAlgorithmConstructor(this.config);
-    geneticalgorithm.evolve();
-    var best = geneticalgorithm.best();
+    this.algorithm.evolve();
+    var best = this.algorithm.best();
   }
 }
