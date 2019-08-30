@@ -1,6 +1,6 @@
-import { ShiftSettings } from "./shiftSettings";
-import { Hour } from "./hour";
-import { DaySettings } from "./daySettings";
+import { ShiftSettings } from "../shiftSettings";
+import { Hour } from "../hour";
+import { DaySettings } from "../daySettings";
 
 export class SpecialDaySettings {
   // like weekend

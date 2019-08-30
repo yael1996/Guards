@@ -1,5 +1,5 @@
-import { ShiftSettings } from "./shiftSettings";
-import { DaySettings } from "./daySettings";
+import { ShiftSettings } from "../shiftSettings";
+import { DaySettings } from "../daySettings";
 
 export class SpecialDatesSettings {
   // like holidays
