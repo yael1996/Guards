@@ -1,10 +1,18 @@
 import { ShiftSettings } from "./shiftSettings";
+import { DaySettings } from "./daySettings";
 
-export class RegularDaySettings extends ShiftSettings {
+export class RegularDaySettings {
   public regularDays: Array<number>;
+  public daySettings;
+  public shiftSettings;
 
-  constructor(numPeople, numShifts, shiftLength, startHour: Hour, regularDays) {
-    super(numPeople, numShifts, shiftLength, startHour);
+  constructor(
+    daySettings: DaySettings,
+    shiftSettings: ShiftSettings,
+    regularDays: Array<number>
+  ) {
+    this.daySettings = daySettings;
+    this.shiftSettings = shiftSettings;
     this.regularDays = regularDays;
   }
 }

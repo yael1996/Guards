@@ -1,5 +1,5 @@
 import { SHIFT_TYPE } from "./shiftTypeEnum";
-import { User } from "../user/user";
+import { User } from "./user/user";
 
 export class Shift {
   public id;
