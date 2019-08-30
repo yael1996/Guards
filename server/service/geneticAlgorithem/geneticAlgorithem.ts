@@ -1,11 +1,10 @@
 declare var require: any;
-
 var geneticalgorithm = require("geneticalgorithm");
 import { CrossOver } from "./crossOver";
 import { Fitness } from "./fitness";
 import { Mutation } from "./mutation";
 
-export class geneticAlgorithm {
+export class GeneticAlgorithm {
   private config;
   private algorithm;
 

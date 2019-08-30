@@ -3,17 +3,17 @@ import { DaySettings } from "../daySettings";
 
 export class SpecialDatesSettings {
   // like holidays
-  public specialDats: Array<number>;
+  public dates: Array<Date>;
   public daySettings;
   public shiftSettings;
 
   constructor(
     daySettings: DaySettings,
     shiftSettings: ShiftSettings,
-    specialDats: Array<number>
+    specialDats: Array<Date>
   ) {
     this.daySettings = daySettings;
     this.shiftSettings = shiftSettings;
-    this.specialDats = specialDats;
+    this.dates = specialDats;
   }
 }

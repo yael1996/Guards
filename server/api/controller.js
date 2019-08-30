@@ -1,20 +1,22 @@
 //var users = require("../service/users");
-var genetic_algorithem = require("../service/geneticAlgorithem/genetic_algorithem");
-var bord_creator = require("../service/bord_creator/month_creator");
+import { GeneticAlgorithem } from "../service/geneticAlgorithem/geneticAlgorithem";
+import { MonthGurdsCreator } from "../service/bordCreator/monthGurdsCreator";
 
 var controllers = {
-  log_in: function(req, res) {
+  logIn: function(req, res) {
     // users.find(req, res, function(err, user) {
     //     if (err) res.send(err);
     //     res.json(user);
     //   });
   },
   constraints: function(req, res) {},
-  create_guard_board: function(req, res) {
-    bord_creator();
+  createGuardBoard: function(req, res) {
+    let bord = MonthGurdsCreator();
+    bord.buildMonth();
   },
-  run_genetic_algorithem: function(req, res) {
-    genetic_algorithem.run();
+  runGeneticAlgorithem: function(req, res) {
+    let algorithem = GeneticAlgorithem();
+    algorithem.run();
   }
 };
 

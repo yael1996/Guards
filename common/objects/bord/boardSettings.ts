@@ -3,13 +3,17 @@ import { SpecialDaySettings } from "./specialDaysSettings";
 import { SpecialDatesSettings } from "./specialDatesSettings";
 
 export class BordSettings {
-  public regularDays;
-  public specialDays;
-  public specialDates;
+  public regularDays: RegularDaySettings;
+  public specialDays?: SpecialDaySettings;
+  public specialDates?: SpecialDatesSettings;
 
   constructor(
     regularDays: RegularDaySettings,
-    specialDays: SpecialDaySettings,
-    specialDates: SpecialDatesSettings
-  ) {}
+    specialDays?: SpecialDaySettings,
+    specialDates?: SpecialDatesSettings
+  ) {
+    this.regularDays = regularDays;
+    this.specialDays = specialDays;
+    this.specialDates = specialDates;
+  }
 }
