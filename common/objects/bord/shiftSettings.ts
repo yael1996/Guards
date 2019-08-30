@@ -1,13 +1,13 @@
-class ShiftSettings {
+export class ShiftSettings {
   public numPeopleInShift: number;
   public numShiftsInDay: number;
   public shiftLengthInHouers: number;
-  public startTimeInDay: any;
+  public startHour: any;
 
-  constructor(numPeople, numShifts, shiftLength, startTime) {
+  constructor(numPeople, numShifts, shiftLength, startHour: Hour) {
     this.numPeopleInShift = numPeople;
     this.numShiftsInDay = numShifts;
     this.shiftLengthInHouers = shiftLength;
-    this.startTimeInDay = startTime;
+    this.startHour = startHour;
   }
 }
