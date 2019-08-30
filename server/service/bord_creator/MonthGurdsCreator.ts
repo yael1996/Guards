@@ -1,5 +1,5 @@
-import { Shift } from "../../../common/objects/bord/shift";
-import { SHIFT_TYPE } from "../../../common/objects/bord/shiftTypeEnum";
+import { Shift } from "../../../common/objects/shift";
+import { SHIFT_TYPE } from "../../../common/objects/shiftTypeEnum";
 
 class MonthGurdsCreator {
   private bordSettings;
