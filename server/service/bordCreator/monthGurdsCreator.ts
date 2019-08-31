@@ -1,6 +1,6 @@
 import { Shift } from "../../../common/objects/shift";
 import { SHIFT_TYPE } from "../../../common/objects/shiftTypeEnum";
-import { BordSettings } from "../../../common/objects/bord/boardSettings";
+import { BordSettings } from "../../../common/objects/settings/boardSettings";
 
 class MonthGurdsCreator {
   private bordSettings: BordSettings;

@@ -3,6 +3,7 @@ import { SpecialDaySettings } from "./specialDaysSettings";
 import { SpecialDatesSettings } from "./specialDatesSettings";
 
 export class BordSettings {
+  public bordId: number;
   public regularDays: RegularDaySettings;
   public specialDays?: SpecialDaySettings;
   public specialDates?: SpecialDatesSettings;

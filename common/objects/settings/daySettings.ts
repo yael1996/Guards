@@ -1,4 +1,4 @@
-import { Hour } from "./hour";
+import { Hour } from "../hour";
 
 export class DaySettings {
   public numShiftsInDay: number;

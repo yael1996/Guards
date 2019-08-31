@@ -1,8 +1,7 @@
-import { ShiftSettings } from "../shiftSettings";
-import { DaySettings } from "../daySettings";
+import { ShiftSettings } from "./shiftSettings";
+import { DaySettings } from "./daySettings";
 
-export class SpecialDaySettings {
-  // like weekend
+export class RegularDaySettings {
   public days: Array<number>;
   public daySettings;
   public shiftSettings;
@@ -10,10 +9,10 @@ export class SpecialDaySettings {
   constructor(
     daySettings: DaySettings,
     shiftSettings: ShiftSettings,
-    specialDays: Array<number>
+    regularDays: Array<number>
   ) {
     this.daySettings = daySettings;
     this.shiftSettings = shiftSettings;
-    this.days = specialDays;
+    this.days = regularDays;
   }
 }
