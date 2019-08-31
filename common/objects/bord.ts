@@ -5,7 +5,7 @@ export class Bord {
   public name: string;
   public description: string;
   public ownerId: string;
-  public bordSettings: BordSettings;
+  public settings: BordSettings;
   public workersIds: Array<string>;
 
   constructor(
@@ -18,7 +18,7 @@ export class Bord {
     this.name = name;
     this.description = description;
     this.ownerId = ownerId;
-    this.bordSettings = bordSettings;
+    this.settings = bordSettings;
     this.workersIds = new Array<string>();
   }
 

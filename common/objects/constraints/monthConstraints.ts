@@ -1,16 +1,20 @@
 import { Month } from "../month";
-import { Constraint } from "./constraint";
+import { WorkerConstraints } from "./workerConstraints";
 
 export class MonthConstraints {
-  public constraints: Array<Constraint>;
+  public constraints: Array<WorkerConstraints>;
   public month: Month;
 
   constructor(month: Month) {
     this.month = month;
-    this.constraints = new Array<Constraint>();
+    this.constraints = new Array<WorkerConstraints>();
   }
 
-  public addConstraint(constraint: Constraint) {
+  public addWorkerConstraint(constraint: WorkerConstraints) {
     this.constraints.push(constraint);
+  }
+
+  public updateWorkerConstraint(constraint: WorkerConstraints) {
+    this.constraints.find;
   }
 }
