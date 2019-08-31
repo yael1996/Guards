@@ -1,19 +1,18 @@
 import { User } from "../user/user";
 import { Bord } from "../bord";
+import { Month } from "../month";
 
 // cant
-class Constraint {
+export class Constraint {
   public fromDate: Date;
   public toDate: Date;
-  public reason: string;
   public workerId: string;
-  public bordId: string;
+  public reason?: string;
 
   constructor(
-    bord: Bord,
-    worker: User,
     fromDate: Date,
     toDate: Date,
+    workerId: string,
     reason?: string
   ) {}
 }

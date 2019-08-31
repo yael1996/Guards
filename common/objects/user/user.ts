@@ -3,8 +3,8 @@ import { Bord } from "../bord";
 
 export class User {
   public type: USER_TYPE;
-  public id: number;
-  public dorbds: Array<Bord>;
+  public id: string;
+  public dorbdsIds: Array<string>; // bordId
 
   constructor() {}
 }

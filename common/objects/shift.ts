@@ -1,22 +1,21 @@
 import { SHIFT_TYPE } from "./shiftTypeEnum";
-import { User } from "./user/user";
 
 export class Shift {
-  public id;
-  public fromTime: any;
-  public toTime: any;
+  public id: string;
+  public fromTime: Date;
+  public toTime: Date;
   public shiftType: SHIFT_TYPE;
-  public workers: Array<User>;
+  public workersIds: Array<string>;
 
-  constructor(fromTime: any, toTime: any, shiftType: SHIFT_TYPE) {
+  constructor(fromTime: Date, toTime: Date, shiftType: SHIFT_TYPE) {
     //this.id =
     this.fromTime = fromTime;
     this.toTime = toTime;
     this.shiftType = shiftType;
-    this.workers = new Array<User>();
+    this.workersIds = new Array<string>();
   }
 
-  public addPersonToShift(person: User): void {
-    this.workers.push(person);
+  public addPersonToShift(workerId: string): void {
+    this.workersIds.push(workerId);
   }
 }

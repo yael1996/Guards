@@ -1,12 +1,28 @@
 import { BordSettings } from "./settings/boardSettings";
-import { User } from "./user/user";
 
 export class Bord {
-  public id: number;
+  public id: string;
   public name: string;
   public description: string;
-  public owner: User;
+  public ownerId: string;
   public bordSettings: BordSettings;
-  public workers: Array<User>;
-  constructor() {}
+  public workersIds: Array<string>;
+
+  constructor(
+    name: string,
+    description: string,
+    ownerId: string,
+    bordSettings: BordSettings
+  ) {
+    //this.id =  generate id
+    this.name = name;
+    this.description = description;
+    this.ownerId = ownerId;
+    this.bordSettings = bordSettings;
+    this.workersIds = new Array<string>();
+  }
+
+  public addWorker(workerId: string): void {
+    this.workersIds.push(workerId);
+  }
 }

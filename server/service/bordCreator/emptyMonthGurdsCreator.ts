@@ -1,21 +1,28 @@
 import { Shift } from "../../../common/objects/shift";
 import { SHIFT_TYPE } from "../../../common/objects/shiftTypeEnum";
 import { BordSettings } from "../../../common/objects/settings/boardSettings";
+import { Month } from "../../../common/objects/month";
 
-class MonthGurdsCreator {
+export class EmptyMonthGurdsCreator {
   private bordSettings: BordSettings;
   private monthShifts: Array<Shift>;
   private specialDates: Array<Date>;
   private specialDays: Array<Date>;
   private regularDays: Array<Date>;
+  private year: number;
+  private month: number;
 
-  constructor(bordSettings: BordSettings) {
+  constructor(month: Month) {
+    this.year = month.year;
+    this.month = month.month;
+
+    let bordSettings; //get settings by month.bordId
     this.bordSettings = bordSettings;
   }
 
-  public buildMonth(month: number, year: number): Array<Shift> {
+  public buildMonth(): Array<Shift> {
     this.init();
-    this.orgenizeDatesByType(month, year);
+    this.orgenizeDatesByType();
     this.fillMonthWithShifts();
     return this.monthShifts;
   }
@@ -62,9 +69,9 @@ class MonthGurdsCreator {
     }
   }
 
-  private orgenizeDatesByType(month, year): void {
-    for (var i = 1; i <= this.numTotalDaysInMonth(month, year); i++) {
-      var currDate = new Date(year, month, i);
+  private orgenizeDatesByType(): void {
+    for (var i = 1; i <= this.numTotalDaysInMonth(); i++) {
+      var currDate = new Date(this.year, this.month, i);
 
       if (this.isDateSpecial(currDate)) this.specialDates.push(currDate);
       else if (this.isDaySpecial(currDate)) this.specialDays.push(currDate);
@@ -85,7 +92,7 @@ class MonthGurdsCreator {
     return this.bordSettings.specialDays.days.includes(currDate.getDay());
   }
 
-  private numTotalDaysInMonth(month, year): number {
-    return new Date(year, month, 0).getDate();
+  private numTotalDaysInMonth(): number {
+    return new Date(this.year, this.month, 0).getDate();
   }
 }
