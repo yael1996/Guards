@@ -1,8 +1,8 @@
-import { ShiftSettings } from "../shiftSettings";
-import { DaySettings } from "../daySettings";
+import { ShiftSettings } from "./shiftSettings";
+import { DaySettings } from "./daySettings";
 
 export class RegularDaySettings {
-  public regularDays: Array<number>;
+  public days: Array<number>;
   public daySettings;
   public shiftSettings;
 
@@ -13,6 +13,6 @@ export class RegularDaySettings {
   ) {
     this.daySettings = daySettings;
     this.shiftSettings = shiftSettings;
-    this.regularDays = regularDays;
+    this.days = regularDays;
   }
 }
