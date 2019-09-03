@@ -6,6 +6,6 @@ export class Month {
   constructor(year: number, month: number, bordId: string) {
     this.year = year;
     this.month = month;
-    this.bordId = bordId;
+    // this.bordId = bordId;
   }
 }

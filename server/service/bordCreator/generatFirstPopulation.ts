@@ -5,6 +5,7 @@ import { MonthConstraints } from "../../../common/objects/constraints/monthConst
 import { Month } from "../../../common/objects/month";
 import { EmptyMonthBord } from "./emptyMonthBord";
 import { ShiftTime } from "../../../common/objects/shiftTime";
+import { Bord } from "../../../common/objects/bord";
 var _ = require("underscore");
 
 export class generatFirstPopulation {
@@ -13,10 +14,10 @@ export class generatFirstPopulation {
   private bord: Bord;
   private emptyBord: EmptyMonthBord;
 
-  constructor(constraints: MonthConstraints) {
+  constructor(bord: Bord, constraints: MonthConstraints) {
     this.constraints = constraints.constraints;
     this.month = constraints.month;
-    this.bord = null; //= constraints.month.bordId
+    this.bord = bord;
   }
 
   private init() {
@@ -66,10 +67,11 @@ export class generatFirstPopulation {
     for (let day of days) {
       let startShift = day.setHours(settings.daySettings.startTimeInDay);
       for (var i = 1; i <= settings.daySettings.numShiftsInDay; i++) {
-        let shiftTime = this.getShiftTime(startShift, settings.shiftSettings);
-        let numWorkers = settings.shiftSettings.numWorkersInShift;
-        let shift: Shift = this.createNewShift(shiftTime, type, numWorkers);
-
+        let shift: Shift = this.createNewShift(
+          this.getShiftTime(startShift, settings.shiftSettings),
+          type,
+          settings.shiftSettings.numWorkersInShift
+        );
         monthShift.push(shift);
         startShift = shift.shiftTime.toTime;
       }
@@ -93,7 +95,6 @@ export class generatFirstPopulation {
   private tryAddWorkerToShift(shift): boolean {
     let workerId = this.getRandomWorkerId();
     if (this.canWorkerDoTheShift(shift, workerId)) {
-      shift.addWorkerToShift(workerId);
       return true;
     }
     return false;
@@ -118,14 +119,20 @@ export class generatFirstPopulation {
   }
 
   private isShiftInWorkersConstraints(shift: Shift, workerId: string): boolean {
-    let worker = this.constraints.find(c => (c.workerId = workerId));
+    let workerConstraints = this.constraints.find(c => (c.workerId = workerId));
 
-    return !!worker.constraints.find(c =>
+    return !!workerConstraints.constraints.find(c =>
       _.isEqual(c.shiftTime, shift.shiftTime)
     );
   }
 
   private isWorkerHasAvalibleShifts(): boolean {
+    //ToDo
     return true;
+  }
+
+  private addWorkerToShift(shift, workerId) {
+    shift.addWorkerToShift(workerId);
+    // add to MonthWorkerShifts
   }
 }
