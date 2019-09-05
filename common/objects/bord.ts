@@ -7,6 +7,7 @@ export class Bord {
   public ownerId: string;
   public settings: BordSettings;
   public workersIds: Array<string>;
+  public numShiftsForWorker: number;
 
   constructor(
     name: string,
