@@ -1,6 +1,6 @@
 import { Shift } from "../../../common/objects/shift";
 import { SHIFT_TYPE } from "../../../common/objects/shiftTypeEnum";
-import { BordSettings } from "../../../common/objects/settings/boardSettings";
+import { BordSettings } from "../../../common/objects/bord/boardSettings";
 import { Month } from "../../../common/objects/month";
 
 export class EmptyMonthBord {
