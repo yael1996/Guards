@@ -1,5 +1,6 @@
 import { Shift } from "./shift";
 
+// no need
 export class WorkerShifts {
   public workerId: string;
   public shifts: Array<Shift>;

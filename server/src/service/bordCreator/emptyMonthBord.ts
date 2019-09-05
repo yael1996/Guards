@@ -1,7 +1,5 @@
-import { Shift } from "../../../common/objects/shift";
-import { SHIFT_TYPE } from "../../../common/objects/shiftTypeEnum";
-import { BordSettings } from "../../../common/objects/bord/boardSettings";
-import { Month } from "../../../common/objects/month";
+import { BordSettings } from "../../../../common/objects/settings/boardSettings";
+import { Month } from "../../../../common/objects/month/month";
 
 export class EmptyMonthBord {
   public specialDates: Array<Date>;

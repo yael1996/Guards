@@ -1,11 +1,11 @@
-import { Shift } from "../../../common/objects/shift";
-import { SHIFT_TYPE } from "../../../common/objects/shiftTypeEnum";
-import { WorkerConstraints } from "../../../common/objects/constraints/workerConstraints";
-import { MonthConstraints } from "../../../common/objects/constraints/monthConstraints";
-import { Month } from "../../../common/objects/month";
+import { Shift } from "../../../../common/objects/shifts/shift";
+import { SHIFT_TYPE } from "../../../../common/objects/shifts/shiftTypeEnum";
+import { WorkerConstraints } from "../../../../common/objects/constraints/workerConstraints";
+import { Month } from "../../../../common/objects/month/month";
+import { MonthConstraints } from "../../../../common/objects/month/monthConstraints";
 import { EmptyMonthBord } from "./emptyMonthBord";
-import { ShiftTime } from "../../../common/objects/shiftTime";
-import { Bord } from "../../../common/objects/bord";
+import { ShiftTime } from "../../../../common/objects/shifts/shiftTime";
+import { Bord } from "../../../../common/objects/bord";
 var _ = require("underscore");
 
 export class generatFirstPopulation {
@@ -14,19 +14,16 @@ export class generatFirstPopulation {
   private bord: Bord;
   private emptyBord: EmptyMonthBord;
 
-  constructor(bord: Bord, constraints: MonthConstraints) {
-    this.constraints = constraints.constraints;
-    this.month = constraints.month;
+  constructor(bord: Bord, monthConstraints: MonthConstraints) {
+    this.constraints = monthConstraints.constraints;
+    this.month = monthConstraints.month;
     this.bord = bord;
-  }
-
-  private init() {
     this.emptyBord = new EmptyMonthBord(this.month, this.bord.settings);
   }
 
   public buildFirstPopulation(numOptions: number): Array<Array<Shift>> {
     let monthShiftsOptions = new Array<Array<Shift>>();
-    for (let i; i < numOptions; i++) {
+    for (let i = 0; i < numOptions; i++) {
       let monthShift: Array<Shift> = this.fillOneMonthWithShifts();
       monthShiftsOptions.push(monthShift);
     }
@@ -63,16 +60,21 @@ export class generatFirstPopulation {
     return monthShift;
   }
 
-  private fillShiftsByType(days, settings, type, monthShift): void {
+  private fillShiftsByType(
+    days,
+    settings,
+    type: SHIFT_TYPE,
+    monthShift: Array<Shift>
+  ): void {
     for (let day of days) {
       let startShift = day.setHours(settings.daySettings.startTimeInDay);
       for (var i = 1; i <= settings.daySettings.numShiftsInDay; i++) {
-        let shift: Shift = this.createNewShift(
-          this.getShiftTime(startShift, settings.shiftSettings),
-          type,
-          settings.shiftSettings.numWorkersInShift
-        );
+        let shiftTime = this.getShiftTime(startShift, settings.shiftSettings);
+        let numWorkers = settings.shiftSettings.numWorkersInShift;
+
+        let shift: Shift = this.createNewShift(shiftTime, type, numWorkers);
         monthShift.push(shift);
+
         startShift = shift.shiftTime.toTime;
       }
     }
@@ -87,17 +89,13 @@ export class generatFirstPopulation {
     let shift: Shift = new Shift(shiftTime, type);
     let numAddedWorkers = 0;
     while (numAddedWorkers < numWorkers) {
-      if (this.tryAddWorkerToShift(shift)) numAddedWorkers++;
+      let workerId = this.getRandomWorkerId();
+      if (this.canWorkerDoTheShift(shift, workerId)) {
+        shift.addWorkerToShift(workerId);
+        numAddedWorkers++;
+      }
     }
     return shift;
-  }
-
-  private tryAddWorkerToShift(shift): boolean {
-    let workerId = this.getRandomWorkerId();
-    if (this.canWorkerDoTheShift(shift, workerId)) {
-      return true;
-    }
-    return false;
   }
 
   private getRandomWorkerId(): string {
@@ -129,10 +127,5 @@ export class generatFirstPopulation {
   private isWorkerHasAvalibleShifts(): boolean {
     //ToDo
     return true;
-  }
-
-  private addWorkerToShift(shift, workerId) {
-    shift.addWorkerToShift(workerId);
-    // add to MonthWorkerShifts
   }
 }

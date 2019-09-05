@@ -4,8 +4,8 @@ import { DaySettings } from "./daySettings";
 export class SpecialDatesSettings {
   // like holidays
   public dates: Array<Date>;
-  public daySettings;
-  public shiftSettings;
+  public daySettings: DaySettings;
+  public shiftSettings: ShiftSettings;
 
   constructor(
     daySettings: DaySettings,

@@ -1,6 +1,5 @@
 //var users = require("../service/users");
 import { GeneticAlgorithem } from "../service/geneticAlgorithem/geneticAlgorithem";
-import { MonthGurdsCreator } from "../service/bordCreator/monthGurdsCreator";
 
 var controllers = {
   logIn: function(req, res) {
@@ -10,10 +9,6 @@ var controllers = {
     //   });
   },
   constraints: function(req, res) {},
-  createGuardBoard: function(req, res) {
-    let bord = MonthGurdsCreator();
-    bord.buildMonth();
-  },
   runGeneticAlgorithem: function(req, res) {
     let algorithem = GeneticAlgorithem();
     algorithem.run();

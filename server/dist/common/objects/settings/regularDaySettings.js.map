@@ -1,0 +1,1 @@
+{"version":3,"file":"regularDaySettings.js","sourceRoot":"","sources":["../../../../../common/objects/settings/regularDaySettings.ts"],"names":[],"mappings":";;AAGA,MAAa,kBAAkB;IAK7B,YACE,WAAwB,EACxB,aAA4B,EAC5B,WAA0B;QAE1B,IAAI,CAAC,WAAW,GAAG,WAAW,CAAC;QAC/B,IAAI,CAAC,aAAa,GAAG,aAAa,CAAC;QACnC,IAAI,CAAC,IAAI,GAAG,WAAW,CAAC;IAC1B,CAAC;CACF;AAdD,gDAcC"}

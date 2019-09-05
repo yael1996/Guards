@@ -13,13 +13,16 @@ export class Bord {
     name: string,
     description: string,
     ownerId: string,
-    bordSettings: BordSettings
+    bordSettings: BordSettings,
+    numShiftsForWorker: number
   ) {
     //this.id =  generate id
+    this.id = "123";
     this.name = name;
     this.description = description;
     this.ownerId = ownerId;
     this.settings = bordSettings;
+    this.numShiftsForWorker = numShiftsForWorker;
     this.workersIds = new Array<string>();
   }
 

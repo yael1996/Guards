@@ -13,6 +13,7 @@ export class BordSettings {
     specialDays?: SpecialDaySettings,
     specialDates?: SpecialDatesSettings
   ) {
+    this.bordId = "123"; //ToDo generate
     this.regularDays = regularDays;
     this.specialDays = specialDays;
     this.specialDates = specialDates;

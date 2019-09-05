@@ -3,8 +3,8 @@ import { DaySettings } from "./daySettings";
 
 export class RegularDaySettings {
   public days: Array<number>;
-  public daySettings;
-  public shiftSettings;
+  public daySettings: DaySettings;
+  public shiftSettings: ShiftSettings;
 
   constructor(
     daySettings: DaySettings,
