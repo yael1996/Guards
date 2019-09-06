@@ -38,14 +38,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = require("express");
 var generatFirstPopulation_1 = require("../../service/bordCreator/generatFirstPopulation");
-var bord_1 = require("../../../../common/objects/bord");
-var monthConstraints_1 = require("../../../../common/objects/month/monthConstraints");
-var regularDaySettings_1 = require("../../../../common/objects/settings/regularDaySettings");
-var hour_1 = require("../../../../common/objects/hour");
-var daySettings_1 = require("../../../../common/objects/settings/daySettings");
-var shiftSettings_1 = require("../../../../common/objects/settings/shiftSettings");
-var boardSettings_1 = require("../../../../common/objects/settings/boardSettings");
 var geneticAlgorithem_1 = require("../../service/geneticAlgorithem/geneticAlgorithem");
+var bord_1 = require("../../../../common/objects/bord");
+var hour_1 = require("../../../../common/objects/hour");
+var regularDaySettings_1 = require("../../../../common/objects/settings/regularDaySettings");
+var shiftSettings_1 = require("../../../../common/objects/settings/shiftSettings");
+var daySettings_1 = require("../../../../common/objects/settings/daySettings");
+var boardSettings_1 = require("../../../../common/objects/settings/boardSettings");
+var monthConstraints_1 = require("../../../../common/objects/month/monthConstraints");
 var GeneticAlgorithemController = /** @class */ (function () {
     function GeneticAlgorithemController() {
         var _this = this;
