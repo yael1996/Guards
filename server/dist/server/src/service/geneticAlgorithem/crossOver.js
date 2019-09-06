@@ -2,11 +2,19 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var CrossOver = /** @class */ (function () {
     function CrossOver() {
+        var _this = this;
+        this.doAction = function (phenoTypeA, phenoTypeB) {
+            // use phenoTypeA and B to create phenotype result 1 and 2
+            _this.combineShifts(phenoTypeA, phenoTypeB);
+        };
     }
-    CrossOver.prototype.doAction = function (phenoTypeA, phenoTypeB) {
-        var result1 = {}, result2 = {};
-        // use phenoTypeA and B to create phenotype result 1 and 2
-        return [result1, result2];
+    CrossOver.prototype.combineShifts = function (phenoTypeA, phenoTypeB) {
+        // assume that phenoTypeA and phenoTypeB are the same length
+        var index = phenoTypeA.length / 2;
+        var partOfA = phenoTypeA.slice(0, index);
+        var partOfB = phenoTypeB.slice(index, phenoTypeB.length);
+        //return partOfA.concat(partOfB);
+        return [partOfA, partOfB];
     };
     return CrossOver;
 }());
