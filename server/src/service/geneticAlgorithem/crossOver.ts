@@ -5,15 +5,14 @@ export class CrossOver {
 
   doAction = (phenoTypeA: Array<Shift>, phenoTypeB: Array<Shift>) => {
     // use phenoTypeA and B to create phenotype result 1 and 2
-    this.combineShifts(phenoTypeA, phenoTypeB);
+    return this.combineShifts(phenoTypeA, phenoTypeB);
   };
 
   private combineShifts(phenoTypeA: Array<Shift>, phenoTypeB: Array<Shift>) {
     // assume that phenoTypeA and phenoTypeB are the same length
     const index = phenoTypeA.length / 2;
     const partOfA = phenoTypeA.slice(0, index);
-    const partOfB = phenoTypeB.slice(index);
-    return partOfA.concat(partOfB);
-    // [partOfA,partOfB]
+    const partOfB = phenoTypeB.slice(index, phenoTypeB.length);
+    return [partOfA, partOfB];
   }
 }
