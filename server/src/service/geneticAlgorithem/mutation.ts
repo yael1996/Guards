@@ -3,13 +3,13 @@ import { Shift } from "../../../../common/objects/shifts/shift";
 export class Mutation {
   constructor() {}
 
-  public doAction(oldPhenotype: Array<Shift>): Array<Shift> {
+  doAction = (oldPhenotype: Array<Shift>): Array<Shift> => {
     // use oldPhenotype and some random
     // function to make a change to your
     // phenotype
     let resultPhenotype = oldPhenotype;
     return this.switchTwoShifts(resultPhenotype);
-  }
+  };
 
   private switchTwoShifts(resultPhenotype) {
     // can do for and switch more then two
