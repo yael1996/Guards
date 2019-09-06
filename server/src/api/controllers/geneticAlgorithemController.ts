@@ -43,7 +43,6 @@ export class GeneticAlgorithemController {
     bord.addWorker("5");
 
     const monthConstraints: MonthConstraints = new MonthConstraints();
-
     const firstPopulation = new GeneratFirstPopulation(bord, monthConstraints);
     return firstPopulation.buildFirstPopulation(5);
   };
