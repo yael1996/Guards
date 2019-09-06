@@ -10,8 +10,8 @@ export class GeneticAlgorithm {
   private algorithm;
 
   constructor(
-    populationSize: number = 250,
-    firstPopulation: Array<Array<Shift>> = []
+    firstPopulation: Array<Array<Shift>> = [],
+    populationSize: number = 250
   ) {
     this.config = this.configure(populationSize, firstPopulation);
     this.algorithm = geneticalgorithm(this.config);
@@ -32,6 +32,7 @@ export class GeneticAlgorithm {
 
   public run() {
     this.algorithm.evolve();
-    var best = this.algorithm.best();
+    let best = this.algorithm.best();
+    return best;
   }
 }

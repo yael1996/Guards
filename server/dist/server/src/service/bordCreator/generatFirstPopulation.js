@@ -33,7 +33,7 @@ var GeneratFirstPopulation = /** @class */ (function () {
     GeneratFirstPopulation.prototype.fillShiftsByType = function (days, settings, type, monthShift) {
         for (var _i = 0, days_1 = days; _i < days_1.length; _i++) {
             var day = days_1[_i];
-            var startShift = day.setHours(settings.daySettings.startTimeInDay);
+            var startShift = new Date(day.getFullYear(), day.getMonth(), day.getDay(), settings.daySettings.startHour.hour, settings.daySettings.startHour.min);
             for (var i = 1; i <= settings.daySettings.numShiftsInDay; i++) {
                 var shiftTime = this.getShiftTime(startShift, settings.shiftSettings);
                 var numWorkers = settings.shiftSettings.numWorkersInShift;
@@ -44,7 +44,7 @@ var GeneratFirstPopulation = /** @class */ (function () {
         }
     };
     GeneratFirstPopulation.prototype.getShiftTime = function (startShift, shiftSettings) {
-        var toTime = startShift.addHours(shiftSettings.shiftLengthInHouers);
+        var toTime = new Date(startShift.getFullYear(), startShift.getMonth(), startShift.getDay(), startShift.getHours() + shiftSettings.shiftLengthInHouers);
         return new shiftTime_1.ShiftTime(startShift, toTime);
     };
     GeneratFirstPopulation.prototype.createNewShift = function (shiftTime, type, numWorkers) {

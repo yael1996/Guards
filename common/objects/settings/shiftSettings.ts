@@ -1,9 +1,9 @@
 export class ShiftSettings {
-  public numPeopleInShift: number;
+  public numWorkersInShift: number;
   public shiftLengthInHouers: number;
 
-  constructor(numPeople: number, shiftLength: number) {
-    this.numPeopleInShift = numPeople;
+  constructor(numWorkers: number, shiftLength: number) {
+    this.numWorkersInShift = numWorkers;
     this.shiftLengthInHouers = shiftLength;
   }
 }

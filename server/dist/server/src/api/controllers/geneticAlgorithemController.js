@@ -40,8 +40,40 @@ var express_1 = require("express");
 var generatFirstPopulation_1 = require("../../service/bordCreator/generatFirstPopulation");
 var bord_1 = require("../../../../common/objects/bord");
 var monthConstraints_1 = require("../../../../common/objects/month/monthConstraints");
+var regularDaySettings_1 = require("../../../../common/objects/settings/regularDaySettings");
+var hour_1 = require("../../../../common/objects/hour");
+var daySettings_1 = require("../../../../common/objects/settings/daySettings");
+var shiftSettings_1 = require("../../../../common/objects/settings/shiftSettings");
+var boardSettings_1 = require("../../../../common/objects/settings/boardSettings");
 var GeneticAlgorithemController = /** @class */ (function () {
     function GeneticAlgorithemController() {
+        var _this = this;
+        this.generateFirstPopulation = function () {
+            var name = "test";
+            var owner = "111";
+            var numShiftsPerWorker = 10;
+            var a = _this.getDefultRegularDaySettings();
+            var bordSettings = new boardSettings_1.BordSettings(a);
+            var bord = new bord_1.Bord(name, owner, numShiftsPerWorker, bordSettings);
+            bord.addWorker("1");
+            bord.addWorker("2");
+            bord.addWorker("3");
+            bord.addWorker("4");
+            bord.addWorker("5");
+            var monthConstraints = new monthConstraints_1.MonthConstraints();
+            var firstPopulation = new generatFirstPopulation_1.GeneratFirstPopulation(bord, monthConstraints);
+            return firstPopulation.buildFirstPopulation(5);
+        };
+        this.getDefultRegularDaySettings = function () {
+            var numShiftsInday = 1;
+            var startTime = new hour_1.Hour(8);
+            var numPeople = 2;
+            var shiftLength = 4;
+            var daySettings = new daySettings_1.DaySettings(numShiftsInday, startTime);
+            var shiftSettings = new shiftSettings_1.ShiftSettings(numPeople, shiftLength);
+            var regularDays = [1, 2, 3, 4];
+            return new regularDaySettings_1.RegularDaySettings(daySettings, shiftSettings, regularDays);
+        };
         this.routs = express_1.Router();
         this.InitRoutes();
     }
@@ -53,20 +85,6 @@ var GeneticAlgorithemController = /** @class */ (function () {
                 return [2 /*return*/];
             });
         }); });
-    };
-    GeneticAlgorithemController.prototype.generateFirstPopulation = function () {
-        var name = "test";
-        var owner = "111";
-        var numShiftsPerWorker = 10;
-        var bord = new bord_1.Bord(name, owner, numShiftsPerWorker);
-        bord.addWorker("1");
-        bord.addWorker("2");
-        bord.addWorker("3");
-        bord.addWorker("4");
-        bord.addWorker("5");
-        var monthConstraints = new monthConstraints_1.MonthConstraints();
-        var firstPopulation = new generatFirstPopulation_1.GeneratFirstPopulation(bord, monthConstraints);
-        return firstPopulation.buildFirstPopulation(5);
     };
     return GeneticAlgorithemController;
 }());

@@ -21,9 +21,9 @@ export class GeneratFirstPopulation {
     this.emptyBord = new EmptyMonthBord(this.month, this.bord.settings);
   }
 
-  public buildFirstPopulation(numOptions: number): Array<Array<Shift>> {
+  public buildFirstPopulation(populationSize: number): Array<Array<Shift>> {
     let monthShiftsOptions = new Array<Array<Shift>>();
-    for (let i = 0; i < numOptions; i++) {
+    for (let i = 0; i < populationSize; i++) {
       let monthShift: Array<Shift> = this.fillOneMonthWithShifts();
       monthShiftsOptions.push(monthShift);
     }
@@ -61,13 +61,19 @@ export class GeneratFirstPopulation {
   }
 
   private fillShiftsByType(
-    days,
+    days: Array<Date>,
     settings,
     type: SHIFT_TYPE,
     monthShift: Array<Shift>
   ): void {
     for (let day of days) {
-      let startShift = day.setHours(settings.daySettings.startTimeInDay);
+      let startShift = new Date(
+        day.getFullYear(),
+        day.getMonth(),
+        day.getDay(),
+        settings.daySettings.startHour.hour,
+        settings.daySettings.startHour.min
+      );
       for (var i = 1; i <= settings.daySettings.numShiftsInDay; i++) {
         let shiftTime = this.getShiftTime(startShift, settings.shiftSettings);
         let numWorkers = settings.shiftSettings.numWorkersInShift;
@@ -80,8 +86,13 @@ export class GeneratFirstPopulation {
     }
   }
 
-  private getShiftTime(startShift, shiftSettings) {
-    let toTime = startShift.addHours(shiftSettings.shiftLengthInHouers);
+  private getShiftTime(startShift: Date, shiftSettings) {
+    let toTime = new Date(
+      startShift.getFullYear(),
+      startShift.getMonth(),
+      startShift.getDay(),
+      startShift.getHours() + shiftSettings.shiftLengthInHouers
+    );
     return new ShiftTime(startShift, toTime);
   }
 

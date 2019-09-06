@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var ShiftSettings = /** @class */ (function () {
-    function ShiftSettings(numPeople, shiftLength) {
-        this.numPeopleInShift = numPeople;
+    function ShiftSettings(numWorkers, shiftLength) {
+        this.numWorkersInShift = numWorkers;
         this.shiftLengthInHouers = shiftLength;
     }
     return ShiftSettings;

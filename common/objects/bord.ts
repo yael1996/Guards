@@ -13,15 +13,15 @@ export class Bord {
     name: string,
     ownerId: string,
     numShiftsForWorker: number,
-    description?: string,
-    bordSettings?: BordSettings
+    bordSettings: BordSettings,
+    description?: string
   ) {
     //this.id =  generate id
     this.id = "123";
     this.name = name;
     this.description = description;
     this.ownerId = ownerId;
-    this.settings = bordSettings ? bordSettings : new BordSettings();
+    this.settings = bordSettings;
     this.numShiftsForWorker = numShiftsForWorker;
     this.workersIds = new Array<string>();
   }
