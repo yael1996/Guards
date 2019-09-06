@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { GeneticAlgorithemController } from "./controllers/geneticAlgorithemController";
 
 export class Routes {
   public appRouts: Router;
@@ -16,6 +17,6 @@ export class Routes {
   }
 
   private initOtherRouts() {
-    //this.appRouts.use("/login", loginController);
+    this.appRouts.use("/geneticAlgo", new GeneticAlgorithemController().routs);
   }
 }

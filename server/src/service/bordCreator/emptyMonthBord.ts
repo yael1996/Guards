@@ -36,16 +36,19 @@ export class EmptyMonthBord {
   }
 
   private isDateSpecial(currDate: Date): boolean {
-    return (
-      this.bordSettings.specialDates &&
-      !!this.bordSettings.specialDates.dates.find(date => {
+    if (!this.bordSettings.specialDates) return false;
+    else {
+      return !!this.bordSettings.specialDates.dates.find(date => {
         return date.getTime() == currDate.getTime();
-      })
-    );
+      });
+    }
   }
 
   private isDaySpecial(currDate: Date): boolean {
-    return this.bordSettings.specialDays.days.includes(currDate.getDay());
+    if (!this.bordSettings.specialDays) return false;
+    else {
+      return this.bordSettings.specialDays.days.includes(currDate.getDay());
+    }
   }
 
   private numTotalDaysInMonth(): number {

@@ -25,13 +25,20 @@ var EmptyMonthBord = /** @class */ (function () {
         }
     };
     EmptyMonthBord.prototype.isDateSpecial = function (currDate) {
-        return (this.bordSettings.specialDates &&
-            !!this.bordSettings.specialDates.dates.find(function (date) {
+        if (!this.bordSettings.specialDates)
+            return false;
+        else {
+            return !!this.bordSettings.specialDates.dates.find(function (date) {
                 return date.getTime() == currDate.getTime();
-            }));
+            });
+        }
     };
     EmptyMonthBord.prototype.isDaySpecial = function (currDate) {
-        return this.bordSettings.specialDays.days.includes(currDate.getDay());
+        if (!this.bordSettings.specialDays)
+            return false;
+        else {
+            return this.bordSettings.specialDays.days.includes(currDate.getDay());
+        }
     };
     EmptyMonthBord.prototype.numTotalDaysInMonth = function () {
         return new Date(this.year, this.month, 0).getDate();

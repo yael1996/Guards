@@ -8,7 +8,7 @@ import { ShiftTime } from "../../../../common/objects/shifts/shiftTime";
 import { Bord } from "../../../../common/objects/bord";
 var _ = require("underscore");
 
-export class generatFirstPopulation {
+export class GeneratFirstPopulation {
   private constraints: Array<WorkerConstraints>;
   private month: Month;
   private bord: Bord;
@@ -105,6 +105,8 @@ export class generatFirstPopulation {
   }
 
   private canWorkerDoTheShift(shift, workerId): boolean {
+    return true;
+
     return (
       !this.isWorkerAlreadyInShift(shift, workerId) &&
       !this.isShiftInWorkersConstraints(shift, workerId) &&

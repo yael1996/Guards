@@ -1,17 +1,28 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-var express_1 = __importDefault(require("express"));
-var app = express_1.default();
-var port = process.env.PORT || 3000;
-// var routes = require("./api/routes");
-// routes(app);
-app.get("/", function (req, res) {
-    res.send("Welcome");
-});
-app.listen(port, function () {
-    console.log("Server started on port: " + port);
-});
+var app_1 = require("./api/app");
+var routes_1 = require("./api/routes");
+var Server = /** @class */ (function () {
+    function Server() {
+        this.app = new app_1.App().app;
+        this.routs = new routes_1.Routes().appRouts;
+        this.port = process.env.PORT || 3000;
+        this.initRouts();
+        this.listen();
+    }
+    Server.prototype.initRouts = function () {
+        this.app.use("/", this.routs);
+        // this.app.get("/", (req, res) => {
+        //   res.send("Welcome");
+        // });
+    };
+    Server.prototype.listen = function () {
+        var _this = this;
+        this.app.listen(this.port, function () {
+            console.log("Server started on port: " + _this.port);
+        });
+    };
+    return Server;
+}());
+var server = new Server();
 //# sourceMappingURL=server.js.map

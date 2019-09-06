@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var Bord = /** @class */ (function () {
-    function Bord(name, description, ownerId, bordSettings, numShiftsForWorker) {
+    function Bord(name, ownerId, numShiftsForWorker, description, bordSettings) {
         //this.id =  generate id
         this.id = "123";
         this.name = name;

@@ -5,16 +5,21 @@ var crossOver_1 = require("./crossOver");
 var fitness_1 = require("./fitness");
 var mutation_1 = require("./mutation");
 var GeneticAlgorithm = /** @class */ (function () {
-    function GeneticAlgorithm() {
-        this.config = {
+    function GeneticAlgorithm(populationSize, firstPopulation) {
+        if (populationSize === void 0) { populationSize = 250; }
+        if (firstPopulation === void 0) { firstPopulation = []; }
+        this.config = this.configure(populationSize, firstPopulation);
+        this.algorithm = geneticalgorithm(this.config);
+    }
+    GeneticAlgorithm.prototype.configure = function (populationSize, firstPopulation) {
+        return {
             mutationFunction: mutation_1.Mutation,
             crossoverFunction: crossOver_1.CrossOver,
             fitnessFunction: fitness_1.Fitness,
-            population: [],
-            populationSize: 250 // defaults to 100
+            population: firstPopulation,
+            populationSize: populationSize // defaults to 100
         };
-        this.algorithm = geneticalgorithm(this.config);
-    }
+    };
     GeneticAlgorithm.prototype.run = function () {
         this.algorithm.evolve();
         var best = this.algorithm.best();

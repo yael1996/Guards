@@ -11,17 +11,17 @@ export class Bord {
 
   constructor(
     name: string,
-    description: string,
     ownerId: string,
-    bordSettings: BordSettings,
-    numShiftsForWorker: number
+    numShiftsForWorker: number,
+    description?: string,
+    bordSettings?: BordSettings
   ) {
     //this.id =  generate id
     this.id = "123";
     this.name = name;
     this.description = description;
     this.ownerId = ownerId;
-    this.settings = bordSettings;
+    this.settings = bordSettings ? bordSettings : new BordSettings();
     this.numShiftsForWorker = numShiftsForWorker;
     this.workersIds = new Array<string>();
   }

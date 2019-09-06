@@ -8,9 +8,14 @@ export class MonthConstraints {
   //public shifts: Array<WorkerShifts>;
   public month: Month;
 
-  constructor(month: Month) {
-    this.month = month;
+  constructor(month?: Month) {
+    this.month = month ? month : this.getCurrentMonth();
     this.constraints = new Array<WorkerConstraints>();
     //this.shifts = new Array<WorkerShifts>();
+  }
+
+  private getCurrentMonth(): Month {
+    const today = new Date();
+    return new Month(today.getFullYear(), today.getMonth() + 1);
   }
 }
