@@ -8,10 +8,11 @@ export class Mutation {
     // function to make a change to your
     // phenotype
     let resultPhenotype = oldPhenotype;
-    return this.switchShifts(resultPhenotype);
+    return this.switchTwoShifts(resultPhenotype);
   }
 
-  private switchShifts(resultPhenotype) {
+  private switchTwoShifts(resultPhenotype) {
+    // can do for and switch more then two
     const randomIndex1 = this.getRandomShiftIndex(resultPhenotype);
     const randomIndex2 = this.getRandomShiftIndex(resultPhenotype);
 

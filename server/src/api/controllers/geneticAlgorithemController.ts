@@ -1,14 +1,14 @@
 import { Router } from "express";
 import { GeneratFirstPopulation } from "../../service/bordCreator/generatFirstPopulation";
+import { GeneticAlgorithm } from "../../service/geneticAlgorithem/geneticAlgorithem";
 import { Shift } from "../../../../common/objects/shifts/shift";
 import { Bord } from "../../../../common/objects/bord";
-import { MonthConstraints } from "../../../../common/objects/month/monthConstraints";
-import { RegularDaySettings } from "../../../../common/objects/settings/regularDaySettings";
 import { Hour } from "../../../../common/objects/hour";
-import { DaySettings } from "../../../../common/objects/settings/daySettings";
+import { RegularDaySettings } from "../../../../common/objects/settings/regularDaySettings";
 import { ShiftSettings } from "../../../../common/objects/settings/shiftSettings";
+import { DaySettings } from "../../../../common/objects/settings/daySettings";
 import { BordSettings } from "../../../../common/objects/settings/boardSettings";
-import { GeneticAlgorithm } from "../../service/geneticAlgorithem/geneticAlgorithem";
+import { MonthConstraints } from "../../../../common/objects/month/monthConstraints";
 
 export class GeneticAlgorithemController {
   public routs: Router;
