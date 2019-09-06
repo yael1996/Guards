@@ -45,10 +45,11 @@ var hour_1 = require("../../../../common/objects/hour");
 var daySettings_1 = require("../../../../common/objects/settings/daySettings");
 var shiftSettings_1 = require("../../../../common/objects/settings/shiftSettings");
 var boardSettings_1 = require("../../../../common/objects/settings/boardSettings");
+var geneticAlgorithem_1 = require("../../service/geneticAlgorithem/geneticAlgorithem");
 var GeneticAlgorithemController = /** @class */ (function () {
     function GeneticAlgorithemController() {
         var _this = this;
-        this.generateFirstPopulation = function () {
+        this.generateFirstPopulation = function (populationSize) {
             var name = "test";
             var owner = "111";
             var numShiftsPerWorker = 10;
@@ -80,8 +81,13 @@ var GeneticAlgorithemController = /** @class */ (function () {
     GeneticAlgorithemController.prototype.InitRoutes = function () {
         var _this = this;
         this.routs.get("/run", function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var populationSize, population, algo, best;
             return __generator(this, function (_a) {
-                this.generateFirstPopulation();
+                populationSize = 10;
+                population = this.generateFirstPopulation(populationSize);
+                algo = new geneticAlgorithem_1.GeneticAlgorithm(population, populationSize);
+                best = algo.run();
+                res.json({ best: JSON.stringify(best) });
                 return [2 /*return*/];
             });
         }); });

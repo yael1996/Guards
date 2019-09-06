@@ -23,8 +23,8 @@ export class GeneticAlgorithemController {
       const populationSize = 10;
       const population = this.generateFirstPopulation(populationSize);
       const algo = new GeneticAlgorithm(population, populationSize);
-      algo.run();
-      // res.json({ application: "genetic algo" });
+      let best = algo.run();
+      res.json({ best: JSON.stringify(best) });
     });
   }
 

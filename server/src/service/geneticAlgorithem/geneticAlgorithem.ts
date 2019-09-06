@@ -6,15 +6,13 @@ import { Mutation } from "./mutation";
 import { Shift } from "../../../../common/objects/shifts/shift";
 
 export class GeneticAlgorithm {
-  private config;
   private algorithm;
-
   constructor(
     firstPopulation: Array<Array<Shift>> = [],
     populationSize: number = 250
   ) {
-    this.config = this.configure(populationSize, firstPopulation);
-    this.algorithm = geneticalgorithm(this.config);
+    const config = this.configure(populationSize, firstPopulation);
+    this.algorithm = geneticalgorithm(config);
   }
 
   private configure(
@@ -22,9 +20,9 @@ export class GeneticAlgorithm {
     firstPopulation: Array<Array<Shift>>
   ): any {
     return {
-      mutationFunction: Mutation,
-      crossoverFunction: CrossOver,
-      fitnessFunction: Fitness,
+      mutationFunction: new Mutation().doAction,
+      crossoverFunction: new CrossOver().doAction,
+      fitnessFunction: new Fitness().doAction,
       population: firstPopulation,
       populationSize: populationSize // defaults to 100
     };

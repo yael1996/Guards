@@ -12,9 +12,9 @@ var GeneratFirstPopulation = /** @class */ (function () {
         this.bord = bord;
         this.emptyBord = new emptyMonthBord_1.EmptyMonthBord(this.month, this.bord.settings);
     }
-    GeneratFirstPopulation.prototype.buildFirstPopulation = function (numOptions) {
+    GeneratFirstPopulation.prototype.buildFirstPopulation = function (populationSize) {
         var monthShiftsOptions = new Array();
-        for (var i = 0; i < numOptions; i++) {
+        for (var i = 0; i < populationSize; i++) {
             var monthShift = this.fillOneMonthWithShifts();
             monthShiftsOptions.push(monthShift);
         }
