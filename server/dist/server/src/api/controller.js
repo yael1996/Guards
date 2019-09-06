@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 //var users = require("../service/users");
-const geneticAlgorithem_1 = require("../service/geneticAlgorithem/geneticAlgorithem");
+var geneticAlgorithem_1 = require("../service/geneticAlgorithem/geneticAlgorithem");
 var controllers = {
     logIn: function (req, res) {
         // users.find(req, res, function(err, user) {
@@ -11,7 +11,7 @@ var controllers = {
     },
     constraints: function (req, res) { },
     runGeneticAlgorithem: function (req, res) {
-        let algorithem = geneticAlgorithem_1.GeneticAlgorithem();
+        var algorithem = geneticAlgorithem_1.GeneticAlgorithem();
         algorithem.run();
     }
 };

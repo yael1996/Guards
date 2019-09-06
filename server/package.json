@@ -2,10 +2,9 @@
   "name": "guards",
   "version": "1.0.0",
   "description": "Guards",
-  "main": "src/start.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ."
+    "start": "ts-node src/server.ts"
   },
   "repository": {
     "type": "git",
@@ -18,9 +17,6 @@
   },
   "homepage": "https://github.com/yael1996/Guards#readme",
   "dependencies": {
-    "@babel/core": "^7.5.5",
-    "@babel/preset-env": "^7.5.5",
-    "@babel/register": "^7.5.5",
     "@types/body-parser": "^1.17.1",
     "@types/connect": "^3.4.32",
     "@types/express": "^4.17.1",
@@ -28,6 +24,7 @@
     "@types/node": "^12.7.4",
     "express": "^4.17.1",
     "geneticalgorithm": "^0.3.5",
-    "request": "^2.88.0"
+    "ts-node": "^8.0.2",
+    "typescript": "^3.1.6"
   }
 }

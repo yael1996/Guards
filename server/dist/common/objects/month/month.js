@@ -1,11 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class Month {
+var Month = /** @class */ (function () {
     //bordId
-    constructor(year, month) {
+    function Month(year, month) {
         this.year = year;
         this.month = month;
     }
-}
+    return Month;
+}());
 exports.Month = Month;
 //# sourceMappingURL=month.js.map

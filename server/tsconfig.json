@@ -1,12 +1,15 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "esModuleInterop": true,
     "module": "commonjs",
-    "allowJs": true,
-    "outDir": "dist",
+    "target": "es5",
     "sourceMap": true,
-    "strictNullChecks": false
-    //"strict": true,
-  }
+    "outDir": "dist",
+    "allowJs": true,
+    "strictNullChecks": false,
+    "esModuleInterop": true,
+    "lib": ["es2015.collection", "es6"]
+  },
+  "include": ["src/**/*"],
+  "exclude": ["dist/**/*", "node_modules"],
+  "compileOnSave": true
 }

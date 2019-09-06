@@ -1,19 +1,19 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class EmptyMonthBord {
-    constructor(month, bordSettings) {
+var EmptyMonthBord = /** @class */ (function () {
+    function EmptyMonthBord(month, bordSettings) {
         this.year = month.year;
         this.month = month.month;
         this.bordSettings = bordSettings;
         this.datesByType();
     }
-    datesByType() {
+    EmptyMonthBord.prototype.datesByType = function () {
         this.specialDates = new Array();
         this.specialDays = new Array();
         this.regularDays = new Array();
         this.orgenizeDatesByType();
-    }
-    orgenizeDatesByType() {
+    };
+    EmptyMonthBord.prototype.orgenizeDatesByType = function () {
         for (var i = 1; i <= this.numTotalDaysInMonth(); i++) {
             var currDate = new Date(this.year, this.month, i);
             if (this.isDateSpecial(currDate))
@@ -23,19 +23,20 @@ class EmptyMonthBord {
             else
                 this.regularDays.push(currDate);
         }
-    }
-    isDateSpecial(currDate) {
+    };
+    EmptyMonthBord.prototype.isDateSpecial = function (currDate) {
         return (this.bordSettings.specialDates &&
-            !!this.bordSettings.specialDates.dates.find(date => {
+            !!this.bordSettings.specialDates.dates.find(function (date) {
                 return date.getTime() == currDate.getTime();
             }));
-    }
-    isDaySpecial(currDate) {
+    };
+    EmptyMonthBord.prototype.isDaySpecial = function (currDate) {
         return this.bordSettings.specialDays.days.includes(currDate.getDay());
-    }
-    numTotalDaysInMonth() {
+    };
+    EmptyMonthBord.prototype.numTotalDaysInMonth = function () {
         return new Date(this.year, this.month, 0).getDate();
-    }
-}
+    };
+    return EmptyMonthBord;
+}());
 exports.EmptyMonthBord = EmptyMonthBord;
 //# sourceMappingURL=emptyMonthBord.js.map

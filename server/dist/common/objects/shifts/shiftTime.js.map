@@ -1,1 +1,1 @@
-{"version":3,"file":"shiftTime.js","sourceRoot":"","sources":["../../../../../common/objects/shifts/shiftTime.ts"],"names":[],"mappings":";;AAAA,MAAa,SAAS;IAIpB,YAAY,QAAQ,EAAE,MAAM;QAC1B,IAAI,CAAC,QAAQ,GAAG,QAAQ,CAAC;QACzB,IAAI,CAAC,MAAM,GAAG,MAAM,CAAC;IACvB,CAAC;CACF;AARD,8BAQC"}
+{"version":3,"file":"shiftTime.js","sourceRoot":"","sources":["../../../../../common/objects/shifts/shiftTime.ts"],"names":[],"mappings":";;AAAA;IAIE,mBAAY,QAAQ,EAAE,MAAM;QAC1B,IAAI,CAAC,QAAQ,GAAG,QAAQ,CAAC;QACzB,IAAI,CAAC,MAAM,GAAG,MAAM,CAAC;IACvB,CAAC;IACH,gBAAC;AAAD,CAAC,AARD,IAQC;AARY,8BAAS"}

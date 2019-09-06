@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class Bord {
-    constructor(name, description, ownerId, bordSettings, numShiftsForWorker) {
+var Bord = /** @class */ (function () {
+    function Bord(name, description, ownerId, bordSettings, numShiftsForWorker) {
         //this.id =  generate id
         this.id = "123";
         this.name = name;
@@ -11,9 +11,10 @@ class Bord {
         this.numShiftsForWorker = numShiftsForWorker;
         this.workersIds = new Array();
     }
-    addWorker(workerId) {
+    Bord.prototype.addWorker = function (workerId) {
         this.workersIds.push(workerId);
-    }
-}
+    };
+    return Bord;
+}());
 exports.Bord = Bord;
 //# sourceMappingURL=bord.js.map

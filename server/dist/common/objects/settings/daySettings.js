@@ -1,10 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class DaySettings {
-    constructor(numShiftsInDay, startHour) {
+var DaySettings = /** @class */ (function () {
+    function DaySettings(numShiftsInDay, startHour) {
         this.numShiftsInDay = numShiftsInDay;
         this.startHour = startHour;
     }
-}
+    return DaySettings;
+}());
 exports.DaySettings = DaySettings;
 //# sourceMappingURL=daySettings.js.map
