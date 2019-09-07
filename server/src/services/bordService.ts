@@ -43,13 +43,19 @@ export class BordService {
     return bord;
   }
 
-  public addNewBord(bord: Bord): void {}
+  public addNewBord(bord: Bord): boolean {
+    return true;
+  }
 
   public getAllBords(): Array<Bord> {
     return null;
   }
 
-  public joinBord(): void {}
+  public AddWorkerToBord(workerId: string, bordId: string): boolean {
+    return true;
+  }
 
-  public leaveBord(): void {}
+  public RemoveWorkerFromBord(workerId: string, bordId: string): boolean {
+    return true;
+  }
 }

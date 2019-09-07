@@ -13,12 +13,12 @@ export class GeneticAlgorithemController {
   }
 
   private async InitRoutes() {
-    this.routs.post("/geneticAlgo", async (req, res) => {
+    this.routs.post("", async (req, res) => {
       const bordId = req.query.bord;
       const month = req.body.month as Month;
 
       const best = await this.algorithemService.runAlgorithem(bordId, month);
-      res.json({ best: JSON.stringify(best) });
+      res.json({ best: best });
     });
   }
 }

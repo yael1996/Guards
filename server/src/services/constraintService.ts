@@ -10,7 +10,11 @@ export class ConstraintService {
     workerId: string,
     month: Month
   ): Array<Constraint> {
-    return new Array<Constraint>();
+    return null;
+  }
+
+  public addWorkerConstraint(constraint: Constraint): boolean {
+    return true;
   }
 
   public isShiftInWorkerConstraints(
