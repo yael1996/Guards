@@ -19,10 +19,11 @@ export class AlgorithemService {
     this.bordService = new BordService();
   }
 
-  public runAlgorithem(bordId: string, month: Month) {
-    const population = this.generateFirstPopulation(bordId, month);
+  public async runAlgorithem(bordId: string, month: Month) {
+    const population = await this.generateFirstPopulation(bordId, month);
     const algo = new GeneticAlgorithm(population);
-    return algo.run();
+    const best = await algo.run();
+    return best;
   }
 
   generateFirstPopulation = (

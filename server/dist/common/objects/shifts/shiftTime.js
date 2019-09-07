@@ -5,6 +5,7 @@ var ShiftTime = /** @class */ (function () {
     function ShiftTime(fromTime, toTime) {
         this.fromTime = fromTime;
         this.toTime = toTime;
+        this.month = this.getShiftMonth();
     }
     ShiftTime.prototype.getShiftMonth = function () {
         return new month_1.Month(this.toTime.getFullYear(), this.toTime.getMonth());

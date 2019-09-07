@@ -45,17 +45,27 @@ var GeneticAlgorithemController = /** @class */ (function () {
         this.InitRoutes();
     }
     GeneticAlgorithemController.prototype.InitRoutes = function () {
-        var _this = this;
-        this.routs.post("/geneticAlgo", function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var bordId, month, best;
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
             return __generator(this, function (_a) {
-                bordId = req.query.bord;
-                month = req.body.month;
-                best = this.algorithemService.runAlgorithem(bordId, month);
-                res.json({ best: JSON.stringify(best) });
+                this.routs.post("/geneticAlgo", function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+                    var bordId, month, best;
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
+                            case 0:
+                                bordId = req.query.bord;
+                                month = req.body.month;
+                                return [4 /*yield*/, this.algorithemService.runAlgorithem(bordId, month)];
+                            case 1:
+                                best = _a.sent();
+                                res.json({ best: JSON.stringify(best) });
+                                return [2 /*return*/];
+                        }
+                    });
+                }); });
                 return [2 /*return*/];
             });
-        }); });
+        });
     };
     return GeneticAlgorithemController;
 }());

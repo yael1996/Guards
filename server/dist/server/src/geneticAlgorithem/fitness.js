@@ -17,7 +17,7 @@ var Fitness = /** @class */ (function () {
         var numSatisfiedWorkers = 0;
         for (var _i = 0, monthShifts_1 = monthShifts; _i < monthShifts_1.length; _i++) {
             var shift = monthShifts_1[_i];
-            var month = shift.shiftTime.getShiftMonth();
+            var month = shift.shiftTime.month;
             for (var _a = 0, _b = shift.workersIds; _a < _b.length; _a++) {
                 var worker = _b[_a];
                 if (!this.constraintsService.isShiftInWorkerConstraints(worker, shift.shiftTime, month))

@@ -20,7 +20,7 @@ export class Fitness {
     let numSatisfiedWorkers = 0;
 
     for (let shift of monthShifts) {
-      const month = shift.shiftTime.getShiftMonth();
+      const month = shift.shiftTime.month;
 
       for (let worker of shift.workersIds) {
         if (
