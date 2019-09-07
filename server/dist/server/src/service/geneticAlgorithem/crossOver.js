@@ -5,7 +5,7 @@ var CrossOver = /** @class */ (function () {
         var _this = this;
         this.doAction = function (phenoTypeA, phenoTypeB) {
             // use phenoTypeA and B to create phenotype result 1 and 2
-            _this.combineShifts(phenoTypeA, phenoTypeB);
+            return _this.combineShifts(phenoTypeA, phenoTypeB);
         };
     }
     CrossOver.prototype.combineShifts = function (phenoTypeA, phenoTypeB) {
@@ -13,7 +13,6 @@ var CrossOver = /** @class */ (function () {
         var index = phenoTypeA.length / 2;
         var partOfA = phenoTypeA.slice(0, index);
         var partOfB = phenoTypeB.slice(index, phenoTypeB.length);
-        //return partOfA.concat(partOfB);
         return [partOfA, partOfB];
     };
     return CrossOver;

@@ -13,6 +13,7 @@ export class ConstraintService {
   ): Array<Constraint> {
     return new Array<Constraint>();
   }
+
   public isShiftInWorkerConstraints(
     workerId: string,
     shiftTime: ShiftTime,

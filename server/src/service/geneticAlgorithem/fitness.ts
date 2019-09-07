@@ -1,7 +1,6 @@
 import { Shift } from "../../../../common/objects/shifts/shift";
 import { Month } from "../../../../common/objects/month/month";
-import { ConstraintService } from "../constraints/constraintService";
-import { ShiftTime } from "../../../../common/objects/shifts/shiftTime";
+import { ConstraintService } from "../dal/constraintService";
 
 export class Fitness {
   private constraintsService: ConstraintService;
@@ -34,7 +33,8 @@ export class Fitness {
 
     return numSatisfiedWorkers;
   }
-  private isWorkerHasAvalibleShifts(): boolean {
+
+  private avalibleShifts(): boolean {
     //ToDo
     return true;
   }

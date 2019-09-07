@@ -4,11 +4,9 @@ var shift_1 = require("../../../../common/objects/shifts/shift");
 var shiftTypeEnum_1 = require("../../../../common/objects/shifts/shiftTypeEnum");
 var emptyMonthBord_1 = require("./emptyMonthBord");
 var shiftTime_1 = require("../../../../common/objects/shifts/shiftTime");
-var _ = require("underscore");
 var GeneratFirstPopulation = /** @class */ (function () {
-    function GeneratFirstPopulation(bord, monthConstraints) {
-        this.constraints = monthConstraints.constraints;
-        this.month = monthConstraints.month;
+    function GeneratFirstPopulation(bord, month) {
+        this.month = month;
         this.bord = bord;
         this.emptyBord = new emptyMonthBord_1.EmptyMonthBord(this.month, this.bord.settings);
     }
@@ -52,7 +50,7 @@ var GeneratFirstPopulation = /** @class */ (function () {
         var numAddedWorkers = 0;
         while (numAddedWorkers < numWorkers) {
             var workerId = this.getRandomWorkerId();
-            if (this.canWorkerDoTheShift(shift, workerId)) {
+            if (!this.isWorkerAlreadyInShift(shift, workerId)) {
                 shift.addWorkerToShift(workerId);
                 numAddedWorkers++;
             }
@@ -62,24 +60,8 @@ var GeneratFirstPopulation = /** @class */ (function () {
     GeneratFirstPopulation.prototype.getRandomWorkerId = function () {
         return this.bord.workersIds[Math.floor(Math.random() * this.bord.workersIds.length)];
     };
-    GeneratFirstPopulation.prototype.canWorkerDoTheShift = function (shift, workerId) {
-        return true;
-        return (!this.isWorkerAlreadyInShift(shift, workerId) &&
-            !this.isShiftInWorkersConstraints(shift, workerId) &&
-            this.isWorkerHasAvalibleShifts());
-    };
     GeneratFirstPopulation.prototype.isWorkerAlreadyInShift = function (shift, workerId) {
         return shift.workersIds.includes(workerId);
-    };
-    GeneratFirstPopulation.prototype.isShiftInWorkersConstraints = function (shift, workerId) {
-        var workerConstraints = this.constraints.find(function (c) { return (c.workerId = workerId); });
-        return !!workerConstraints.constraints.find(function (c) {
-            return _.isEqual(c.shiftTime, shift.shiftTime);
-        });
-    };
-    GeneratFirstPopulation.prototype.isWorkerHasAvalibleShifts = function () {
-        //ToDo
-        return true;
     };
     return GeneratFirstPopulation;
 }());

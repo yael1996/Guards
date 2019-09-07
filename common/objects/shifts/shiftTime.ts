@@ -1,3 +1,5 @@
+import { Month } from "../month/month";
+
 export class ShiftTime {
   public fromTime: Date;
   public toTime: Date;
@@ -5,5 +7,9 @@ export class ShiftTime {
   constructor(fromTime, toTime) {
     this.fromTime = fromTime;
     this.toTime = toTime;
+  }
+
+  public getShiftMonth(): Month {
+    return new Month(this.toTime.getFullYear(), this.toTime.getMonth());
   }
 }

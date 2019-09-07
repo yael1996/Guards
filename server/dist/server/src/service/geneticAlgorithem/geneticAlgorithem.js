@@ -22,8 +22,8 @@ var GeneticAlgorithm = /** @class */ (function () {
     };
     GeneticAlgorithm.prototype.run = function () {
         this.algorithm.evolve();
-        var best = this.algorithm.best();
-        return best;
+        // best
+        return this.algorithm.best();
     };
     return GeneticAlgorithm;
 }());
