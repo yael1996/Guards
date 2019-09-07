@@ -17,6 +17,6 @@ export class Routes {
   }
 
   private initOtherRouts() {
-    this.appRouts.use("/geneticAlgo", new GeneticAlgorithemController().routs);
+    this.appRouts.use("/", new GeneticAlgorithemController().routs);
   }
 }

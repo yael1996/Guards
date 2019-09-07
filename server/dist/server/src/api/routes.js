@@ -14,7 +14,7 @@ var Routes = /** @class */ (function () {
         });
     };
     Routes.prototype.initOtherRouts = function () {
-        this.appRouts.use("/geneticAlgo", new geneticAlgorithemController_1.GeneticAlgorithemController().routs);
+        this.appRouts.use("/", new geneticAlgorithemController_1.GeneticAlgorithemController().routs);
     };
     return Routes;
 }());

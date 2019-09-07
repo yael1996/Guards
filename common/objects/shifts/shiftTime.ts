@@ -1,4 +1,4 @@
-import { Month } from "../month/month";
+import { Month } from "../time/month";
 
 export class ShiftTime {
   public fromTime: Date;

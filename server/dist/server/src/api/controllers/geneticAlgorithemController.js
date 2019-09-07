@@ -37,56 +37,21 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = require("express");
-var generatFirstPopulation_1 = require("../../service/bordCreator/generatFirstPopulation");
-var geneticAlgorithem_1 = require("../../service/geneticAlgorithem/geneticAlgorithem");
-var bord_1 = require("../../../../common/objects/bord");
-var hour_1 = require("../../../../common/objects/hour");
-var regularDaySettings_1 = require("../../../../common/objects/settings/regularDaySettings");
-var shiftSettings_1 = require("../../../../common/objects/settings/shiftSettings");
-var daySettings_1 = require("../../../../common/objects/settings/daySettings");
-var boardSettings_1 = require("../../../../common/objects/settings/boardSettings");
-var monthConstraints_1 = require("../../../../common/objects/month/monthConstraints");
+var algorithemService_1 = require("../../services/algorithemService");
 var GeneticAlgorithemController = /** @class */ (function () {
     function GeneticAlgorithemController() {
-        var _this = this;
-        this.generateFirstPopulation = function (populationSize) {
-            var name = "test";
-            var owner = "111";
-            var numShiftsPerWorker = 10;
-            var a = _this.getDefultRegularDaySettings();
-            var bordSettings = new boardSettings_1.BordSettings(a);
-            var bord = new bord_1.Bord(name, owner, numShiftsPerWorker, bordSettings);
-            bord.addWorker("1");
-            bord.addWorker("2");
-            bord.addWorker("3");
-            bord.addWorker("4");
-            bord.addWorker("5");
-            var monthConstraints = new monthConstraints_1.MonthConstraints();
-            var firstPopulation = new generatFirstPopulation_1.GeneratFirstPopulation(bord, monthConstraints);
-            return firstPopulation.buildFirstPopulation(5);
-        };
-        this.getDefultRegularDaySettings = function () {
-            var numShiftsInday = 1;
-            var startTime = new hour_1.Hour(8);
-            var numPeople = 2;
-            var shiftLength = 4;
-            var daySettings = new daySettings_1.DaySettings(numShiftsInday, startTime);
-            var shiftSettings = new shiftSettings_1.ShiftSettings(numPeople, shiftLength);
-            var regularDays = [1, 2, 3, 4];
-            return new regularDaySettings_1.RegularDaySettings(daySettings, shiftSettings, regularDays);
-        };
         this.routs = express_1.Router();
+        this.algorithemService = new algorithemService_1.AlgorithemService();
         this.InitRoutes();
     }
     GeneticAlgorithemController.prototype.InitRoutes = function () {
         var _this = this;
-        this.routs.get("/run", function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var populationSize, population, algo, best;
+        this.routs.post("/geneticAlgo", function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var bordId, month, best;
             return __generator(this, function (_a) {
-                populationSize = 10;
-                population = this.generateFirstPopulation(populationSize);
-                algo = new geneticAlgorithem_1.GeneticAlgorithm(population, populationSize);
-                best = algo.run();
+                bordId = req.query.bord;
+                month = req.body.month;
+                best = this.algorithemService.runAlgorithem(bordId, month);
                 res.json({ best: JSON.stringify(best) });
                 return [2 /*return*/];
             });

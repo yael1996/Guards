@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var constraintService_1 = require("../constraints/constraintService");
+var constraintService_1 = require("../dal/constraintService");
 var Fitness = /** @class */ (function () {
     function Fitness() {
         // getFitness
@@ -22,7 +22,7 @@ var Fitness = /** @class */ (function () {
         }
         return numSatisfiedWorkers;
     };
-    Fitness.prototype.isWorkerHasAvalibleShifts = function () {
+    Fitness.prototype.avalibleShifts = function () {
         //ToDo
         return true;
     };
