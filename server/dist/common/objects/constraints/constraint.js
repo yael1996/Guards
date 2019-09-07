@@ -2,8 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 // cant
 var Constraint = /** @class */ (function () {
-    function Constraint(shiftTime, reason) {
+    function Constraint(shiftTime, workerId, reason) {
         this.shiftTime = shiftTime;
+        this.workerId = workerId;
         this.reason = reason;
     }
     return Constraint;

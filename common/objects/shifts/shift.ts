@@ -1,5 +1,6 @@
 import { SHIFT_TYPE } from "./shiftTypeEnum";
 import { ShiftTime } from "./shiftTime";
+import { Guid } from "guid-typescript";
 
 export class Shift {
   public id: string;
@@ -8,7 +9,7 @@ export class Shift {
   public workersIds: Array<string>;
 
   constructor(shiftTime: ShiftTime, shiftType: SHIFT_TYPE) {
-    //this.id =
+    this.id = Guid.create().toString();
     this.shiftTime = shiftTime;
     this.shiftType = shiftType;
     this.workersIds = new Array<string>();
