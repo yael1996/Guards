@@ -2,21 +2,17 @@ import { Shift } from "../../../../common/objects/shifts/shift";
 import { SHIFT_TYPE } from "../../../../common/objects/shifts/shiftTypeEnum";
 import { WorkerConstraints } from "../../../../common/objects/constraints/workerConstraints";
 import { Month } from "../../../../common/objects/month/month";
-import { MonthConstraints } from "../../../../common/objects/month/monthConstraints";
 import { EmptyMonthBord } from "./emptyMonthBord";
 import { ShiftTime } from "../../../../common/objects/shifts/shiftTime";
 import { Bord } from "../../../../common/objects/bord";
-var _ = require("underscore");
 
 export class GeneratFirstPopulation {
-  private constraints: Array<WorkerConstraints>;
   private month: Month;
   private bord: Bord;
   private emptyBord: EmptyMonthBord;
 
-  constructor(bord: Bord, monthConstraints: MonthConstraints) {
-    this.constraints = monthConstraints.constraints;
-    this.month = monthConstraints.month;
+  constructor(bord: Bord, month: Month) {
+    this.month = month;
     this.bord = bord;
     this.emptyBord = new EmptyMonthBord(this.month, this.bord.settings);
   }
@@ -101,7 +97,7 @@ export class GeneratFirstPopulation {
     let numAddedWorkers = 0;
     while (numAddedWorkers < numWorkers) {
       let workerId = this.getRandomWorkerId();
-      if (this.canWorkerDoTheShift(shift, workerId)) {
+      if (!this.isWorkerAlreadyInShift(shift, workerId)) {
         shift.addWorkerToShift(workerId);
         numAddedWorkers++;
       }
@@ -115,30 +111,7 @@ export class GeneratFirstPopulation {
     ];
   }
 
-  private canWorkerDoTheShift(shift, workerId): boolean {
-    return true;
-
-    return (
-      !this.isWorkerAlreadyInShift(shift, workerId) &&
-      !this.isShiftInWorkersConstraints(shift, workerId) &&
-      this.isWorkerHasAvalibleShifts()
-    );
-  }
-
   private isWorkerAlreadyInShift(shift: Shift, workerId: string): boolean {
     return shift.workersIds.includes(workerId);
-  }
-
-  private isShiftInWorkersConstraints(shift: Shift, workerId: string): boolean {
-    let workerConstraints = this.constraints.find(c => (c.workerId = workerId));
-
-    return !!workerConstraints.constraints.find(c =>
-      _.isEqual(c.shiftTime, shift.shiftTime)
-    );
-  }
-
-  private isWorkerHasAvalibleShifts(): boolean {
-    //ToDo
-    return true;
   }
 }

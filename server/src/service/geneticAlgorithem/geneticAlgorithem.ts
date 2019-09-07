@@ -30,7 +30,7 @@ export class GeneticAlgorithm {
 
   public run() {
     this.algorithm.evolve();
-    let best = this.algorithm.best();
-    return best;
+    // best
+    return this.algorithm.best();
   }
 }
