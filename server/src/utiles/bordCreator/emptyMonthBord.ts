@@ -1,5 +1,6 @@
 import { BordSettings } from "../../../../common/objects/settings/boardSettings";
 import { Month } from "../../../../common/objects/time/month";
+import { HolidaysDates } from "./holidaysDates";
 
 export class EmptyMonthBord {
   public specialDates: Array<Date>;
@@ -9,11 +10,14 @@ export class EmptyMonthBord {
   private bordSettings: BordSettings;
   private year: number;
   private month: number;
+  private holidays: HolidaysDates;
 
   constructor(month: Month, bordSettings: BordSettings) {
     this.year = month.year;
     this.month = month.month;
     this.bordSettings = bordSettings;
+
+    this.holidays = new HolidaysDates();
 
     this.datesByType();
   }
@@ -38,9 +42,10 @@ export class EmptyMonthBord {
   private isDateSpecial(currDate: Date): boolean {
     if (!this.bordSettings.specialDates) return false;
     else {
-      return !!this.bordSettings.specialDates.dates.find(date => {
-        return date.getTime() == currDate.getTime();
-      });
+      return this.holidays.isDateHoliday(currDate);
+      // return !!this.bordSettings.specialDates.dates.find(date => {
+      //   return date.getTime() == currDate.getTime();
+      //});
     }
   }
 

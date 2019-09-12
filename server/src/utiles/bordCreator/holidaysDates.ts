@@ -1,6 +1,6 @@
 const Hebcal = require("hebcal");
 
-export class holidaysDates {
+export class HolidaysDates {
   private holidays;
   constructor() {
     Hebcal.defaultCity = "Jerusalem";
