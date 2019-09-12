@@ -1,7 +1,7 @@
 import { Month } from "../../../common/objects/time/month";
 import { Constraint } from "../../../common/objects/constraints/constraint";
 import { ShiftTime } from "../../../common/objects/shifts/shiftTime";
-var _ = require("underscore");
+const _ = require("underscore");
 
 export class ConstraintService {
   constructor() {}

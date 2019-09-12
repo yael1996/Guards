@@ -38,6 +38,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = require("express");
 var algorithemService_1 = require("../../services/algorithemService");
+var Hebcal = require("hebcal");
 var GeneticAlgorithemController = /** @class */ (function () {
     function GeneticAlgorithemController() {
         this.routs = express_1.Router();
@@ -49,10 +50,17 @@ var GeneticAlgorithemController = /** @class */ (function () {
             var _this = this;
             return __generator(this, function (_a) {
                 this.routs.post("", function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-                    var bordId, month, best;
+                    var holidays, currDate, holidayDate, date, hol, bordId, month, best;
                     return __generator(this, function (_a) {
                         switch (_a.label) {
                             case 0:
+                                Hebcal.defaultCity = "Jerusalem";
+                                Hebcal.holidays.Event.isIL = true;
+                                holidays = new Hebcal().holidays;
+                                currDate = new Hebcal.HDate().toString();
+                                holidayDate = new Hebcal.HDate(new Date(2018, 8, 10)).toString();
+                                date = holidays[currDate];
+                                hol = holidays[holidayDate];
                                 bordId = req.query.bord;
                                 month = req.body.month;
                                 return [4 /*yield*/, this.algorithemService.runAlgorithem(bordId, month)];

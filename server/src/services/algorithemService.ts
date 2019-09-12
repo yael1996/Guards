@@ -1,10 +1,5 @@
 import { Bord } from "../../../common/objects/bord/bord";
-import { BordSettings } from "../../../common/objects/settings/boardSettings";
 import { GeneratFirstPopulation } from "../utiles/bordCreator/generatFirstPopulation";
-import { RegularDaySettings } from "../../../common/objects/settings/regularDaySettings";
-import { Hour } from "../../../common/objects/time/hour";
-import { DaySettings } from "../../../common/objects/settings/daySettings";
-import { ShiftSettings } from "../../../common/objects/settings/shiftSettings";
 import { GeneticAlgorithm } from "../geneticAlgorithem/geneticAlgorithem";
 import { Shift } from "../../../common/objects/shifts/shift";
 import { BordService } from "./bordService";

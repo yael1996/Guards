@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { AlgorithemService } from "../../services/algorithemService";
 import { Month } from "../../../../common/objects/time/month";
-
+const Hebcal = require("hebcal");
 export class GeneticAlgorithemController {
   public routs: Router;
   private algorithemService: AlgorithemService;
