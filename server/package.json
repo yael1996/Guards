@@ -28,8 +28,13 @@
     "geneticalgorithm": "^0.3.5",
     "guid-typescript": "^1.0.9",
     "hebcal": "^2.3.1",
+    "mongoose": "^5.7.0",
     "ts-node": "^8.0.2",
     "typescript": "^3.1.6",
-    "underscore": "^1.9.1"
+    "underscore": "^1.9.1",
+    "validator": "^11.1.0"
+  },
+  "devDependencies": {
+    "@types/mongoose": "^5.5.17"
   }
 }

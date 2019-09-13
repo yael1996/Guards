@@ -1,5 +1,5 @@
 export enum SHIFT_TYPE {
-  regular_day = 1,
-  special_day,
-  special_date
+  REGULAR_DAY = 1,
+  SPECIAL_DAY,
+  SPECIAL_DATE
 }
