@@ -7,20 +7,32 @@ export class BordDal {
     this.model = DBConnection.Models.Bord;
   }
 
-  public async insert(bord) {
+  public async insert(bord: string) {
     const bordModel = new DBConnection.Models.Bord(bord);
-    await bordModel.save();
+    return await bordModel.save();
   }
 
   public async remove(id: string) {
-    await this.model.findByIdAndRemove(id);
+    return await this.model.findByIdAndRemove(id);
   }
 
-  public async update(id: string, newBord) {
-    await this.model.findByIdAndUpdate(id, newBord);
+  public async addWorker(bordId, worker) {
+    return await this.model.findByIdAndUpdate(bordId, {
+      $push: { workersIds: worker }
+    });
+  }
+
+  public async removeWorker(bordId, worker) {
+    return await this.model.findByIdAndUpdate(bordId, {
+      $pull: { workersIds: worker }
+    });
   }
 
   public async getAll() {
-    const allBords = await this.model.find({});
+    return await this.model.find({});
+  }
+
+  public async getById(bordId: string) {
+    return await this.model.find({ id: bordId });
   }
 }

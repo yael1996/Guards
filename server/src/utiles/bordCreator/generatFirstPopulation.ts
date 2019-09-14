@@ -34,21 +34,21 @@ export class GeneratFirstPopulation {
     this.fillShiftsByType(
       specialDates,
       this.bord.settings.specialDates,
-      SHIFT_TYPE.special_date,
+      SHIFT_TYPE.SPECIAL_DATE,
       monthShift
     );
 
     this.fillShiftsByType(
       specialDays,
       this.bord.settings.specialDays,
-      SHIFT_TYPE.special_day,
+      SHIFT_TYPE.SPECIAL_DAY,
       monthShift
     );
 
     this.fillShiftsByType(
       regularDays,
       this.bord.settings.regularDays,
-      SHIFT_TYPE.regular_day,
+      SHIFT_TYPE.REGULAR_DAY,
       monthShift
     );
 

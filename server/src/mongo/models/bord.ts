@@ -22,8 +22,7 @@ export class Bord {
       id: {
         type: String,
         required: true,
-        unique: true,
-        default: Guid.create().toString()
+        unique: true
       },
       name: { type: String, required: true },
       description: { type: String },
