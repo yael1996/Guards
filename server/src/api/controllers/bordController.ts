@@ -17,6 +17,14 @@ export class BordController {
       await this.bordService.addNewBord(req, res);
     });
 
+    this.routs.get("/testmongo", async (req, res) => {
+      await this.bordService.addNewBord(req, res);
+    });
+
+    this.routs.post("/deleteBord", async (req, res) => {
+      await this.bordService.deleteBord(req, res);
+    });
+
     this.routs.get("/allBords", async (req, res) => {
       await this.bordService.getAllBords(req, res);
     });
@@ -26,10 +34,7 @@ export class BordController {
     });
 
     this.routs.get("/leaveBord", async (req, res) => {
-      const bordId = req.query.bord;
-      const workerId = req.query.worker;
-      const isSucceeded = this.bordService.RemoveWorkerFromBord(req, res);
-      res.json({ success: isSucceeded });
+      await this.bordService.RemoveWorkerFromBord(req, res);
     });
   }
 }

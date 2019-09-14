@@ -14,11 +14,19 @@ export class ConstraintsController {
 
   private async InitRoutes() {
     this.routs.post("/addConstraint", async (req, res) => {
-      const constraint = req.body.constraint as Constraint;
-      const isSucceeded = this.constraintService.addWorkerConstraint(
-        constraint
-      );
-      res.json({ success: isSucceeded });
+      await this.constraintService.addConstraint(req, res);
+    });
+
+    this.routs.post("/deleteConstraint", async (req, res) => {
+      await this.constraintService.deleteConstraint(req, res);
+    });
+
+    this.routs.post("/getWorkerConstraint", async (req, res) => {
+      await this.constraintService.getWorkerConstraints(req, res);
+    });
+
+    this.routs.post("/getMonthConstraint", async (req, res) => {
+      await this.constraintService.getMonthConstraints(req, res);
     });
   }
 }

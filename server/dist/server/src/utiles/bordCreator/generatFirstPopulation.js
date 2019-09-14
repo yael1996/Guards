@@ -23,9 +23,9 @@ var GeneratFirstPopulation = /** @class */ (function () {
         var specialDates = this.emptyBord.specialDates;
         var specialDays = this.emptyBord.specialDays;
         var regularDays = this.emptyBord.regularDays;
-        this.fillShiftsByType(specialDates, this.bord.settings.specialDates, shiftTypeEnum_1.SHIFT_TYPE.special_date, monthShift);
-        this.fillShiftsByType(specialDays, this.bord.settings.specialDays, shiftTypeEnum_1.SHIFT_TYPE.special_day, monthShift);
-        this.fillShiftsByType(regularDays, this.bord.settings.regularDays, shiftTypeEnum_1.SHIFT_TYPE.regular_day, monthShift);
+        this.fillShiftsByType(specialDates, this.bord.settings.specialDates, shiftTypeEnum_1.SHIFT_TYPE.SPECIAL_DATE, monthShift);
+        this.fillShiftsByType(specialDays, this.bord.settings.specialDays, shiftTypeEnum_1.SHIFT_TYPE.SPECIAL_DAY, monthShift);
+        this.fillShiftsByType(regularDays, this.bord.settings.regularDays, shiftTypeEnum_1.SHIFT_TYPE.REGULAR_DAY, monthShift);
         return monthShift;
     };
     GeneratFirstPopulation.prototype.fillShiftsByType = function (days, settings, type, monthShift) {

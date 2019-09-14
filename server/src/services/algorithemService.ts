@@ -21,11 +21,8 @@ export class AlgorithemService {
     return best;
   }
 
-  generateFirstPopulation = (
-    bordId: string,
-    month: Month
-  ): Array<Array<Shift>> => {
-    const bord: Bord = this.bordService.getBordById(bordId);
+  generateFirstPopulation = async (bordId: string, month: Month) => {
+    const bord: Bord = await this.bordService.getdBordById(bordId);
     const firstPopulation = new GeneratFirstPopulation(bord, month);
     return firstPopulation.buildFirstPopulation(POPULATION_SIZE);
   };

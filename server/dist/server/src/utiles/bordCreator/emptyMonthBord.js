@@ -1,10 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var holidaysDates_1 = require("./holidaysDates");
 var EmptyMonthBord = /** @class */ (function () {
     function EmptyMonthBord(month, bordSettings) {
         this.year = month.year;
         this.month = month.month;
         this.bordSettings = bordSettings;
+        this.holidays = new holidaysDates_1.HolidaysDates();
         this.datesByType();
     }
     EmptyMonthBord.prototype.datesByType = function () {
@@ -28,9 +30,10 @@ var EmptyMonthBord = /** @class */ (function () {
         if (!this.bordSettings.specialDates)
             return false;
         else {
-            return !!this.bordSettings.specialDates.dates.find(function (date) {
-                return date.getTime() == currDate.getTime();
-            });
+            return this.holidays.isDateHoliday(currDate);
+            // return !!this.bordSettings.specialDates.dates.find(date => {
+            //   return date.getTime() == currDate.getTime();
+            //});
         }
     };
     EmptyMonthBord.prototype.isDaySpecial = function (currDate) {

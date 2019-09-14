@@ -1,7 +1,7 @@
 import { connect, connection, Connection } from "mongoose";
 import { Bord, BordModel } from "./models/bord";
-import { ShiftModel, Shift } from "./models/shift";
 import { UserModel, User } from "./models/user";
+import { ShiftModel, Shift } from "./models/shift";
 import { ConstraintModel, Constraint } from "./models/constraint";
 
 declare interface IModels {

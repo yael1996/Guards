@@ -8,8 +8,10 @@ export class BordDal {
   }
 
   public async insert(bord: string) {
-    const bordModel = new DBConnection.Models.Bord(bord);
-    return await bordModel.save();
+    //const bordModel = new DBConnection.Models.Bord(bord);
+    //return await bordModel.save();
+
+    return await this.model.create({ bord });
   }
 
   public async remove(id: string) {

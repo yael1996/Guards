@@ -1,4 +1,4 @@
 export enum USER_TYPE {
-  manager = 1,
-  worker
+  MANAGER = 1,
+  WORKER
 }

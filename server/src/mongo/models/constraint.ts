@@ -2,8 +2,9 @@ import { Schema, model, Document, Model } from "mongoose";
 import { ShiftTime } from "../../../../common/objects/shifts/shiftTime";
 
 declare interface IConstraint extends Document {
+  // id: string;
   shiftTime: ShiftTime;
-  workerId: string; //?
+  workerId: string;
   reason: string;
 }
 
@@ -14,6 +15,7 @@ export class Constraint {
 
   constructor() {
     const schema = new Schema({
+      // id: { type: String, required: true, unique: true },
       shiftTime: { type: Schema.Types.Mixed, required: true },
       workerId: {
         type: Schema.Types.ObjectId,

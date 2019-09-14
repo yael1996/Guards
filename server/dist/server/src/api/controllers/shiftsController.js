@@ -49,12 +49,13 @@ var ShiftsController = /** @class */ (function () {
             var _this = this;
             return __generator(this, function (_a) {
                 this.routs.post("/monthShifts", function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-                    var month, monthShifts;
                     return __generator(this, function (_a) {
-                        month = req.body.month;
-                        monthShifts = this.shiftsService.getMonthShifts(month);
-                        res.json({ shifts: monthShifts });
-                        return [2 /*return*/];
+                        switch (_a.label) {
+                            case 0: return [4 /*yield*/, this.shiftsService.getShifts(req, res)];
+                            case 1:
+                                _a.sent();
+                                return [2 /*return*/];
+                        }
                     });
                 }); });
                 return [2 /*return*/];

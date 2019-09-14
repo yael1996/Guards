@@ -1,5 +1,4 @@
 import { Schema, model, Document, Model } from "mongoose";
-import { Guid } from "guid-typescript";
 import { BordSettings } from "../../../../common/objects/settings/boardSettings";
 
 declare interface IBord extends Document {

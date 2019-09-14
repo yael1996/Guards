@@ -43,11 +43,18 @@ var POPULATION_SIZE = 10; // 250
 var AlgorithemService = /** @class */ (function () {
     function AlgorithemService() {
         var _this = this;
-        this.generateFirstPopulation = function (bordId, month) {
-            var bord = _this.bordService.getBordById(bordId);
-            var firstPopulation = new generatFirstPopulation_1.GeneratFirstPopulation(bord, month);
-            return firstPopulation.buildFirstPopulation(POPULATION_SIZE);
-        };
+        this.generateFirstPopulation = function (bordId, month) { return __awaiter(_this, void 0, void 0, function () {
+            var bord, firstPopulation;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.bordService.getdBordById(bordId)];
+                    case 1:
+                        bord = _a.sent();
+                        firstPopulation = new generatFirstPopulation_1.GeneratFirstPopulation(bord, month);
+                        return [2 /*return*/, firstPopulation.buildFirstPopulation(POPULATION_SIZE)];
+                }
+            });
+        }); };
         this.bordService = new bordService_1.BordService();
     }
     AlgorithemService.prototype.runAlgorithem = function (bordId, month) {

@@ -7,6 +7,7 @@ declare interface IUser extends Document {
   lastName: String;
   email: String;
   tokens: Array<String>;
+  userType: String;
 }
 
 export interface UserModel extends Model<IUser> {}
@@ -24,7 +25,12 @@ export class User {
       firstName: { type: String },
       lastName: { type: String },
       email: { type: String, required: true, unique: true },
-      tokens: { type: [String] }
+      tokens: { type: [String] },
+      userType: {
+        type: String,
+        enum: ["MANAGER", "WORKER"],
+        required: true
+      }
     });
 
     this._model = model<IUser>("User", schema);

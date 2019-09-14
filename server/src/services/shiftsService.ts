@@ -1,16 +1,25 @@
-import { Shift } from "../../../common/objects/shifts/shift";
-import { Month } from "../../../common/objects/time/month";
+import { ShiftDal } from "../mongo/dal/shiftDal";
 
 export class ShiftsService {
-  constructor() {}
+  private dal: ShiftDal;
 
-  public getWorkerShiftsByMonth(workerId: string, month: Month): Array<Shift> {
-    return null;
+  constructor() {
+    this.dal = new ShiftDal();
   }
 
-  public getMonthShifts(month: Month): Array<Shift> {
-    return null;
+  public async getWorkerShifts(req, res) {}
+
+  public async getShifts(req, res) {
+    try {
+      const month = req.body.month;
+      const result = await this.dal.getByMonth(month);
+      return res.send(result);
+    } catch (error) {
+      return res.status(400).send(error);
+    }
   }
 
-  public getCapacity() {}
+  public async addWorkerToShift(req, res) {}
+
+  public async deleteWorkerFromShift(req, res) {}
 }

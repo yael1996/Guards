@@ -7,20 +7,35 @@ export class ShiftDal {
     this.model = DBConnection.Models.Shift;
   }
 
-  public async insert(shift) {
-    const shiftModel = new DBConnection.Models.Shift(shift);
-    await shiftModel.save();
+  public async insert(shift: string) {
+    //const shiftModel = new DBConnection.Models.Shift(month);
+    //return await shiftModel.save();
+    return await this.model.create({ shift: shift });
   }
 
-  public async remove(id: string) {
-    await this.model.findByIdAndRemove(id);
+  public async remove(shiftId: string) {
+    return await this.model.findByIdAndRemove(shiftId);
   }
 
-  public async update(id: string, newShift) {
-    await this.model.findByIdAndUpdate(id, newShift);
+  public async addWorker(shiftId: string, workerId: String) {
+    return await this.model.findByIdAndUpdate(shiftId, {
+      $push: { workersIds: workerId }
+    });
   }
 
-  public async getAll() {
-    const allShifts = await this.model.find({});
+  public async removeWorker(shiftId: string, workerId: String) {
+    return await this.model.findByIdAndUpdate(shiftId, {
+      $pull: { workersIds: workerId }
+    });
+  }
+
+  public async updateTime(shiftId: string, shiftTime) {
+    return await this.model.findByIdAndUpdate(shiftId, {
+      $pull: { shiftTime: shiftTime }
+    });
+  }
+
+  public async getByMonth(month: string) {
+    return await this.model.find({ month: month });
   }
 }

@@ -50,17 +50,10 @@ var GeneticAlgorithemController = /** @class */ (function () {
             var _this = this;
             return __generator(this, function (_a) {
                 this.routs.post("", function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-                    var holidays, currDate, holidayDate, date, hol, bordId, month, best;
+                    var bordId, month, best;
                     return __generator(this, function (_a) {
                         switch (_a.label) {
                             case 0:
-                                Hebcal.defaultCity = "Jerusalem";
-                                Hebcal.holidays.Event.isIL = true;
-                                holidays = new Hebcal().holidays;
-                                currDate = new Hebcal.HDate().toString();
-                                holidayDate = new Hebcal.HDate(new Date(2018, 8, 10)).toString();
-                                date = holidays[currDate];
-                                hol = holidays[holidayDate];
                                 bordId = req.query.bord;
                                 month = req.body.month;
                                 return [4 /*yield*/, this.algorithemService.runAlgorithem(bordId, month)];

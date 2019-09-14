@@ -1,20 +1,53 @@
 import { Month } from "../../../common/objects/time/month";
-import { Constraint } from "../../../common/objects/constraints/constraint";
 import { ShiftTime } from "../../../common/objects/shifts/shiftTime";
+import { ConstraintDal } from "../mongo/dal/constraintDal";
+
 const _ = require("underscore");
 
 export class ConstraintService {
-  constructor() {}
+  private dal: ConstraintDal;
 
-  public getWorkerConstraintsByMonth(
-    workerId: string,
-    month: Month
-  ): Array<Constraint> {
-    return null;
+  constructor() {
+    this.dal = new ConstraintDal();
   }
 
-  public addWorkerConstraint(constraint: Constraint): boolean {
-    return true;
+  public async getMonthConstraints(req, res) {
+    try {
+      const month = req.body.month;
+      const result = await this.dal.getByMonth(month);
+      return res.send(result);
+    } catch (error) {
+      return res.status(400).send(error);
+    }
+  }
+
+  public async getWorkerConstraints(req, res) {
+    try {
+      const workerId = req.body.worker;
+      const result = await this.dal.getByMonth(workerId);
+      return res.send(result);
+    } catch (error) {
+      return res.status(400).send(error);
+    }
+  }
+
+  public async addConstraint(req, res) {
+    try {
+      const constraint = JSON.stringify(req.body.constraint);
+      await this.dal.insert(constraint);
+    } catch (error) {
+      return res.status(400).send(error);
+    }
+  }
+
+  public async deleteConstraint(req, res) {
+    try {
+      const shiftTime = req.body.shiftTime;
+      const workerId = req.body.worker;
+      await this.dal.remove(workerId, shiftTime);
+    } catch (error) {
+      return res.status(400).send(error);
+    }
   }
 
   public isShiftInWorkerConstraints(
@@ -22,7 +55,9 @@ export class ConstraintService {
     shiftTime: ShiftTime,
     month: Month
   ): boolean {
-    const workerConstrains = this.getWorkerConstraintsByMonth(workerId, month);
-    return !!workerConstrains.find(c => _.isEqual(c.shiftTime, shiftTime));
+    // const workerConstrains = this.getWorkerConstraints(workerId, month);
+    //return !!workerConstrains.find(c => _.isEqual(c.shiftTime, shiftTime));
+
+    return true;
   }
 }

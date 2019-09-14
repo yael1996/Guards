@@ -45,49 +45,67 @@ var BordController = /** @class */ (function () {
         this.InitRoutes();
     }
     BordController.prototype.InitRoutes = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var _this = this;
+        var _this = this;
+        this.routs.post("/addBord", function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                this.routs.post("/addBord", function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-                    var bord, isSucceeded;
-                    return __generator(this, function (_a) {
-                        bord = req.body.bord;
-                        isSucceeded = this.bordService.addNewBord(bord);
-                        res.json({ success: isSucceeded });
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.bordService.addNewBord(req, res)];
+                    case 1:
+                        _a.sent();
                         return [2 /*return*/];
-                    });
-                }); });
-                this.routs.get("/joinBord", function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-                    var bordId, workerId, isSucceeded;
-                    return __generator(this, function (_a) {
-                        bordId = req.query.bord;
-                        workerId = req.query.worker;
-                        isSucceeded = this.bordService.AddWorkerToBord(workerId, bordId);
-                        res.json({ success: isSucceeded });
-                        return [2 /*return*/];
-                    });
-                }); });
-                this.routs.get("/leaveBord", function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-                    var bordId, workerId, isSucceeded;
-                    return __generator(this, function (_a) {
-                        bordId = req.query.bord;
-                        workerId = req.query.worker;
-                        isSucceeded = this.bordService.RemoveWorkerFromBord(workerId, bordId);
-                        res.json({ success: isSucceeded });
-                        return [2 /*return*/];
-                    });
-                }); });
-                this.routs.get("/allBords", function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-                    var allBords;
-                    return __generator(this, function (_a) {
-                        allBords = this.bordService.getAllBords();
-                        res.json({ bordsList: allBords });
-                        return [2 /*return*/];
-                    });
-                }); });
-                return [2 /*return*/];
+                }
             });
-        });
+        }); });
+        this.routs.get("/testmongo", function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.bordService.addNewBord(req, res)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+        this.routs.post("/deleteBord", function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.bordService.deleteBord(req, res)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+        this.routs.get("/allBords", function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.bordService.getAllBords(req, res)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+        this.routs.get("/joinBord", function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.bordService.AddWorkerToBord(req, res)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+        this.routs.get("/leaveBord", function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.bordService.RemoveWorkerFromBord(req, res)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        }); });
     };
     return BordController;
 }());

@@ -2,12 +2,10 @@ import { Schema, model, Document, Model } from "mongoose";
 import { ShiftTime } from "../../../../common/objects/shifts/shiftTime";
 import { SHIFT_TYPE } from "../../../../common/objects/shifts/shiftTypeEnum";
 
-const shiftTypes = ["REGULAR_DAY", "SPECIAL_DAY", "SPECIAL_DATE"];
-
 declare interface IShift extends Document {
-  id: string;
+  // id: string;
   shiftTime: ShiftTime;
-  shiftType: SHIFT_TYPE;
+  shiftType: string;
   workersIds: Array<string>;
 }
 
@@ -18,11 +16,11 @@ export class Shift {
 
   constructor() {
     const schema = new Schema({
-      id: { type: String, required: true, unique: true },
-      shiftTime: { type: Schema.Types.Mixed, required: true },
+      // id: { type: String, required: true, unique: true },
+      shiftTime: { type: Schema.Types.Mixed, required: true, unique: true },
       shiftType: {
         type: String,
-        enum: shiftTypes,
+        enum: ["REGULAR_DAY", "SPECIAL_DAY", "SPECIAL_DATE"],
         required: true
       },
       workersIds: [{ type: Schema.Types.ObjectId, ref: "User" }]

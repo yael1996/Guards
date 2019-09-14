@@ -1,5 +1,4 @@
 import { Shift } from "../../../common/objects/shifts/shift";
-import { Month } from "../../../common/objects/time/month";
 import { ConstraintService } from "../services/constraintService";
 
 export class Fitness {
