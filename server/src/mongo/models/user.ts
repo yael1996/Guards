@@ -1,8 +1,6 @@
 import { Schema, model, Document, Model } from "mongoose";
-import { Guid } from "guid-typescript";
 
 declare interface IUser extends Document {
-  id: String;
   firstName: String;
   lastName: String;
   email: String;
@@ -17,11 +15,6 @@ export class User {
 
   constructor() {
     const schema = new Schema({
-      id: {
-        type: String,
-        required: true,
-        unique: true
-      },
       firstName: { type: String },
       lastName: { type: String },
       email: { type: String, required: true, unique: true },

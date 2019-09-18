@@ -2,7 +2,6 @@ import { Schema, model, Document, Model } from "mongoose";
 import { BordSettings } from "../../../../common/objects/settings/boardSettings";
 
 declare interface IBord extends Document {
-  id: string;
   name: string;
   description: string;
   ownerId: string;
@@ -18,15 +17,10 @@ export class Bord {
 
   constructor() {
     const schema = new Schema({
-      id: {
-        type: String,
-        required: true,
-        unique: true
-      },
       name: { type: String, required: true },
       description: { type: String },
       ownerId: { type: Schema.Types.ObjectId, ref: "User", required: true },
-      settings: { type: Schema.Types.Mixed, required: true },
+      settings: { type: Schema.Types.Mixed, ref: "", required: true },
       workersIds: [{ type: Schema.Types.ObjectId, ref: "User" }],
       numShiftsForWorker: { type: Number }
     });
