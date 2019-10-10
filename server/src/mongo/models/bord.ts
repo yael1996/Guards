@@ -25,7 +25,7 @@ export class Bord {
       numShiftsForWorker: { type: Number }
     });
 
-    this._model = model<IBord>("Bord", schema);
+    this._model = model<IBord>("boards", schema);
   }
 
   public get model(): Model<IBord> {

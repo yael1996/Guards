@@ -28,7 +28,7 @@ export class Constraint {
       reason: { type: String, required: false }
     });
 
-    this._model = model<IConstraint>("Constraint", schema);
+    this._model = model<IConstraint>("constraints", schema);
   }
 
   public get model(): Model<IConstraint> {

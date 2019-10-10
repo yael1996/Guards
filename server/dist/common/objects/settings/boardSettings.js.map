@@ -1,1 +1,0 @@
-{"version":3,"file":"boardSettings.js","sourceRoot":"","sources":["../../../../../common/objects/settings/boardSettings.ts"],"names":[],"mappings":";;AAIA;IAKE,sBACE,WAA+B,EAC/B,WAAgC,EAChC,YAAmC;QAEnC,IAAI,CAAC,WAAW,GAAG,WAAW,CAAC;QAC/B,IAAI,CAAC,WAAW,GAAG,WAAW,CAAC;QAC/B,IAAI,CAAC,YAAY,GAAG,YAAY,CAAC;IACnC,CAAC;IACH,mBAAC;AAAD,CAAC,AAdD,IAcC;AAdY,oCAAY"}

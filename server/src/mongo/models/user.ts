@@ -26,7 +26,7 @@ export class User {
       }
     });
 
-    this._model = model<IUser>("User", schema);
+    this._model = model<IUser>("users", schema);
   }
 
   public get model(): Model<IUser> {

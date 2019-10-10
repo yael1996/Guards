@@ -18,7 +18,7 @@ export class Month {
       toTime: { type: Date, required: true }
     });
 
-    this._model = model<IShiftTime>("ShiftTime", schema);
+    this._model = model<IShiftTime>("shifttimes", schema);
   }
 
   public get model(): Model<IShiftTime> {

@@ -16,7 +16,7 @@ export class Month {
       year: { type: Number, required: true }
     });
 
-    this._model = model<IMonth>("Month", schema);
+    this._model = model<IMonth>("months", schema);
   }
 
   public get model(): Model<IMonth> {

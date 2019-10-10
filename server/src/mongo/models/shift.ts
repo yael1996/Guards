@@ -27,7 +27,7 @@ export class Shift {
       workersIds: [{ type: Schema.Types.ObjectId, ref: "User" }]
     });
 
-    this._model = model<IShift>("Shift", schema);
+    this._model = model<IShift>("shifts", schema);
   }
 
   public get model(): Model<IShift> {
