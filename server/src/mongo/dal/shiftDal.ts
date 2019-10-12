@@ -1,7 +1,8 @@
 import { DBConnection } from "../dbConnection";
+import { ShiftModel } from "../models/shift";
 
 export class ShiftDal {
-  private model;
+  private model: ShiftModel;
 
   constructor() {
     this.model = DBConnection.Models.Shift;
