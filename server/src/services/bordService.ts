@@ -5,6 +5,7 @@ import { DaySettings } from "../../../common/objects/settings/daySettings";
 import { ShiftSettings } from "../../../common/objects/settings/shiftSettings";
 import { RegularDaySettings } from "../../../common/objects/settings/regularDaySettings";
 import { BordSettings } from "../../../common/objects/settings/boardSettings";
+import { Request, Dictionary, Response } from "express-serve-static-core";
 
 export class BordService {
   private dal: BordDal;
@@ -27,11 +28,11 @@ export class BordService {
     return await this.dal.getById(bordId);
   }
 
-  public async getOwnerBords(req, res) {}
+  public async getOwnerBords(req: Request<Dictionary<string>>, res: Response) {}
 
-  public async getworkerBords(req, res) {}
+  public async getworkerBords(req: Request<Dictionary<string>>, res: Response) {}
 
-  public async addNewBord(req, res) {
+  public async addNewBord(req: Request<Dictionary<string>>, res: Response) {
     try {
       // const bord = JSON.stringify(req.body.bord as Bord);
       const bord = JSON.stringify(this.getTestBord());
@@ -76,7 +77,7 @@ export class BordService {
     return bord;
   }
 
-  public async deleteBord(req, res) {
+  public async deleteBord(req: Request<Dictionary<string>>, res: Response) {
     try {
       const bordId = req.query.bord;
       await this.dal.remove(bordId);
@@ -85,7 +86,7 @@ export class BordService {
     }
   }
 
-  public async getAllBords(req, res) {
+  public async getAllBords(req: Request<Dictionary<string>>, res: Response) {
     try {
       const result = await this.dal.getAll();
       return res.send(result);
@@ -94,7 +95,7 @@ export class BordService {
     }
   }
 
-  public async AddWorkerToBord(req, res) {
+  public async AddWorkerToBord(req: Request<Dictionary<string>>, res: Response) {
     try {
       const bordId = req.query.bord;
       const worker = req.query.worker;
@@ -104,7 +105,7 @@ export class BordService {
     }
   }
 
-  public async RemoveWorkerFromBord(req, res) {
+  public async RemoveWorkerFromBord(req: Request<Dictionary<string>>, res: Response) {
     try {
       const bordId = req.query.bord;
       const worker = req.query.worker;
