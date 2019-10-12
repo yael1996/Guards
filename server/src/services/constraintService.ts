@@ -1,8 +1,7 @@
 import { Month } from "../../../common/objects/time/month";
 import { ShiftTime } from "../../../common/objects/shifts/shiftTime";
 import { ConstraintDal } from "../mongo/dal/constraintDal";
-import { Request, Response } from "express-serve-static-core";
-import { Dictionary } from "underscore";
+import { Request, Dictionary, Response } from "express-serve-static-core";
 
 const _ = require("underscore");
 
