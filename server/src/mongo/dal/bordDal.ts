@@ -1,7 +1,8 @@
 import { DBConnection } from "../dbConnection";
+import { BordModel } from "../models/bord";
 
 export class BordDal {
-  private model;
+  private model: BordModel;
 
   constructor() {
     this.model = DBConnection.Models.Bord;
