@@ -1,6 +1,8 @@
 import { Month } from "../../../common/objects/time/month";
 import { ShiftTime } from "../../../common/objects/shifts/shiftTime";
 import { ConstraintDal } from "../mongo/dal/constraintDal";
+import { Request, Response } from "express-serve-static-core";
+import { Dictionary } from "underscore";
 
 const _ = require("underscore");
 
@@ -11,7 +13,7 @@ export class ConstraintService {
     this.dal = new ConstraintDal();
   }
 
-  public async getMonthConstraints(req, res) {
+  public async getMonthConstraints(req: Request<Dictionary<string>>, res: Response) {
     try {
       const month = req.body.month;
       const result = await this.dal.getByMonth(month);
@@ -21,7 +23,7 @@ export class ConstraintService {
     }
   }
 
-  public async getWorkerConstraints(req, res) {
+  public async getWorkerConstraints(req: Request<Dictionary<string>>, res: Response) {
     try {
       const workerId = req.body.worker;
       const result = await this.dal.getByMonth(workerId);
@@ -31,7 +33,7 @@ export class ConstraintService {
     }
   }
 
-  public async addConstraint(req, res) {
+  public async addConstraint(req: Request<Dictionary<string>>, res: Response) {
     try {
       const constraint = JSON.stringify(req.body.constraint);
       await this.dal.insert(constraint);
@@ -40,7 +42,7 @@ export class ConstraintService {
     }
   }
 
-  public async deleteConstraint(req, res) {
+  public async deleteConstraint(req: Request<Dictionary<string>>, res: Response) {
     try {
       const shiftTime = req.body.shiftTime;
       const workerId = req.body.worker;
