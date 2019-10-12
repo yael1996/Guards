@@ -1,7 +1,8 @@
 import { DBConnection } from "../dbConnection";
+import { ConstraintModel } from "../models/constraint";
 
 export class ConstraintDal {
-  private model;
+  private model: ConstraintModel;
 
   constructor() {
     this.model = DBConnection.Models.Constraint;
