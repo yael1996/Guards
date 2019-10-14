@@ -1,4 +1,4 @@
-import { Document, model, Schema } from "mongoose";
+import { Document, model, Schema, Connection } from "mongoose";
 
 interface DateTime {
     date: string,
@@ -34,5 +34,6 @@ const schemaBoard = new Schema<Board>({
     workDays: [schemaWorkDay]
 })
 
-const boardModel = model<Board>("boards", schemaBoard)
-export {boardModel, Board, WorkDay, Shift, DateTime}
+const register = () => model<Board>("boards", schemaBoard)
+
+export { register, Board, WorkDay, Shift, DateTime }
