@@ -1,35 +1,19 @@
-import { Schema, model, Document, Model } from "mongoose";
+import { Schema, model, Document } from "mongoose";
 
-declare interface IUser extends Document {
-  firstName: String;
-  lastName: String;
-  email: String;
-  tokens: Array<String>;
-  userType: String;
+interface User extends Document {
+  firstname: string;
+  lastname: string;
+  email: string;
+  tokens: [string];
+  type: string;
 }
+const schemaUser = new Schema({
+  firstname: String,
+  lastname: String,
+  email: String,
+  tokens: [String],
+  type: String
+});
 
-export interface UserModel extends Model<IUser> {}
-
-export class User {
-  private _model: Model<IUser>;
-
-  constructor() {
-    const schema = new Schema({
-      firstName: { type: String },
-      lastName: { type: String },
-      email: { type: String, required: true, unique: true },
-      tokens: { type: [String] },
-      userType: {
-        type: String,
-        enum: ["MANAGER", "WORKER"],
-        required: true
-      }
-    });
-
-    this._model = model<IUser>("users", schema);
-  }
-
-  public get model(): Model<IUser> {
-    return this._model;
-  }
-}
+const register = () => model<User>("users", schemaUser)
+export { register, User }
