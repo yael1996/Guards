@@ -7,7 +7,7 @@ interface DateTime {
 const schemaDateTime = new Schema<DateTime>({
     date: String,
     time: String
-})
+});
 
 interface Shift {
     start: DateTime,
@@ -16,14 +16,14 @@ interface Shift {
 const schemaShift = new Schema<Shift>({
     start: schemaDateTime,
     end: schemaDateTime
-})
+});
 
 interface WorkDay {
     shifts: Shift[]
 }
 const schemaWorkDay = new Schema<WorkDay>({
     shifts: [schemaShift]
-})
+});
 
 interface Board extends Document {
     owner: string,
@@ -32,8 +32,8 @@ interface Board extends Document {
 const schemaBoard = new Schema<Board>({
     owner: String,
     workDays: [schemaWorkDay]
-})
+});
 
-const register = () => model<Board>("boards", schemaBoard)
+const register = () => model<Board>("boards", schemaBoard);
 
-export { register, Board, WorkDay, Shift, DateTime }
+export { register, Board, WorkDay, Shift, DateTime };
