@@ -1,6 +1,38 @@
 import { Router } from "express";
 import { BordService } from "../../services/bordService";
+import { models } from "../../mongo/connection"
 import { Bord } from "../../../../common/objects/bord/bord";
+import { Board } from "../../mongo/models/Board";
+import { Response } from "express-serve-static-core";
+
+const router = Router();
+
+const safeAsync = (fn) => (req, res: Response) => {
+  try {
+    res.status(200).send(fn(req, res));
+  } catch (error) {
+    res.status(500).send(error);
+  }
+}
+
+router.post("/add", async (req, res) => {
+  try {
+    const board = await models.board.create(req.body);
+    res.status(200).send(board);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+router.post("/delete", async (req, res) => {
+  try {
+    const board = await models.board.findByIdAndRemove(req.body.id);
+    res.status(200).send(board);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+
 
 export class BordController {
   public routs: Router;
