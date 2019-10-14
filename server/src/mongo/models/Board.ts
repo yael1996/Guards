@@ -1,21 +1,25 @@
-import { Document, model, Schema, Connection } from "mongoose";
+import { Document, model, Schema } from "mongoose";
 
 interface DateTime {
     date: string,
     time: string
 }
 const schemaDateTime = new Schema<DateTime>({
-    date: String,
-    time: String
+    date: Schema.Types.String,
+    time: Schema.Types.String
 });
 
 interface Shift {
     start: DateTime,
-    end: DateTime
+    end: DateTime,
+    neededStaff: number,
+    assignedStaff: [string]
 }
 const schemaShift = new Schema<Shift>({
     start: schemaDateTime,
-    end: schemaDateTime
+    end: schemaDateTime,
+    neededStaff: Schema.Types.Number,
+    assignedStaff: [Schema.Types.ObjectId]
 });
 
 interface WorkDay {
@@ -27,10 +31,12 @@ const schemaWorkDay = new Schema<WorkDay>({
 
 interface Board extends Document {
     owner: string,
+    isOptimised: boolean,
     workDays: WorkDay[]
 }
 const schemaBoard = new Schema<Board>({
-    owner: String,
+    owner: Schema.Types.ObjectId,
+    isOptimised: Schema.Types.Boolean,
     workDays: [schemaWorkDay]
 });
 
