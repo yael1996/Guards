@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { GeneticAlgorithemController } from "./controllers/geneticAlgorithemController";
-import { BordController } from "./controllers/bordController";
+import { router as boardRouter } from "./controllers/boardController";
 import { ShiftsController } from "./controllers/shiftsController";
 
 export class Routes {
@@ -20,7 +20,7 @@ export class Routes {
 
   private initOtherRouts() {
     this.appRouts.use("/geneticAlgo", new GeneticAlgorithemController().routs);
-    this.appRouts.use("/bord", new BordController().routs);
+    this.appRouts.use("/board", boardRouter);
     this.appRouts.use("/shifts", new ShiftsController().routs);
   }
 }
