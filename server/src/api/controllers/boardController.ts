@@ -43,3 +43,5 @@ router.patch("/:id", async (req, res) => {
     res.status(500).end(error);
   }
 });
+
+export { router };
