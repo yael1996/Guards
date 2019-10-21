@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { models } from "../../mongo/connection"
+import { models } from "../../mongo/connection";
 import { safeAsync } from "../../utiles/safeAsync";
 
 const router = Router();
