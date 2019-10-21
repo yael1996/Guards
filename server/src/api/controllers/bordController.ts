@@ -7,15 +7,23 @@ import { Response } from "express-serve-static-core";
 
 const router = Router();
 
-const safeAsync = (fn) => (req, res: Response) => {
+router.get("/", async (req, res) => {
   try {
-    res.status(200).send(fn(req, res));
+    const boards = await models.board.find();
+    res.status(200).end(boards);
   } catch (error) {
-    res.status(500).send(error);
+    res.status(500).end(error);
   }
-}
-
-router.post("/add", async (req, res) => {
+});
+router.get("/:id", async (req, res) => {
+  try {
+    const board = await models.board.findById(req.params.id);
+    res.status(200).end(board);
+  } catch (error) {
+    res.status(500).end(error);
+  }
+});
+router.post("/", async (req, res) => {
   try {
     const board = await models.board.create(req.body);
     res.status(200).send(board);
@@ -23,50 +31,19 @@ router.post("/add", async (req, res) => {
     res.status(500).send(error);
   }
 });
-router.post("/delete", async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
-    const board = await models.board.findByIdAndRemove(req.body.id);
+    const board = await models.board.findByIdAndRemove(req.params.id);
     res.status(200).send(board);
   } catch (error) {
     res.status(500).send(error);
   }
 });
-
-
-
-export class BordController {
-  public routs: Router;
-  private bordService: BordService;
-
-  constructor() {
-    this.routs = Router();
-    this.bordService = new BordService();
-    this.InitRoutes();
+router.patch("/:id", async (req, res) => {
+  try {
+    const board = await models.board.findByIdAndUpdate(req.params.id, req.body);
+    res.status(200).end(board);
+  } catch (error) {
+    res.status(500).end(error);
   }
-
-  private InitRoutes() {
-    this.routs.post("/addBord", async (req, res) => {
-      await this.bordService.addNewBord(req, res);
-    });
-
-    this.routs.get("/testmongo", async (req, res) => {
-      await this.bordService.addNewBord(req, res);
-    });
-
-    this.routs.post("/deleteBord", async (req, res) => {
-      await this.bordService.deleteBord(req, res);
-    });
-
-    this.routs.get("/allBords", async (req, res) => {
-      await this.bordService.getAllBords(req, res);
-    });
-
-    this.routs.get("/joinBord", async (req, res) => {
-      await this.bordService.AddWorkerToBord(req, res);
-    });
-
-    this.routs.get("/leaveBord", async (req, res) => {
-      await this.bordService.RemoveWorkerFromBord(req, res);
-    });
-  }
-}
+});
