@@ -1,9 +1,5 @@
 import { Router } from "express";
-import { BordService } from "../../services/bordService";
 import { models } from "../../mongo/connection"
-import { Bord } from "../../../../common/objects/bord/bord";
-import { Board } from "../../mongo/models/Board";
-import { Response } from "express-serve-static-core";
 
 const router = Router();
 
