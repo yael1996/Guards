@@ -1,26 +1,11 @@
 import { Router } from "express";
 import { GeneticAlgorithemController } from "./controllers/geneticAlgorithemController";
 import { router as boardRouter } from "./controllers/boardController";
-import { ShiftsController } from "./controllers/shiftsController";
+import { router as userRouter } from "./controllers/userController";
 
-export class Routes {
-  public appRouts: Router;
+const router = Router();
 
-  constructor() {
-    this.appRouts = Router();
-    this.initMainRout();
-    this.initOtherRouts();
-  }
+router.use("/board", boardRouter);
+router.use("/user", userRouter);
 
-  private initMainRout() {
-    this.appRouts.get("/api", (req, res) =>
-      res.json({ application: "App is good" })
-    );
-  }
-
-  private initOtherRouts() {
-    this.appRouts.use("/geneticAlgo", new GeneticAlgorithemController().routs);
-    this.appRouts.use("/board", boardRouter);
-    this.appRouts.use("/shifts", new ShiftsController().routs);
-  }
-}
+export { router };
