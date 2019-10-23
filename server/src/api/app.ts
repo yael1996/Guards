@@ -1,6 +1,5 @@
 import express from "express";
 import bodyParser from "body-parser";
-import { GeneticAlgorithemController } from "./controllers/geneticAlgorithemController";
 import { router as boardRouter } from "./controllers/boardController";
 import { router as userRouter } from "./controllers/userController";
 
