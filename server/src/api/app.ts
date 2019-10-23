@@ -11,3 +11,5 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use("/board", boardRouter);
 app.use("/user", userRouter);
+
+export { app };
