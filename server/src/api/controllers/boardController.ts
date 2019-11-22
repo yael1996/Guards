@@ -5,7 +5,7 @@ import { safeAsync } from "../../utiles/safeAsync";
 const router = Router();
 
 router.get("/", safeAsync(async (req, res) => {
-    return await models.board.find();
+  return await models.board.find();
 }));
 router.get("/:id", safeAsync(async (req, res) => {
   return await models.board.findById(req.params.id);
