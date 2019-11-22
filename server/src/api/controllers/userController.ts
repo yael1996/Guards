@@ -17,7 +17,11 @@ router.delete("/:id", safeAsync(async (req, res) => {
   return await models.user.findByIdAndRemove(req.params.id);
 }));
 router.patch("/:id", safeAsync(async (req, res) => {
-  return await models.user.findByIdAndUpdate(req.params.id, req.body);
+  const user = await models.user.findById(req.params.id);
+  Object.getOwnPropertyNames(req.body).forEach((name) => {
+    user[name] = req.body[name];
+  })
+  return await user.save();
 }));
 
 export { router };
