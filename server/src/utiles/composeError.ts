@@ -1,13 +1,13 @@
 
 const compose = (...fns: [(x: any) => any]) => (x: any) => {
     let result: any;
-    let input = x;
     for (const fn of fns) {
-        result = fn(input);
+        result = fn(x);
         if (result instanceof Error) {
-            break;;
+            return result;
         }
-        input = x;
     }
-    return result;
+    return x;
 }
+
+export { compose };
