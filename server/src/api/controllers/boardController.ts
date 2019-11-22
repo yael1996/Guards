@@ -19,7 +19,7 @@ router.delete("/:id", safeAsync(async (req, res) => {
 router.patch("/:id", safeAsync(async (req, res) => {
   const board = await models.board.findById(req.params.id);
   if (!board) {
-    throw Error("Entity not found");
+    throw new Error("Entity not found!");
   }
   Object.getOwnPropertyNames(req.body).forEach((prop) => {
     board[prop] = req.body[prop];

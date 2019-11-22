@@ -18,6 +18,9 @@ router.delete("/:id", safeAsync(async (req, res) => {
 }));
 router.patch("/:id", safeAsync(async (req, res) => {
   const user = await models.user.findById(req.params.id);
+  if (!user) {
+    throw new Error("Entity not found!");
+  }
   Object.getOwnPropertyNames(req.body).forEach((name) => {
     user[name] = req.body[name];
   })
