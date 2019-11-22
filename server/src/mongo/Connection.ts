@@ -1,4 +1,4 @@
-import { Board, register as registerBoard } from "./models/Board";
+import { Board, register as registerBoard } from "./models/board";
 import { connect, connection, Model } from "mongoose";
 import { User, register as registerUser } from "./models/User";
 
