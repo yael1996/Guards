@@ -1,45 +1,60 @@
 import { Document, model, Schema } from "mongoose";
 
-interface DateTime {
-    date: string,
-    time: string
-}
-const schemaDateTime = new Schema<DateTime>({
-    date: Schema.Types.String,
-    time: Schema.Types.String
-});
-
 interface Shift {
-    start: DateTime,
-    end: DateTime,
-    neededStaff: number,
-    assignedStaff: [string]
+    start: Date,
+    end: Date,
+    neededStaff: Number,
+    assignedStaff: [String]
 }
+
 const schemaShift = new Schema<Shift>({
-    start: schemaDateTime,
-    end: schemaDateTime,
-    neededStaff: Schema.Types.Number,
-    assignedStaff: [Schema.Types.ObjectId]
+    start: {
+        type: Schema.Types.Date,
+        required: true
+    },
+    end: {
+        type: Schema.Types.Date,
+        required: true
+    },
+    neededStaff: {
+        type: Schema.Types.Number,
+        required: true
+    },
+    assignedStaff: {
+        type: [Schema.Types.ObjectId]
+    }
 });
 
 interface WorkDay {
-    shifts: Shift[]
+    shifts: [Shift]
 }
 const schemaWorkDay = new Schema<WorkDay>({
-    shifts: [schemaShift]
+    shifts: {
+        type: [schemaShift],
+        required: true
+    }
 });
 
 interface Board extends Document {
-    owner: string,
-    isOptimised: boolean,
-    workDays: WorkDay[]
+    owner: String,
+    isOptimised: Boolean,
+    workDays: [WorkDay]
 }
 const schemaBoard = new Schema<Board>({
-    owner: Schema.Types.ObjectId,
-    isOptimised: Schema.Types.Boolean,
-    workDays: [schemaWorkDay]
+    owner: {
+        type: Schema.Types.ObjectId,
+        required: true
+    },
+    isOptimised: {
+        type: Schema.Types.Boolean,
+        default: false
+    },
+    workDays: {
+        type: [schemaWorkDay],
+        required: true
+    }
 });
 
 const register = () => model<Board>("boards", schemaBoard);
 
-export { register, Board, WorkDay, Shift, DateTime };
+export { register, Board, WorkDay, Shift };

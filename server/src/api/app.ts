@@ -1,6 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
-import { router as boardRouter } from "./controllers/boardController/boardController";
+import { router as boardRouter } from "./controllers/boardController";
 import { router as userRouter } from "./controllers/userController";
 
 const app = express();
