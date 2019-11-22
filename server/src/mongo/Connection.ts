@@ -1,5 +1,5 @@
 import { Board, register as registerBoard } from "./models/board";
-import { connect, connection, Model } from "mongoose";
+import { connect, connection, Model, set } from "mongoose";
 import { User, register as registerUser } from "./models/User";
 
 interface Models {
@@ -9,7 +9,9 @@ interface Models {
 
 let models: Models;
 
-connect("mongodb://ec2-3-9-169-24.eu-west-2.compute.amazonaws.com:27017/guards", { useNewUrlParser: true }).then(() => {
+set("runValidators", true);
+
+connect(process.env.DB, { useNewUrlParser: true }).then(() => {
     connection.db.on("open", () => console.log("Connected to mongo database"));
     connection.db.on("error", () => {
         console.error("Database connection failed!");

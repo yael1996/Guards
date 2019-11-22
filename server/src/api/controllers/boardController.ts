@@ -17,8 +17,9 @@ router.delete("/:id", safeAsync(async (req, res) => {
   return await models.board.findByIdAndRemove(req.params.id);
 }));
 router.patch("/:id", safeAsync(async (req, res) => {
-  console.log(req.body);
-  return await models.board.findByIdAndUpdate(req.params.id, req.body, { runValidators: true });
+  // const board = await models.board.findById(req.params.id);
+  // return await board.update(req.body);
+  return await models.board.findByIdAndUpdate(req.params.id, req.body);
 }));
 
 export { router };
