@@ -1,3 +1,4 @@
+import { config } from "dotenv";
 import { Board, register as registerBoard } from "./models/board";
 import { connect, connection, Model, set } from "mongoose";
 import { User, register as registerUser } from "./models/User";
@@ -6,6 +7,8 @@ interface Models {
     board: Model<Board>,
     user: Model<User>
 }
+
+config();
 
 let models: Models;
 
