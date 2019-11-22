@@ -1,6 +1,5 @@
 import { config } from "dotenv";
 import { connect, connection, Model, set, plugin } from "mongoose";
-import findOneErrorPlugin from "mongoose-findone-or-error";
 import { Board, register as registerBoard } from "./models/board";
 import { User, register as registerUser } from "./models/User";
 
@@ -14,7 +13,6 @@ config();
 let models: Models;
 
 set("runValidators", true);
-plugin(findOneErrorPlugin);
 
 connect(process.env.DB, { useNewUrlParser: true }).then(() => {
     connection.db.on("open", () => console.log("Connected to mongo database"));
