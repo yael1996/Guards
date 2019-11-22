@@ -1,12 +1,17 @@
 import { Document, model, Schema } from "mongoose";
 
-interface Shift {
+interface JSONShift {
     start: Date,
     end: Date,
     neededStaff: Number,
     assignedStaff: [String]
 }
-
+interface Shift extends Document {
+    start: Schema.Types.Date,
+    end: Schema.Types.Date,
+    neededStaff: Schema.Types.Number,
+    assignedStaff: [Schema.Types.String]
+}
 const schemaShift = new Schema<Shift>({
     start: {
         type: Schema.Types.Date,
@@ -25,7 +30,10 @@ const schemaShift = new Schema<Shift>({
     }
 });
 
-interface WorkDay {
+interface JSONWorkDay {
+    shifts: [Shift]
+}
+interface WorkDay extends Document {
     shifts: [Shift]
 }
 const schemaWorkDay = new Schema<WorkDay>({
@@ -35,9 +43,14 @@ const schemaWorkDay = new Schema<WorkDay>({
     }
 });
 
-interface Board extends Document {
+interface JSONBoard {
     owner: String,
     isOptimised: Boolean,
+    workDays: [WorkDay]
+}
+interface Board extends Document {
+    owner: Schema.Types.String,
+    isOptimised: Schema.Types.Boolean,
     workDays: [WorkDay]
 }
 const schemaBoard = new Schema<Board>({
@@ -57,4 +70,4 @@ const schemaBoard = new Schema<Board>({
 
 const register = () => model<Board>("boards", schemaBoard);
 
-export { register, Board, WorkDay, Shift };
+export { register, JSONBoard, Board, JSONWorkDay, WorkDay, JSONShift, Shift };

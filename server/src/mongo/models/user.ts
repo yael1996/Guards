@@ -1,5 +1,12 @@
 import { Schema, model, Document } from "mongoose";
 
+interface JSONUser {
+  firstname: String;
+  lastname: String;
+  email: String;
+  tokens: [String];
+  type: String;
+}
 interface User extends Document {
   firstname: Schema.Types.String;
   lastname: Schema.Types.String;
@@ -28,4 +35,4 @@ const schemaUser = new Schema({
 });
 
 const register = () => model<User>("users", schemaUser)
-export { register, User }
+export { register, JSONUser, User }
