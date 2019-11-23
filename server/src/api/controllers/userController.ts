@@ -8,7 +8,7 @@ router.get("/", safeAsync(async (req, res) => {
   return await models.user.find();
 }));
 router.get("/:id", safeAsync(async (req, res) => {
-  return await models.user.findById(req.params.id);
+  const board = await models.user.findById(req.params.id);
 }));
 router.post("/", safeAsync(async (req, res) => {
   return await models.user.create(req.body);

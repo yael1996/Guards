@@ -68,6 +68,10 @@ const schemaBoard = new Schema<Board>({
     }
 });
 
+schemaBoard.pre("save", (next) => {
+    // Next with Error object should break the chain
+})
+
 const register = () => model<Board>("boards", schemaBoard);
 
 export { register, JSONBoard, Board, JSONWorkDay, WorkDay, JSONShift, Shift };
