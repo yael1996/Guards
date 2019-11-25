@@ -1,0 +1,17 @@
+{
+  "inlineSource": true,
+
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es5",
+    "sourceMap": true,
+    "outDir": "dist",
+    "allowJs": true,
+    "strictNullChecks": false,
+    "esModuleInterop": true,
+    "lib": ["es2015.collection", "es6"]
+  },
+  "include": ["src/**/*"],
+  "exclude": ["dist/**/*", "node_modules"],
+  "compileOnSave": true
+}
