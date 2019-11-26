@@ -1,11 +1,12 @@
 import { Schema, model, Document } from "mongoose";
 
 interface JSONUser {
-  firstname: String;
-  lastname: String;
-  email: String;
-  tokens: [String];
-  type: String;
+  firstname: string,
+  lastname: string,
+  email: string,
+  tokens: [string],
+  type: string,
+  boardIds: string[]
 }
 interface User extends JSONUser, Document {}
 const schemaUser = new Schema<User>({
@@ -26,9 +27,18 @@ const schemaUser = new Schema<User>({
   },
   type: {
     type: Schema.Types.String,
+    enum: ['user', 'manager'],
+    required: true
+  },
+  boardIds: {
+    type: [Schema.Types.ObjectId],
     required: true
   }
 });
 
-const register = () => model<User>("users", schemaUser)
-export { register, User }
+schemaUser.pre('save', function(this: User, next) {
+  next();
+});
+
+const register = () => model<User>("users", schemaUser);
+export { register, User };

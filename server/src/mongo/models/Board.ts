@@ -13,7 +13,7 @@ const schemaTime = new Schema<Time>({
         type: Schema.Types.Number,
         required: true
     }
-})
+});
 
 interface ShiftSettings {
     numWorkersInShift: number,
@@ -28,7 +28,7 @@ const schemaShiftSettings = new Schema<ShiftSettings>({
         type: Schema.Types.Number,
         required: true
     }
-})
+});
 
 interface DaySettings {
     numShiftsInDay: number,
@@ -43,7 +43,7 @@ const schemaDaySettings = new Schema<DaySettings>({
         type: schemaTime,
         required: true
     }
-})
+});
 
 interface RegularDaySettings {
     days: number[],
@@ -63,7 +63,7 @@ const schemaRegularDaySettings = new Schema<RegularDaySettings>({
         type: schemaShiftSettings,
         required: true
     }
-})
+});
 
 interface SpecialDaysSettings {
     days: number[],
@@ -83,7 +83,7 @@ const schemaSpecialDaysSettings = new Schema<SpecialDaysSettings>({
         type: schemaShiftSettings,
         required: true
     }
-})
+});
 
 interface SpecialDatesSettings {
     dates: Date[],
@@ -103,7 +103,7 @@ const schemaSpecialDatesSettings = new Schema<SpecialDatesSettings>({
         type: schemaShiftSettings,
         required: true
     }
-})
+});
 
 interface BoardSettings {
     regularDaySettings: RegularDaySettings,
@@ -123,13 +123,14 @@ const schemaBoardSettings = new Schema<BoardSettings>({
         type: schemaSpecialDatesSettings,
         required: true
     }
-})
+});
 
 interface Board extends Document {
     name: string,
     description: string,
     ownerId: string,
-    boardSettings: BoardSettings
+    boardSettings: BoardSettings,
+    workerIds: string[]
 }
 const schemaBoard = new Schema<Board>({
     name: {
@@ -147,12 +148,16 @@ const schemaBoard = new Schema<Board>({
     boardSettings: {
         type: schemaBoardSettings,
         required: true
+    },
+    workerIds: {
+        type: [Schema.Types.ObjectId],
+        required: true
     }
 });
 
 schemaBoard.pre('save', function(this: Board, next) {
-    // Next with Error object should break the chain
-})
+    next();
+});
 
 const register = () => model<Board>('boards', schemaBoard);
 
