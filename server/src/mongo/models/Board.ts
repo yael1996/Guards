@@ -1,71 +1,92 @@
 import { Document, model, Schema } from "mongoose";
 
-interface JSONShift {
-    start: Date,
-    end: Date,
-    neededStaff: Number,
-    assignedStaff: [String]
+interface Time {
+    hour: number,
+    minute: number
 }
-interface Shift extends Document {
-    start: Schema.Types.Date,
-    end: Schema.Types.Date,
-    neededStaff: Schema.Types.Number,
-    assignedStaff: [Schema.Types.String]
-}
-const schemaShift = new Schema<Shift>({
-    start: {
-        type: Schema.Types.Date,
-        required: true
-    },
-    end: {
-        type: Schema.Types.Date,
-        required: true
-    },
-    neededStaff: {
-        type: Schema.Types.Number,
-        required: true
-    },
-    assignedStaff: {
-        type: [Schema.Types.ObjectId]
-    }
-});
+const schemaTime = new Schema<Time>({
+    hour: Schema.Types.Number,
+    minutes: Schema.Types.Number
+})
 
-interface JSONWorkDay {
-    shifts: [Shift]
+interface ShiftSettings {
+    numWorkersInShift: number,
+    shiftLengthInHours: number
 }
-interface WorkDay extends Document {
-    shifts: [Shift]
-}
-const schemaWorkDay = new Schema<WorkDay>({
-    shifts: {
-        type: [schemaShift],
-        required: true
-    }
-});
+const schemaShiftSettings = new Schema<ShiftSettings>({
+    numWorkersInShift: Schema.Types.Number,
+    shiftLengthInHours: Schema.Types.Number
+})
 
-interface JSONBoard {
-    owner: String,
-    isOptimised: Boolean,
-    workDays: [WorkDay]
+interface DaySettings {
+    numShiftsInDay: number,
+    startHour: Time
 }
+const schemaDaySettings = new Schema<DaySettings>({
+    numShiftsInDay: Schema.Types.Number,
+    startHour: schemaTime
+})
+
+interface RegularDaySettings {
+    days: number[],
+    daySettings: DaySettings,
+    shiftSettings: ShiftSettings
+}
+const schemaRegularDaySettings = new Schema<RegularDaySettings>({
+    days: [Schema.Types.Number],
+    daySettings: schemaDaySettings,
+    shiftSettings: schemaShiftSettings
+})
+
+interface SpecialDaysSettings {
+    days: number[],
+    daySettings: DaySettings,
+    shiftSettings: ShiftSettings
+}
+const schemaSpecialDaysSettings = new Schema<SpecialDaysSettings>({
+    days: [Schema.Types.Number],
+    daySettings: schemaDaySettings,
+    shiftSettings: schemaShiftSettings
+})
+
+interface SpecialDatesSettings {
+    dates: Date[],
+    daySettings: DaySettings,
+    shiftSettings: ShiftSettings
+}
+const schemaSpecialDatesSettings = new Schema<SpecialDatesSettings>({
+    dates: [Schema.Types.Date],
+    daySettings: schemaDaySettings,
+    shiftSettings: schemaShiftSettings
+})
+
+interface BoardSettings {
+    regularDaySettings: RegularDaySettings,
+    specialDaysSettings: SpecialDaysSettings,
+}
+const schemaBoardSettings = new Schema<BoardSettings>({
+    regularDaySettings: schemaRegularDaySettings,
+    specialDaysSettings: schemaSpecialDaysSettings,
+    specialDatesSettings: schemaSpecialDatesSettings
+})
+
 interface Board extends Document {
-    owner: Schema.Types.String,
-    isOptimised: Schema.Types.Boolean,
-    workDays: [WorkDay]
+    name: string,
+    description: string,
+    ownerId: string,
+    boardSettings: BoardSettings
 }
 const schemaBoard = new Schema<Board>({
-    owner: {
+    name: {
+        type: Schema.Types.String,
+        required: true
+    },
+    description: Schema.Types.String,
+    ownerId: {
         type: Schema.Types.ObjectId,
         required: true
     },
-    isOptimised: {
-        type: Schema.Types.Boolean,
-        default: false
-    },
-    workDays: {
-        type: [schemaWorkDay],
-        required: true
-    }
+    boardSettings: schemaBoardSettings
 });
 
 schemaBoard.pre("save", (next) => {
@@ -74,4 +95,4 @@ schemaBoard.pre("save", (next) => {
 
 const register = () => model<Board>("boards", schemaBoard);
 
-export { register, JSONBoard, Board, JSONWorkDay, WorkDay, JSONShift, Shift };
+export { register, Board, BoardSettings, SpecialDaysSettings, RegularDaySettings, DaySettings, ShiftSettings, Time };

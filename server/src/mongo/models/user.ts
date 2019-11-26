@@ -7,14 +7,8 @@ interface JSONUser {
   tokens: [String];
   type: String;
 }
-interface User extends Document {
-  firstname: Schema.Types.String;
-  lastname: Schema.Types.String;
-  email: Schema.Types.String;
-  tokens: [Schema.Types.String];
-  type: Schema.Types.String;
-}
-const schemaUser = new Schema({
+interface User extends JSONUser, Document {}
+const schemaUser = new Schema<User>({
   firstname: {
     type: Schema.Types.String,
     required: true
@@ -35,4 +29,4 @@ const schemaUser = new Schema({
 });
 
 const register = () => model<User>("users", schemaUser)
-export { register, JSONUser, User }
+export { register, User }
