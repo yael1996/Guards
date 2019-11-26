@@ -1,12 +1,18 @@
-import { Document, model, Schema } from "mongoose";
+import { Document, model, Schema, HookSyncCallback } from "mongoose";
 
 interface Time {
     hour: number,
     minute: number
 }
 const schemaTime = new Schema<Time>({
-    hour: Schema.Types.Number,
-    minutes: Schema.Types.Number
+    hour: {
+        type: Schema.Types.Number,
+        required: true
+    },
+    minute: {
+        type: Schema.Types.Number,
+        required: true
+    }
 })
 
 interface ShiftSettings {
@@ -14,8 +20,14 @@ interface ShiftSettings {
     shiftLengthInHours: number
 }
 const schemaShiftSettings = new Schema<ShiftSettings>({
-    numWorkersInShift: Schema.Types.Number,
-    shiftLengthInHours: Schema.Types.Number
+    numWorkersInShift: {
+        type: Schema.Types.Number,
+        required: true
+    },
+    shiftLengthInHours: {
+        type: Schema.Types.Number,
+        required: true
+    }
 })
 
 interface DaySettings {
@@ -23,8 +35,14 @@ interface DaySettings {
     startHour: Time
 }
 const schemaDaySettings = new Schema<DaySettings>({
-    numShiftsInDay: Schema.Types.Number,
-    startHour: schemaTime
+    numShiftsInDay: {
+        type: Schema.Types.Number,
+        required: true
+    },
+    startHour: {
+        type: schemaTime,
+        required: true
+    }
 })
 
 interface RegularDaySettings {
@@ -33,9 +51,18 @@ interface RegularDaySettings {
     shiftSettings: ShiftSettings
 }
 const schemaRegularDaySettings = new Schema<RegularDaySettings>({
-    days: [Schema.Types.Number],
-    daySettings: schemaDaySettings,
-    shiftSettings: schemaShiftSettings
+    days: {
+        type: [Schema.Types.Number],
+        required: true
+    },
+    daySettings: {
+        type: schemaDaySettings,
+        required: true
+    },
+    shiftSettings: {
+        type: schemaShiftSettings,
+        required: true
+    }
 })
 
 interface SpecialDaysSettings {
@@ -44,9 +71,18 @@ interface SpecialDaysSettings {
     shiftSettings: ShiftSettings
 }
 const schemaSpecialDaysSettings = new Schema<SpecialDaysSettings>({
-    days: [Schema.Types.Number],
-    daySettings: schemaDaySettings,
-    shiftSettings: schemaShiftSettings
+    days: {
+        type: [Schema.Types.Number],
+        required: true
+    },
+    daySettings: {
+        type: schemaDaySettings,
+        required: true
+    },
+    shiftSettings: {
+        type: schemaShiftSettings,
+        required: true
+    }
 })
 
 interface SpecialDatesSettings {
@@ -55,19 +91,38 @@ interface SpecialDatesSettings {
     shiftSettings: ShiftSettings
 }
 const schemaSpecialDatesSettings = new Schema<SpecialDatesSettings>({
-    dates: [Schema.Types.Date],
-    daySettings: schemaDaySettings,
-    shiftSettings: schemaShiftSettings
+    dates: {
+        type: [Schema.Types.Date],
+        required: true
+    },
+    daySettings: {
+        type: schemaDaySettings,
+        required: true
+    },
+    shiftSettings: {
+        type: schemaShiftSettings,
+        required: true
+    }
 })
 
 interface BoardSettings {
     regularDaySettings: RegularDaySettings,
     specialDaysSettings: SpecialDaysSettings,
+    specialDatesSettings: SpecialDatesSettings
 }
 const schemaBoardSettings = new Schema<BoardSettings>({
-    regularDaySettings: schemaRegularDaySettings,
-    specialDaysSettings: schemaSpecialDaysSettings,
-    specialDatesSettings: schemaSpecialDatesSettings
+    regularDaySettings: {
+        type: schemaRegularDaySettings,
+        required: true
+    },
+    specialDaysSettings: {
+        type: schemaSpecialDaysSettings,
+        required: true
+    },
+    specialDatesSettings: {
+        type: schemaSpecialDatesSettings,
+        required: true
+    }
 })
 
 interface Board extends Document {
@@ -81,18 +136,24 @@ const schemaBoard = new Schema<Board>({
         type: Schema.Types.String,
         required: true
     },
-    description: Schema.Types.String,
+    description: {
+        type: Schema.Types.String,
+        required: true
+    },
     ownerId: {
         type: Schema.Types.ObjectId,
         required: true
     },
-    boardSettings: schemaBoardSettings
+    boardSettings: {
+        type: schemaBoardSettings,
+        required: true
+    }
 });
 
-schemaBoard.pre("save", (next) => {
+schemaBoard.pre('save', function(this: Board, next) {
     // Next with Error object should break the chain
 })
 
-const register = () => model<Board>("boards", schemaBoard);
+const register = () => model<Board>('boards', schemaBoard);
 
 export { register, Board, BoardSettings, SpecialDaysSettings, RegularDaySettings, DaySettings, ShiftSettings, Time };
