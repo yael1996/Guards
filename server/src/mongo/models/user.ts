@@ -21,7 +21,9 @@ const schemaUser = new Schema<User>({
     type: Schema.Types.String,
     required: true
   },
-  tokens: [String],
+  tokens: {
+    type: Schema.Types.String
+  },
   type: {
     type: Schema.Types.String,
     required: true
