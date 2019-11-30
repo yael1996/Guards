@@ -1,14 +1,25 @@
 import React, { Component } from "react";
-
+import { State } from "./store/store";
+import { connect } from "react-redux";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import HeaderComp from "./components/Header";
+import SideMenuComp from "./components/SideMenu";
 import "./Styles/App.css";
 import ClientCalendar from "./Pages/Calendar/CalendarComponent";
 import {CalendarActions} from "./Pages/Calendar/CalendarActions";
 // import {myFunc} from "./Pages/Calendar/CalendarActions";
 
+interface OwnProps {
+    
+}
 
+interface ReduxDispatch {
 
+}
 
-class App extends Component {
+type Props = OwnProps & State & ReduxDispatch
+
+class App extends Component<Props> {
 
     componentDidMount() {
         this.fetchData();
@@ -24,12 +35,30 @@ class App extends Component {
     };
 
     render() {
+        const { header, menuItems } = this.props;
         return (
-            <div className="App" style={{height : '100%', width : '100%'}}>
-               <ClientCalendar />
-            </div>
+            <Router>
+                <div className="App" style={{height : '100%', width : '100%'}}>
+                    <HeaderComp data={header}/>
+                    <Switch>
+                        <Route path="/">
+                            <ClientCalendar />
+                        </Route>
+                    </Switch>
+                    <SideMenuComp data={menuItems}/>
+                </div>
+            </Router>
         );
     }
 }
 
-export default App;
+const mapStateToProps = (state: State, props: OwnProps): State => {
+    return state;
+}
+const mapDispatchToProps = (state: State, props: OwnProps): ReduxDispatch => {
+    return {
+
+    }
+}
+
+export default connect<State, ReduxDispatch, OwnProps>(mapStateToProps)(App);
