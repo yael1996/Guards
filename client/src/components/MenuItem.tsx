@@ -6,7 +6,7 @@ interface OwnPros {
     data: SideMenuItem
 }
 
-class MenuItem extends Component<OwnPros> {
+class MenuItemComp extends Component<OwnPros> {
     render() {
         const { text } = this.props.data;
         return (
@@ -16,3 +16,5 @@ class MenuItem extends Component<OwnPros> {
         );
     }
 }
+
+export default MenuItemComp;

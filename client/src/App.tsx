@@ -40,12 +40,16 @@ class App extends Component<Props> {
             <Router>
                 <div className="App" style={{height : '100%', width : '100%'}}>
                     <HeaderComp data={header}/>
-                    <Switch>
-                        <Route path="/">
-                            <ClientCalendar />
-                        </Route>
-                    </Switch>
-                    <SideMenuComp data={menuItems}/>
+                    <section className="content-area">
+                        <section className="main-area">
+                            <Switch>
+                                <Route path="/">
+                                    <ClientCalendar />
+                                </Route>
+                            </Switch>
+                        </section>
+                        <SideMenuComp data={menuItems}/>
+                    </section>
                 </div>
             </Router>
         );

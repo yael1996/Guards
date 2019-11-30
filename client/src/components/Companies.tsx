@@ -11,7 +11,7 @@ class Companies extends Component<OwnProps> {
     render() {
         const { data } = this.props;
         return (
-            <section>
+            <section className="companies-wrapper">
                 {data.map((x) => {
                     return <CompanyComp data={x} />;
                 })}
