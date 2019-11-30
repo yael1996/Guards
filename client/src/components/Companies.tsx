@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Company } from "../store/types";
+import "../Styles/Companies.css";
 import CompanyComp from "./Company";
 
 interface OwnProps {

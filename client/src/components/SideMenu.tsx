@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { SideMenuItem } from "../store/types";
+import "../Styles/SideMenu.css";
 
 interface OwnProps {
     data: SideMenuItem[]

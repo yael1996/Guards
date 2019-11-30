@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Header } from "../store/types";
+import "../Styles/Header.css";
 import CompaniesComp from "./Companies";
 import UserInformationComp from "./UserInformation";
 
