@@ -16,7 +16,7 @@ const schemaConcreteBoard = new Schema<ConcreteBoard>({
         required: true
     },
     shifts: {
-        type: [[Shift]],
+        type: [Shift],
         required: true
     }
 });
