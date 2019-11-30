@@ -35,10 +35,21 @@ const indexWorkers = (shifts: Shift[]): {} => {
     }, {});
 }
 
+/**
+ * Generate a tuple whose 1st element is a function that calculates ford-fulkerson
+ * on the given dataset and the 2nd element is the needed maximal flow in order
+ * to achieve maximal flow.
+ * Maximal flow can be get by running the 1st element and checking the property value
+ * @example result[0]().value === result[1] // Checks if achieved maximal flow
+ * @param shifts Shifts to work with
+ * @param regularShiftSettings The settings of the regular shifts
+ * @param specialShiftSettings The settings of the special shifts
+ * @param specialDaySettings The settings of the special days
+ */
 const createGraph = (shifts: Shift[],
                     regularShiftSettings: ShiftSettings,
                     specialShiftSettings: ShiftSettings,
-                    specialDaySettings: ShiftSettings): FordFulkerson => {
+                    specialDaySettings: ShiftSettings): [() => FordFulkerson, number] => {
     const workers = indexWorkers(shifts);
     const workersBaseIndex = 1;
     const numOfWorkers = Object.getOwnPropertyNames(workers).length;
@@ -61,6 +72,8 @@ const createGraph = (shifts: Shift[],
         });
     });
 
+    let neededMaxFlow = 0;
+
     // Connect the shift edges to target edge
     shifts.forEach(({ shiftType }, index) => {
         let neededWorkers;
@@ -75,11 +88,12 @@ const createGraph = (shifts: Shift[],
                 neededWorkers = specialDaySettings.numWorkersInShift;
                 break;
         }
+        neededMaxFlow += neededWorkers;
         graph.addEdge(new FlowEdge(shiftBaseIndex + index, target, neededWorkers));
     });
 
 
-    return new FordFulkerson(graph, source, target);
+    return [() => new FordFulkerson(graph, source, target), neededMaxFlow];
 }
 
 export { createGraph };
