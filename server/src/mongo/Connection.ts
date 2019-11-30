@@ -2,9 +2,11 @@ import { config } from "dotenv";
 import { connect, connection, Model, set, plugin } from "mongoose";
 import { Board, register as registerBoard } from "./models/board";
 import { User, register as registerUser } from "./models/User";
+import { ConcreteBoard, register as registerConcreteBoard } from "./models/concreteBoard";
 
 interface Models {
     board: Model<Board>,
+    concreteBoard: Model<ConcreteBoard>,
     user: Model<User>
 }
 
@@ -23,6 +25,7 @@ connect(process.env.DB, { useNewUrlParser: true }).then(() => {
 
     models = {
         board: registerBoard(),
+        concreteBoard: registerConcreteBoard(),
         user: registerUser()
     };
 });
