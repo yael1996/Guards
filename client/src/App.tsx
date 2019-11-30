@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { State } from "./store/store";
+import { State } from "./store/store"
 import { connect } from "react-redux";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import HeaderComp from "./components/Header";
@@ -22,7 +22,7 @@ type Props = OwnProps & State & ReduxDispatch
 class App extends Component<Props> {
 
     componentDidMount() {
-        this.fetchData();
+        // this.fetchData();
     }
 
     fetchData = () => {
