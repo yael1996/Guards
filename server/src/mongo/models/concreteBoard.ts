@@ -4,7 +4,7 @@ import { Shift } from "../../../../common/objects/shifts/shift";
 interface ConcreteBoard extends Document {
     metaId: string,
     month: number,
-    shifts: Shift[][]
+    shifts: Shift[]
 }
 const schemaConcreteBoard = new Schema<ConcreteBoard>({
     metaId: {
