@@ -1,11 +1,8 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React, { Component } from "react";
 
 import "./Styles/App.css";
-import ClientCalendar from './components/GeneralComponents/Calendar/CalendarComponent.js'
-// import ClientCalendar from "./components/GeneralComponents/Calendar/CalendarComponent";
-import {CalendarActions} from "./components/GeneralComponents/Calendar/CalendarActions";
-import {Component} from "react";
+import ClientCalendar from "./Pages/Calendar/CalendarComponent";
+import {CalendarActions} from "./Pages/Calendar/CalendarActions";
 // import {myFunc} from "./Pages/Calendar/CalendarActions";
 
 
@@ -28,9 +25,8 @@ class App extends Component {
 
     render() {
         return (
-    //         <h1>HI!</h1> )
             <div className="App" style={{height : '100%', width : '100%'}}>
-                <ClientCalendar />
+               <ClientCalendar />
             </div>
         );
     }
