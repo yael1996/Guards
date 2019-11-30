@@ -1,7 +1,10 @@
 .vscode/launch.json
 server/package-lock.json
 server/node_modules
+server/dist
 common/package-lock.json
 common/node_modules
 common/dist
-server/dist
+client/dist
+client/node_modules
+client/package-lock.json

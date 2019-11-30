@@ -1,13 +1,16 @@
 // import {JSONBoard} from '../../../../server/src/mongo/models/Board';
 // @ts-ignore
 // import moment from 'moment';
-// import axios from "axios";
+import axios from "axios";
 import App from "../../../App";
+import {JSONBoard, JSONShift, Shift, Shift, WorkDay} from "../../../../../server/src/mongo/models/Board";
+// import moment = require("moment");
 
 export class CalendarActions {
-    constructor() {}
-    myFunc = () => {
+    constructor() {
+    }
 
+    myFunc = () => {
         const tomorrow = new Date(new Date());
 
         tomorrow.setDate(tomorrow.getDate() + 1);
@@ -18,33 +21,39 @@ export class CalendarActions {
                 title: "my title"
             },
         ];
-    }
+    };
+
+    getUserEvents = async () => {
+        try {
+            const response = await axios.get('http://127.0.0.1:3000/board');
+
+            const tomorrow = new Date(new Date());
+
+            tomorrow.setDate(tomorrow.getDate() + 1);
+
+            // return [
+            //     {
+            //         start: new Date(),
+            //         end: tomorrow,
+            //         title: "GWEE title",//response.data[0].owner
+            //     },
+            //
+            // ]
+            const days: WorkDay[];
+            const myShifts: Shift[];
+
+            const board: JSONBoard = {
+                owner: "a",
+                isOptimised: true,
+                workDays: days
+            };
+
+        } catch (e) {
+            console.log("Error!!!");
+            console.error(e);
+        }
+    };
 }
 export default CalendarActions;
-// export const getUserEvents = () => {
-// try {
-//     // const response = await axios.get('http://127.0.0.1:3000/board');
-//     // console.log(response.data[0]);
-//     console.log("hErE!");
-//     let tomorrow = moment(new Date()).add(1,"days").toDate();
-//     return [
-//         {
-//             start: new Date(),
-//             end: tomorrow,
-//             title: "my title",//response.data[0].owner
-//         },
-//
-//     ]
-//     // const board = new JSONBoard();
-//     // board.owner = response.data[0].owner;
-//     // board.isOptimised = response.data[0].isOptimised;
-//     // board.workDays = response.data[0].workDays;
-//     //
-//     // return board
-//
-// } catch (e) {
-//     console.log("Error!!!");
-//     console.error(e);
-// }
-// };
+
 
