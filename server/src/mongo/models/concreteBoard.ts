@@ -1,8 +1,10 @@
 import { Document, model, Schema } from "mongoose";
+import { Shift } from "../../../../common/objects/shifts/shift";
 
 interface ConcreteBoard extends Document {
     metaId: string,
-    month: number
+    month: number,
+    shifts: Shift[][]
 }
 const schemaConcreteBoard = new Schema<ConcreteBoard>({
     metaId: {
@@ -11,6 +13,10 @@ const schemaConcreteBoard = new Schema<ConcreteBoard>({
     },
     month: {
         type: Schema.Types.Number,
+        required: true
+    },
+    shifts: {
+        type: [[Shift]],
         required: true
     }
 });
