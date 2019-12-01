@@ -5,28 +5,39 @@ const router = Router();
 
 router.get("/:metaId/:month", async (req, res) => {
     try {
-
+        const { metaId, month } = req.params;
+        const result = await models.concreteBoard.findOne({ metaId, month });
+        if (!result) {
+            return res.sendStatus(404);
+        }
+        res.status(200).end(result);
     } catch (error) {
         res.status(400).end(error);
     }
-    const { metaId, month } = req.params;
-    const concreteData = await models.concreteBoard.findOne({ metaId, month });
 });
 router.get("/:metaId", async (req, res) => {
-    const { metaId } = req.params;
-    const month = new Date().getMonth();
-    const concreteData = await models.concreteBoard.findOne({ metaId, month });
+    try {
+        const { metaId } = req.params;
+        const month = new Date().getMonth();
+        const result = await models.concreteBoard.findOne({ metaId, month });
+        if (!result) {
+            return res.sendStatus(404);
+        }
+        res.status(200).end(result);
+    } catch (error) {
+        res.status(400).end(error);
+    }
 });
 router.patch("/:id", async (req, res) => {
     try {
-        const board = await models.concreteBoard.findById(req.params.id);
-        if (!board) {
+        const concreteBoard = await models.concreteBoard.findById(req.params.id);
+        if (!concreteBoard) {
             return res.sendStatus(404);
         }
         Object.getOwnPropertyNames(req.body).forEach((prop) => {
-            board[prop] = req.body[prop];
+            concreteBoard[prop] = req.body[prop];
         });
-        const result = await board.save();
+        const result = await concreteBoard.save();
         res.status(200).end(result);
     } catch (error) {
         res.status(400).end(error);
