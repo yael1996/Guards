@@ -1,11 +1,12 @@
 import { Document, model, Schema } from "mongoose";
 import { Shift } from "../../../../common/objects/shifts/shift";
 
-interface ConcreteBoard extends Document {
+interface JSONConcreteBoard {
     metaId: string,
     month: number,
     shifts: Shift[]
 }
+interface ConcreteBoard extends JSONConcreteBoard, Document {}
 const schemaConcreteBoard = new Schema<ConcreteBoard>({
     metaId: {
         type: Schema.Types.ObjectId,
@@ -31,4 +32,4 @@ schemaConcreteBoard.pre("save", function(this: ConcreteBoard, next) {
 
 const register = () => model<ConcreteBoard>('concreteBoards', schemaConcreteBoard);
 
-export { register, ConcreteBoard };
+export { register, ConcreteBoard, JSONConcreteBoard };

@@ -125,13 +125,14 @@ const schemaBoardSettings = new Schema<BoardSettings>({
     }
 });
 
-interface Board extends Document {
+interface JSONBoard {
     name: string,
     description: string,
     ownerId: string,
     boardSettings: BoardSettings,
     workerIds: string[]
 }
+interface Board extends JSONBoard, Document {}
 const schemaBoard = new Schema<Board>({
     name: {
         type: Schema.Types.String,
@@ -161,4 +162,4 @@ schemaBoard.pre('save', function(this: Board, next) {
 
 const register = () => model<Board>('boards', schemaBoard);
 
-export { register, Board, BoardSettings, SpecialDaysSettings, RegularDaySettings, DaySettings, ShiftSettings, Time };
+export { register, Board, JSONBoard, BoardSettings, SpecialDaysSettings, RegularDaySettings, DaySettings, ShiftSettings, Time };
