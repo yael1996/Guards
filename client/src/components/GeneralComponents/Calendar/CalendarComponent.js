@@ -14,11 +14,11 @@ const localizer = momentLocalizer(moment);
 class ClientCalendar extends Component {
     state = {
         events: [
-            {
-                start: new Date(),
-                end: moment(new Date()).add(1, "days").toDate(),
-                title: "Some title"
-            },
+            // {
+            //     start: new Date(),
+            //     end: moment(new Date()).add(1, "days").toDate(),
+            //     title: "Some title"
+            // },
             // {
             //     start: new Date(),
             //     end: new Date(moment().add(5, "days")),
@@ -32,11 +32,13 @@ class ClientCalendar extends Component {
     }
 
     fetchData = () => {
-        let a = new CalendarActions().myFunc();
-        let events = a;
-    //     console.log(events);
-    //             return events;
-                this.setState({events});
+        let a = new CalendarActions().getUserEvents()
+            .then((res => {
+               this.setState({events:res});
+            }))
+            .catch((err=>{
+               alert(err);
+            }));
     };
 
     render() {
