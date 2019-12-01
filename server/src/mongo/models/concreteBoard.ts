@@ -1,5 +1,60 @@
 import { Document, model, Schema } from "mongoose";
-import { Shift } from "../../../../common/objects/shifts/shift";
+import { SHIFT_TYPE } from "../../../../common/objects/shifts/shiftTypeEnum";
+
+interface Month {
+    month: number,
+    year: number
+}
+const schemaMonth = new Schema<Month>({
+    month: {
+        type: Schema.Types.Number,
+        required: true
+    },
+    year: {
+        type: Schema.Types.Number,
+        required: true
+    }
+})
+
+interface ShiftTime {
+    month: Month,
+    fromTime: Date,
+    toTime: Date
+}
+const schemaShiftTime = new Schema<ShiftTime>({
+    month: {
+        type: schemaMonth,
+        required: true
+    },
+    fromTime: {
+        type: Schema.Types.Date,
+        required: true
+    },
+    toTime: {
+        type: Schema.Types.Date,
+        required: true
+    }
+})
+interface Shift {
+    shiftTime: ShiftTime,
+    shiftType: SHIFT_TYPE,
+    workersId: [string]
+}
+const schemaShift = new Schema<Shift>({
+    shiftTime: {
+        type: schemaShiftTime,
+        required: true
+    },
+    shiftType: {
+        type: Schema.Types.Number,
+        enum: [SHIFT_TYPE.REGULAR_DAY, SHIFT_TYPE.SPECIAL_DATE ,SHIFT_TYPE.SPECIAL_DATE],
+        required: true
+    },
+    workersId: {
+        type: [Schema.Types.ObjectId],
+        required: true
+    }
+})
 
 interface JSONConcreteBoard {
     metaId: string,
@@ -17,7 +72,7 @@ const schemaConcreteBoard = new Schema<ConcreteBoard>({
         required: true
     },
     shifts: {
-        type: [Shift],
+        type: [schemaShift],
         required: true
     }
 });
