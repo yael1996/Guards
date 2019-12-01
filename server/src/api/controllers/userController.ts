@@ -1,30 +1,55 @@
 import { Router } from "express";
 import { models } from "../../mongo/connection";
-import { safeAsync } from "../../utiles/safeAsync";
 
 const router = Router();
 
-router.get("/", safeAsync(async (req, res) => {
-    return await models.user.find();
-}));
-router.get("/:id", safeAsync(async (req, res) => {
-    const board = await models.user.findById(req.params.id);
-}));
-router.post("/", safeAsync(async (req, res) => {
-    return await models.user.create(req.body);
-}));
-router.delete("/:id", safeAsync(async (req, res) => {
-    return await models.user.findByIdAndRemove(req.params.id);
-}));
-router.patch("/:id", safeAsync(async (req, res) => {
-    const user = await models.user.findById(req.params.id);
-    if (!user) {
-        throw new Error("Entity not found!");
+router.get("/", async (req, res) => {
+    try {
+        const result = await models.user.find();
+        res.status(200).end(result);
+    } catch (error) {
+        res.status(400).end(error);
     }
-    Object.getOwnPropertyNames(req.body).forEach((name) => {
-        user[name] = req.body[name];
-    })
-    return await user.save();
-}));
+    res.end(await models.user.find());
+});
+router.get("/:id", async (req, res) => {
+    try {
+        const result = await models.user.findById(req.params.id);
+        res.status(200).end(result);
+    } catch (error) {
+        res.status(400).end(error);
+    }
+});
+router.post("/", async (req, res) => {
+    try {
+        const result = await models.user.create(req.body);
+        res.status(201).end(result);
+    } catch (error) {
+        res.status(406).end(error);
+    }
+});
+router.delete("/:id", async (req, res) => {
+    try {
+        const result = await models.user.findByIdAndRemove(req.params.id);
+        res.status(200).end(result);
+    } catch (error) {
+        res.status(400).end(error);
+    }
+});
+router.patch("/:id", async (req, res) => {
+    try {
+        const user = await models.user.findById(req.params.id);
+        if (!user) {
+            return res.sendStatus(404);
+        }
+        Object.getOwnPropertyNames(req.body).forEach((name) => {
+            user[name] = req.body[name];
+        });
+        const result = await user.save();
+        res.status(200).end(result);
+    } catch (error) {
+        res.status(400).end(error);
+    }
+});
 
 export { router };

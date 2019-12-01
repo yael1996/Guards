@@ -1,27 +1,36 @@
 import { Router } from "express";
 import { models } from "../../mongo/connection";
-import { safeAsync } from "../../utiles/safeAsync";
 
 const router = Router();
 
-router.get("/:metaId/:month", safeAsync(async (req, res) => {
+router.get("/:metaId/:month", async (req, res) => {
+    try {
+
+    } catch (error) {
+        res.status(400).end(error);
+    }
     const { metaId, month } = req.params;
-    return await models.concreteBoard.find({ metaId, month })
-}));
-router.get("/:metaId", safeAsync(async (req, res) => {
+    const concreteData = await models.concreteBoard.findOne({ metaId, month });
+});
+router.get("/:metaId", async (req, res) => {
     const { metaId } = req.params;
     const month = new Date().getMonth();
-    return await models.concreteBoard.find({ metaId, month });
-}));
-router.patch("/:id", safeAsync(async (req, res) => {
-    const board = await models.board.findById(req.params.id);
-    if (!board) {
-        throw new Error("Entity not found!");
+    const concreteData = await models.concreteBoard.findOne({ metaId, month });
+});
+router.patch("/:id", async (req, res) => {
+    try {
+        const board = await models.concreteBoard.findById(req.params.id);
+        if (!board) {
+            return res.sendStatus(404);
+        }
+        Object.getOwnPropertyNames(req.body).forEach((prop) => {
+            board[prop] = req.body[prop];
+        });
+        const result = await board.save();
+        res.status(200).end(result);
+    } catch (error) {
+        res.status(400).end(error);
     }
-    Object.getOwnPropertyNames(req.body).forEach((prop) => {
-        board[prop] = req.body[prop];
-    })
-    return await board.save();
-}));
+});
 
 export { router };
