@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { MenuItem } from "../../Store/Menu/types";
-import "./MenuItem.css";
 
 interface Props {
     menuItem: MenuItem
@@ -10,7 +9,7 @@ class MenuItemComp extends Component<Props> {
     render() {
         const { text } = this.props.menuItem;
         return (
-            <article>
+            <article className="list-group-item list-group-item-action">
                 {text}
             </article>
         );

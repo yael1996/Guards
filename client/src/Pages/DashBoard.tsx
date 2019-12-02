@@ -34,21 +34,25 @@ class DashBoard extends Component<Props> {
         return (
             <div className="App" style={{height : '100%', width : '100%'}}>
                 <HeaderComp companies={companies} user={user} />
-                <section className="content-area">
-                    <section className="main-area">
-                        <Switch>
-                            <section style={{ height: "100vh" }}>
-                                <Route path="/dashboard">
-                                    <Calendar
-                                        localizer={momentLocalizer(Moment)}
-                                        events={calendar.events}
-                                        defaultDate={new Date()}
-                                        defaultView="month" />
-                                </Route>
-                            </section>
-                        </Switch>
+                <section className="container-fluid bg-light ">
+                    <section className="row">
+                        <section className="col-9 mt-3">
+                            <Switch>
+                                <section style={{ height: "100vh" }}>
+                                    <Route path="/dashboard">
+                                        <Calendar
+                                            localizer={momentLocalizer(Moment)}
+                                            events={calendar.events}
+                                            defaultDate={new Date()}
+                                            defaultView="month" />
+                                    </Route>
+                                </section>
+                            </Switch>
+                        </section>
+                        <section className="col-3 mt-3">
+                            <SideMenuComp menuItems={items}/>
+                        </section>
                     </section>
-                    <SideMenuComp menuItems={items}/>
                 </section>
             </div>
         );

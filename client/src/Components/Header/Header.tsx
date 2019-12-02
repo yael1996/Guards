@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { CompanyState, Company } from "../../Store/Company/types";
-import "./Header.css";
+import { CompanyState } from "../../Store/Company/types";
 import CompaniesComp from "../Companies/Companies";
 import UserInformationComp from "../UserInformation/UserInformation";
 import { UserState } from "../../Store/User/types";
@@ -15,9 +14,15 @@ class HeaderComp extends Component<Props> {
         const { companies, user } = this.props;
         const displayedCompanies = companies.filter((x, index) => index < 3);
         return (
-            <header className="header-wrapper">
-                <CompaniesComp companies={displayedCompanies}></CompaniesComp>
-                <UserInformationComp user={user}></UserInformationComp>
+            <header className="container-fluid bg-light pt-3">
+                <section className="row">
+                    <section className="col-9">
+                        <CompaniesComp companies={displayedCompanies}></CompaniesComp>
+                    </section>
+                    <section className="col-3">
+                        <UserInformationComp user={user}></UserInformationComp>
+                    </section>
+                </section>
             </header>
         );
     }

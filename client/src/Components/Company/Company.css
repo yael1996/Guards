@@ -1,8 +1,6 @@
 @import "../../Styles/Vars.css";
 
-.company-wrapper {
-    background-color: green;
-    margin: 10px 40px;
+.my-card {
     height: var(--card-height);
     width: var(--card-width);
 }

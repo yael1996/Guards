@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { UserState } from "../../Store/User/types";
-import "./UserInformation.css";
 
 interface Props {
     user: UserState
@@ -8,15 +7,13 @@ interface Props {
 
 class UserInformationComp extends Component<Props> {
     render() {
-        const { imageUrl } = this.props.user;
+        const { imageUrl, firstname, lastname } = this.props.user;
         return (
-            <section className="user-information-wrapper">
-                <section className="user-information-data">
-                    Hello world
-                </section>
-                <section className="user-information-image-wrapper">
-                    <img className="user-information-image" src={imageUrl} />
-                    logout button
+            <section className="card">
+                <section className="card-body">
+                    <img className="rounded-circle" src={imageUrl} />
+                    <p>Welcome {`${firstname} ${lastname}`}</p>
+                    <a href="#" className="btn btn-link">Logout</a>
                 </section>
             </section>
         );

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import store from "./Store/store"
 import { Provider } from "react-redux";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
 import "./Styles/App.css";
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
