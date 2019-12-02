@@ -1,4 +1,4 @@
-@import "./Vars.css";
+@import "../../Styles/Vars.css";
 
 .user-information-wrapper {
     justify-self: end;

@@ -12,9 +12,9 @@ class Companies extends Component<OwnProps> {
         const { data } = this.props;
         return (
             <section className="companies-wrapper">
-                {/* {data.map((x) => {
+                {data.map((x) => {
                     return <CompanyComp data={x} />;
-                })} */}
+                })}
             </section>
         );
     }

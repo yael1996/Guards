@@ -1,4 +1,4 @@
-@import "./Vars.css";
+@import "../../Styles/Vars.css";
 
 .company-wrapper {
     background-color: green;

@@ -13,8 +13,8 @@ class HeaderComp extends Component<OwnProps> {
         const { companies, userInformation } = this.props.data;
         return (
             <header className="header-wrapper">
-                {/* <CompaniesComp data={companies}></CompaniesComp>
-                <UserInformationComp data={userInformation}></UserInformationComp> */}
+                <CompaniesComp data={companies}></CompaniesComp>
+                <UserInformationComp data={userInformation}></UserInformationComp>
             </header>
         );
     }
