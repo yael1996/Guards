@@ -4,7 +4,7 @@ class Register extends Component {
     render() {
         return (
             <section>
-                test
+                Register page
             </section>
         );
     }

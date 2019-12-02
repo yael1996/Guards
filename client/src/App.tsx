@@ -5,6 +5,8 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./Styles/App.css";
 import {CalendarActions} from "./Pages/Calendar/CalendarActions";
 import Login from "./Pages/Login";
+import Register from "./Pages/Register";
+import DashBoard from "./Pages/DashBoard";
 
 class App extends Component {
 
@@ -44,6 +46,12 @@ class App extends Component {
             <Provider store={store}>
                 <Router>
                     <Switch>
+                        <Route path="/dashboard">
+                            <DashBoard />
+                        </Route>
+                        <Route path="/register">
+                            <Register />
+                        </Route>
                         <Route path="/">
                             <Login />
                         </Route>
