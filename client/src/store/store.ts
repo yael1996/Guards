@@ -9,9 +9,9 @@ export interface State {
 const defaultState: State = {
     header: {
         userInformation: {
-            imageSource: ""
+            imageSource: "https://randomuser.me/api/portraits/men/83.jpg"
         },
-        companies: [{name: "test"}]
+        companies: [{name: "company A"}, {name: "company B"}, {name: "companyC"}]
     },
     menuItems: [{text: "some item"}]
 }

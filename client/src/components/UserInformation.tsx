@@ -11,8 +11,13 @@ class UserInformationComp extends Component<OwnProps> {
         const { imageSource } = this.props.data;
         return (
             <section className="user-information-wrapper">
-                this is user information
-                <img className="user-information-image" src={imageSource} />
+                <section className="user-information-data">
+                    Hello world
+                </section>
+                <section className="user-information-image-wrapper">
+                    <img className="user-information-image" src={imageSource} />
+                    logout button
+                </section>
             </section>
         );
     }

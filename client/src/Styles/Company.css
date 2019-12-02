@@ -1,4 +1,6 @@
 .company-wrapper {
     background-color: green;
     margin: 10px 40px;
+    height: 25vh;
+    width: 10vw;
 }
