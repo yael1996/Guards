@@ -1,24 +1,10 @@
 import React, { Component } from "react";
-import store, { State } from "./store/store"
-import { Provider, connect } from "react-redux";
+import store from "./Store/store"
+import { Provider } from "react-redux";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import HeaderComp from "./Components/Header/Header";
-import SideMenuComp from "./Components/SideMenu/SideMenu";
 import "./Styles/App.css";
-import ClientCalendar from "./Pages/Calendar/CalendarComponent";
 import {CalendarActions} from "./Pages/Calendar/CalendarActions";
 import Login from "./Pages/Login";
-// import {myFunc} from "./Pages/Calendar/CalendarActions";
-
-// interface OwnProps {
-    
-// }
-
-// interface ReduxDispatch {
-
-// }
-
-// type Props = OwnProps & State & ReduxDispatch
 
 class App extends Component {
 
@@ -67,16 +53,5 @@ class App extends Component {
         );
     }
 }
-
-// const mapStateToProps = (state: State, props: OwnProps): State => {
-//     return state;
-// }
-// const mapDispatchToProps = (state: State, props: OwnProps): ReduxDispatch => {
-//     return {
-
-//     }
-// }
-
-// export default connect<State, ReduxDispatch, OwnProps>(mapStateToProps)(App);
 
 export default App;

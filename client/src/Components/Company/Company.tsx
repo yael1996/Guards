@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Company } from "../../store/types";
+import { Company } from "../../Store/types";
 import "./Company.css";
 
 interface OwnProps {

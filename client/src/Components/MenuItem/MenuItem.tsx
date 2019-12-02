@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { SideMenuItem } from "../../store/types";
+import { SideMenuItem } from "../../Store/types";
 import "./MenuItem.css";
 
 interface OwnPros {

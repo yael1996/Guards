@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { UserInformation } from "../../store/types";
+import { UserInformation } from "../../Store/types";
 import "./UserInformation.css";
 
 interface OwnProps {

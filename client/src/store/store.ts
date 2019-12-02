@@ -1,4 +1,4 @@
-import { createStore, Action } from "redux";
+import { createStore, Action } from "./node_modules/redux";
 import { SideMenuItem, Header } from "./types";
 
 export interface State {

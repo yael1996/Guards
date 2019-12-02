@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Company } from "../../store/types";
+import { Company } from "../../Store/types";
 import "./Companies.css";
 import CompanyComp from "../Company/Company";
 
