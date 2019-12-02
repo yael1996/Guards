@@ -1,17 +1,17 @@
 import React, { Component } from "react";
-import { Company } from "../../Store/types";
+import { Company } from "../../Store/Company/types";
 import "./Company.css";
 
-interface OwnProps {
-    data: Company
+interface Props {
+    company: Company
 }
 
-class CompanyComp extends Component<OwnProps> {
+class CompanyComp extends Component<Props> {
     render() {
-        const { name } = this.props.data;
+        const { title } = this.props.company;
         return (
             <article className="company-wrapper">
-                company name: {name}
+                <h3>{title}</h3>
             </article>
         );
     }

@@ -1,14 +1,14 @@
 import React, { Component } from "react";
-import { SideMenuItem } from "../../Store/types";
+import { MenuItem } from "../../Store/Menu/types";
 import "./MenuItem.css";
 
-interface OwnPros {
-    data: SideMenuItem
+interface Props {
+    menuItem: MenuItem
 }
 
-class MenuItemComp extends Component<OwnPros> {
+class MenuItemComp extends Component<Props> {
     render() {
-        const { text } = this.props.data;
+        const { text } = this.props.menuItem;
         return (
             <article>
                 {text}

@@ -1,26 +1,16 @@
-import { createStore, Action } from "redux";
-import { SideMenuItem, Header } from "./types";
+import { createStore, combineReducers } from "redux";
+import { reducer as calendarReducer } from "./Calendar/reducer";
+import { reducer as companiesReducer } from "./Company/reducer";
+import { reducer as userReducer } from "./User/reducer";
+import { reducer as menuReducer } from "./Menu/reducer";
 
-export interface State {
-    header: Header,
-    menuItems: SideMenuItem[]
-}
+const rootReducer = combineReducers({
+    calendar: calendarReducer,
+    companies: companiesReducer,
+    user: userReducer,
+    menu: menuReducer
+});
 
-const defaultState: State = {
-    header: {
-        userInformation: {
-            imageSource: "https://randomuser.me/api/portraits/men/83.jpg"
-        },
-        companies: [{name: "company A"}, {name: "company B"}, {name: "companyC"}]
-    },
-    menuItems: [{text: "some item"}]
-}
+export type RootState = ReturnType<typeof rootReducer>;
 
-const appReducer = (state: State = defaultState, action: Action): State => {
-    switch (action.type) {
-        default:
-            return Object.assign({}, state);
-    }
-}
-
-export default createStore(appReducer);
+export default createStore(rootReducer);

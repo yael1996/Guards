@@ -1,20 +1,20 @@
 import React, { Component } from "react";
-import { SideMenuItem } from "../../Store/types";
-import MenuItemComp from "../MenuItem/MenuItem";
 import "./SideMenu.css";
+import { MenuItem } from "../../Store/Menu/types";
+import MenuItemComp from "../MenuItem/MenuItem";
 
-interface OwnProps {
-    data: SideMenuItem[]
+interface Props {
+    menuItems: MenuItem[]
 }
 
-class SideMenu extends Component<OwnProps> {
+class SideMenu extends Component<Props> {
     render() {
-        const { data } = this.props;
+        const { menuItems } = this.props;
         return (
             <section className="side-menu-wrapper">
-                {data.map((x) => {
-                    return <MenuItemComp data={x} />
-                })}
+                {menuItems.map((menuItem) => 
+                    <MenuItemComp key={menuItem.text} menuItem={menuItem} />
+                )}
             </section>
         );
     }

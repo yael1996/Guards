@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { State } from "../Store/store";
+import { RootState } from "../Store/store";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 
@@ -23,7 +23,7 @@ class Login extends Component<Props> {
     }
 }
 
-const mapStateToProps = (state: State): ReduxState => {
+const mapStateToProps = (state: RootState): ReduxState => {
     return state;
 }
 const mapDispatchToProps = (dispatch: Dispatch): ReduxDispatch => {

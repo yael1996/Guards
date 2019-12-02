@@ -1,19 +1,19 @@
 import React, { Component } from "react";
-import { Company } from "../../Store/types";
+import { CompanyState } from "../../Store/Company/types";
 import "./Companies.css";
 import CompanyComp from "../Company/Company";
 
-interface OwnProps {
-    data: Company[]
+interface Props {
+    companies: CompanyState
 }
 
-class Companies extends Component<OwnProps> {
+class Companies extends Component<Props> {
     render() {
-        const { data } = this.props;
+        const { companies } = this.props;
         return (
             <section className="companies-wrapper">
-                {data.map((x) => {
-                    return <CompanyComp data={x} />;
+                {companies.map((x) => {
+                    return <CompanyComp key={x.id} company={x} />;
                 })}
             </section>
         );
