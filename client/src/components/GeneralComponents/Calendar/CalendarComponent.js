@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import {Calendar, momentLocalizer} from 'react-big-calendar';
 import moment from "moment";
 import {
+    CalendarActions,
     // getUserEvents,
     myFunc
 } from './CalendarActions';
@@ -13,11 +14,11 @@ const localizer = momentLocalizer(moment);
 class ClientCalendar extends Component {
     state = {
         events: [
-            {
-                start: new Date(),
-                end: moment(new Date()).add(1, "days").toDate(),
-                title: "Some title"
-            },
+            // {
+            //     start: new Date(),
+            //     end: moment(new Date()).add(1, "days").toDate(),
+            //     title: "Some title"
+            // },
             // {
             //     start: new Date(),
             //     end: new Date(moment().add(5, "days")),
@@ -26,18 +27,19 @@ class ClientCalendar extends Component {
         ]
     };
 
-    // componentDidMount() {
-    //     this.fetchData();
-    // }
-    //
-    // fetchData = () => {
-    //     let events = myFunc();
-    //         // .then(events => {
-    //     console.log(events);
-    // //             // return events;
-    // //             this.setState({events});
-    // //         });
-    // };
+    componentDidMount() {
+        this.fetchData();
+    }
+
+    fetchData = () => {
+        let a = new CalendarActions().getUserEvents()
+            .then((res => {
+               this.setState({events:res});
+            }))
+            .catch((err=>{
+               alert(err);
+            }));
+    };
 
     render() {
         return (
