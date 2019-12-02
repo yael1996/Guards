@@ -27,19 +27,19 @@ class App extends Component {
         // const { header, menuItems } = this.props;
         // return (
         //     <Router>
-        //         <div className="App" style={{height : '100%', width : '100%'}}>
-        //             <HeaderComp data={header}/>
-        //             <section className="content-area">
-        //                 <section className="main-area">
-        //                     <Switch>
-        //                         <Route path="/">
-        //                             <ClientCalendar />
-        //                         </Route>
-        //                     </Switch>
-        //                 </section>
-        //                 <SideMenuComp data={menuItems}/>
-        //             </section>
-        //         </div>
+                // <div className="App" style={{height : '100%', width : '100%'}}>
+                //     <HeaderComp data={header}/>
+                //     <section className="content-area">
+                //         <section className="main-area">
+                //             <Switch>
+                //                 <Route path="/">
+                //                     <ClientCalendar />
+                //                 </Route>
+                //             </Switch>
+                //         </section>
+                //         <SideMenuComp data={menuItems}/>
+                //     </section>
+                // </div>
         //     </Router>
         // );
         return (
