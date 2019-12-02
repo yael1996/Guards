@@ -4,7 +4,8 @@ import { State } from "../Store/store";
 import { Dispatch } from "redux";
 import { Header, SideMenuItem } from "../Store/types";
 import HeaderComp from "../Components/Header/Header";
-import { Switch, Route, match } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
+import { Calendar } from "react-big-calendar";
 import SideMenuComp from "../Components/SideMenu/SideMenu";
 
 interface ReduxState {

@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@types/react": "^15.6.6",
+    "@types/react-big-calendar": "^0.22.3",
     "@types/react-dom": "^0.14.23",
     "@types/react-redux": "^4.4.36",
     "@types/react-router-dom": "^5.1.3",
