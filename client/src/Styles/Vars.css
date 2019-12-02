@@ -1,0 +1,8 @@
+:root {
+    --card-width: 12vw;
+    --card-height: 25vh;
+    --user-information-width: 25vw;
+    --user-information-height: 25vh;
+    --user-information-data-width: 15vw;
+    --user-information-data-height: 25vh;
+}
