@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { Company } from "../store/types";
-import "../Styles/Companies.css";
-import CompanyComp from "./Company";
+import { Company } from "../../store/types";
+import "./Companies.css";
+import CompanyComp from "../Company/Company";
 
 interface OwnProps {
     data: Company[]
@@ -12,9 +12,9 @@ class Companies extends Component<OwnProps> {
         const { data } = this.props;
         return (
             <section className="companies-wrapper">
-                {data.map((x) => {
+                {/* {data.map((x) => {
                     return <CompanyComp data={x} />;
-                })}
+                })} */}
             </section>
         );
     }

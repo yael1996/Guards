@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { SideMenuItem } from "../store/types";
-import MenuItemComp from "./MenuItem";
-import "../Styles/SideMenu.css";
+import { SideMenuItem } from "../../store/types";
+import MenuItemComp from "../MenuItem/MenuItem";
+import "./SideMenu.css";
 
 interface OwnProps {
     data: SideMenuItem[]

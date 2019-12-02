@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Company } from "../store/types";
-import "../Styles/Company.css";
+import { Company } from "../../store/types";
+import "./Company.css";
 
 interface OwnProps {
     data: Company

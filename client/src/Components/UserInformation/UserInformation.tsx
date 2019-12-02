@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { UserInformation } from "../store/types";
-import "../Styles/UserInformation.css";
+import { UserInformation } from "../../store/types";
+import "./UserInformation.css";
 
 interface OwnProps {
     data: UserInformation

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { SideMenuItem } from "../store/types";
-import "../Styles/MenuItem.css";
+import { SideMenuItem } from "../../store/types";
+import "./MenuItem.css";
 
 interface OwnPros {
     data: SideMenuItem
