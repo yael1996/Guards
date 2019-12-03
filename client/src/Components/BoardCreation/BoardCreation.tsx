@@ -87,7 +87,7 @@ class BoardCreation extends Component<Props, State> {
                     default:
                         throw new Error("Bad type");
                 }
-                this.setState(newState);
+                this.setState(newState);    
             }
         }
     }
@@ -147,7 +147,7 @@ class BoardCreation extends Component<Props, State> {
         const special = (fn: ShiftUpdate) => this.allowOnlyNumbers(this.updateSpecialSettings(fn));
         const holiday = (fn: ShiftUpdate) => this.allowOnlyNumbers(this.updateHolidaySettings(fn));
         return (
-            <div className="container-fluid">
+            <div className="container-fluid mb-3">
                 <div className="row d-flex flex-column align-content-center">
                     <section className="card w-75 mb-3">
                         <section className="card-header d-flex">
@@ -204,11 +204,22 @@ class BoardCreation extends Component<Props, State> {
                             </button>
                         </section>
                         <section className="card-body">
+                            <span className="d-flex flex-column align-content-center">
+                                <p>With holidays<input className="ml-2" type="radio" name="holiday" value="true"/></p>
+                                <p>Without holidays<input className="ml-2" type="radio" name="holiday" value="false"/></p>
+                            </span>
                             <span className="d-flex flex-column">
                                 <p>Shift length: <input type="text" onChange={holiday(length)} value={holidayShiftSettings.length}/></p>
                                 <p>Number of shifts: <input type="text" onChange={holiday(amount)} value={holidayShiftSettings.amount}/></p>
                                 <p>Workers needed: <input type="text" onChange={holiday(workerCount)} value={holidayShiftSettings.workerCount}/></p>
                             </span>
+                        </section>
+                    </section>
+                    <section className="card">
+                        <section className="card-footer">
+                            <button className="btn btn-success">
+                                Create
+                            </button>
                         </section>
                     </section>
                 </div>
