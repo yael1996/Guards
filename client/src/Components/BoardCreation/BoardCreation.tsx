@@ -61,20 +61,33 @@ class BoardCreation extends Component<Props, State> {
             const isTaken = (ordinal: number) => (dayMap: DayMap) => dayMap[ordinal];
             const or = (base: boolean, x: boolean) => base || x;
 
-            let dayMap: DayMap;
-            switch (type) {
-                case "standard":
-                    dayMap = this.state.standardDays;
-                    break;
-                case "special":
-                    dayMap = this.state.specialDays;
-                    break;
-                default:
-                    throw new Error("Bad type");
-            }
             const conflicts = contrastsWith.map(isTaken(ordinal)).reduce(or, false);
             if (!conflicts) {
+                let dayMap: DayMap;
+                switch (type) {
+                    case "standard":
+                        dayMap = this.state.standardDays;
+                        break;
+                    case "special":
+                        dayMap = this.state.specialDays;
+                        break;
+                    default:
+                        throw new Error("Bad type");
+                }
                 dayMap[ordinal] = !dayMap[ordinal];
+
+                let newState: State;
+                switch (type) {
+                    case "standard":
+                        newState = Object.assign({}, this.state, { standardDays: dayMap });
+                        break;
+                    case "special":
+                        newState = Object.assign({}, this.state, { specialDays: dayMap });
+                        break;
+                    default:
+                        throw new Error("Bad type");
+                }
+                this.setState(newState);
             }
         }
     }
@@ -128,6 +141,8 @@ class BoardCreation extends Component<Props, State> {
         const { standardDays, specialDays, withHolidays } = this.state;
         const { standardShiftSettings, specialShiftSettings, holidayShiftSettings } = this.state;
         const { length, amount, workerCount } = this;
+        const markStandard = this.markDay("standard", [specialDays]);
+        const markSpecial = this.markDay("special", [standardDays]);
         const standard = (fn: ShiftUpdate) => this.allowOnlyNumbers(this.updateStandardSettings(fn));
         const special = (fn: ShiftUpdate) => this.allowOnlyNumbers(this.updateSpecialSettings(fn));
         const holiday = (fn: ShiftUpdate) => this.allowOnlyNumbers(this.updateHolidaySettings(fn));
@@ -145,9 +160,9 @@ class BoardCreation extends Component<Props, State> {
                             <span className="d-flex justify-content-center mb-5">
                                 {standardDays.map((x, index) =>  {
                                     if (x) {
-                                        return <button key={index} className="btn btn-primary mx-1">{index + 1}</button>;
+                                        return <button key={index} onClick={() => markStandard(index)} className="btn btn-primary mx-1">{index + 1}</button>;
                                     } else {
-                                        return <button key={index} className="btn btn-secondary mx-1">{index + 1}</button>;
+                                        return <button key={index} onClick={() => markStandard(index)} className="btn btn-secondary mx-1">{index + 1}</button>;
                                     }
                                 })}
                             </span>
@@ -169,9 +184,9 @@ class BoardCreation extends Component<Props, State> {
                             <span className="d-flex justify-content-center mb-5">
                                 {specialDays.map((x, index) => {
                                     if (x) {
-                                        return <button key={index} className="btn btn-primary mx-1">{index + 1}</button>;
+                                        return <button key={index} onClick={() => markSpecial(index)} className="btn btn-primary mx-1">{index + 1}</button>;
                                     } else {
-                                        return <button key={index} className="btn btn-secondary mx-1">{index + 1}</button>;
+                                        return <button key={index} onClick={() => markSpecial(index)} className="btn btn-secondary mx-1">{index + 1}</button>;
                                     }
                                 })}
                             </span>
@@ -189,7 +204,11 @@ class BoardCreation extends Component<Props, State> {
                             </button>
                         </section>
                         <section className="card-body">
-                            test
+                            <span className="d-flex flex-column">
+                                <p>Shift length: <input type="text" onChange={holiday(length)} value={holidayShiftSettings.length}/></p>
+                                <p>Number of shifts: <input type="text" onChange={holiday(amount)} value={holidayShiftSettings.amount}/></p>
+                                <p>Workers needed: <input type="text" onChange={holiday(workerCount)} value={holidayShiftSettings.workerCount}/></p>
+                            </span>
                         </section>
                     </section>
                 </div>
