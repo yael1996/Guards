@@ -12,6 +12,7 @@ import { CompanyState } from "../Store/Company/types";
 import { UserState } from "../Store/User/types";
 import { CalendarState } from "../Store/Calendar/types";
 import { MenuState } from "../Store/Menu/types";
+import BoardCreation from "../Components/BoardCreation/BoardCreation";
 
 interface ReduxState {
     companies: CompanyState,
@@ -32,21 +33,22 @@ class DashBoard extends Component<Props> {
         const { items } = this.props.menu;
         
         return (
-            <div className="App" style={{height : '100%', width : '100%'}}>
+            <div className="App">
                 <HeaderComp companies={companies} user={user} />
                 <section className="container-fluid bg-light ">
                     <section className="row">
                         <section className="col-9 mt-3">
                             <Switch>
-                                <section style={{ height: "100vh" }}>
-                                    <Route path="/dashboard">
-                                        <Calendar
-                                            localizer={momentLocalizer(Moment)}
-                                            events={calendar.events}
-                                            defaultDate={new Date()}
-                                            defaultView="month" />
-                                    </Route>
-                                </section>
+                                <Route exact path="/dashboard/create">
+                                    <BoardCreation />
+                                </Route>
+                                <Route exact path="/dashboard">
+                                    <Calendar className="min-vh-100"
+                                        localizer={momentLocalizer(Moment)}
+                                        events={calendar.events}
+                                        defaultDate={new Date()}
+                                        defaultView="month" />
+                                </Route>
                             </Switch>
                         </section>
                         <section className="col-3 mt-3">

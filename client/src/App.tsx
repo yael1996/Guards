@@ -11,6 +11,7 @@ import DashBoard from "./Pages/DashBoard";
 class App extends Component {
     render() {
         return (
+            <div className="min-vh-100 bg-light">
             <Provider store={store}>
                 <Router>
                     <Switch>
@@ -26,6 +27,7 @@ class App extends Component {
                     </Switch>
                 </Router>
             </Provider>
+            </div>
         );
     }
 }
