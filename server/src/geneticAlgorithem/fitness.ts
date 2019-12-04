@@ -7,38 +7,61 @@ export class Fitness {
     this.constraintsService = new ConstraintService();
   }
 
-  getFitness = (monthShifts: Array<Shift>): number => {
+  getFitness = (monthShifts: Array<Shift>, workersIds: string[]): number => {
     // use phenotype and possibly some other information
     // to determine the fitness number.  Higher is better, lower is worse.
     let fitness = 0;
-    fitness += this.workersConstraints(monthShifts);
+    //fitness += this.workersConstraints(monthShifts);
     return fitness;
   };
 
-  private workersConstraints(monthShifts: Array<Shift>): number {
-    let numSatisfiedWorkers = 0;
+  private fitness = () => {
+    const amountShiftsPart = 0;
+    const equityPart = 0;
+    const satisfiedPeoplePart = 0;
 
-    for (let shift of monthShifts) {
-      const month = shift.shiftTime.month;
+    let amountShifts = this.getAmountShifts();
+    let equit = this.getEquity();
+    let satisfiedPeople = this.getSatisfiedPeople();
 
-      for (let worker of shift.workersIds) {
-        if (
-          !this.constraintsService.isShiftInWorkerConstraints(
-            worker,
-            shift.shiftTime,
-            month
-          )
-        )
-          // maby + more then one
-          numSatisfiedWorkers++;
-      }
-    }
+    return -(
+      amountShifts * amountShiftsPart +
+      equit * equityPart +
+      satisfiedPeople * satisfiedPeoplePart
+    );
+  };
 
-    return numSatisfiedWorkers;
-  }
+  private getAmountShifts = (): number => {
+    return 0;
+  };
 
-  private avalibleShifts(): boolean {
-    // ford farcenson
-    return true;
-  }
+  private getEquity = (): number => {
+    return 0;
+  };
+
+  private getSatisfiedPeople = (): number => {
+    return 0;
+  };
 }
+
+// private workersConstraints(monthShifts: Array<Shift>): number {
+//   let numSatisfiedWorkers = 0;
+
+//   for (let shift of monthShifts) {
+//     const month = shift.shiftTime.month;
+
+//     for (let worker of shift.workersId) {
+//       if (
+//         !this.constraintsService.isShiftInWorkerConstraints(
+//           worker,
+//           shift.shiftTime,
+//           month
+//         )
+//       )
+//         // maby + more then one
+//         numSatisfiedWorkers++;
+//     }
+//   }
+
+//   return numSatisfiedWorkers;
+// }

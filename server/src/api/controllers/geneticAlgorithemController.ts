@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { GeneticAlgorithm } from "../../geneticAlgorithem/geneticAlgorithem";
+import { Month } from "../../mongo/models/concreteBoard";
 
 export class GeneticAlgorithemController {
   public routs: Router;

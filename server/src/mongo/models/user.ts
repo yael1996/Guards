@@ -38,7 +38,7 @@ interface JSONUser {
   tokens: [string];
   type: USER_TYPE;
   boardId: string;
-  satisfiedConstraints: number;
+  unSatisfiedConstraints: number;
   monthlyConstraints: MonthlyConstraints;
 }
 interface User extends JSONUser, Document {}
@@ -67,7 +67,7 @@ const schemaUser = new Schema<User>({
     type: Schema.Types.ObjectId,
     required: true
   },
-  satisfiedConstraints: {
+  unSatisfiedConstraints: {
     type: Schema.Types.Number,
     default: 0
   },

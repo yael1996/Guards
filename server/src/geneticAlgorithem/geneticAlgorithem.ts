@@ -10,6 +10,8 @@ export class GeneticAlgorithm {
 
   constructor() {}
 
+  public runAlgorithm() {}
+
   public configure(firstPopulation: Array<Array<Shift>> = []): any {
     const config = {
       mutationFunction: new Mutation().getMutation,
