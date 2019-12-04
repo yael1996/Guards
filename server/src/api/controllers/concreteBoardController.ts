@@ -23,9 +23,9 @@ router.get("/:metaId", async (req, res) => {
         if (!result) {
             return res.sendStatus(404);
         }
-        res.status(200).end(result);
+        res.status(200).end(JSON.stringify(result));
     } catch (error) {
-        res.status(400).end(error);
+        res.status(400).end({ error: error.message });
     }
 });
 router.patch("/:id", async (req, res) => {
@@ -38,9 +38,9 @@ router.patch("/:id", async (req, res) => {
             concreteBoard[prop] = req.body[prop];
         });
         const result = await concreteBoard.save();
-        res.status(200).end(result);
+        res.status(200).end(JSON.stringify(result));
     } catch (error) {
-        res.status(400).end(error);
+        res.status(400).end({ error: error.message });
     }
 });
 
