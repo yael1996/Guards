@@ -78,5 +78,5 @@ schemaUser.pre('save', function(this: User, next) {
   next();
 });
 
-const register = () => model<User>("users", schemaUser);
+const register = () => model<User>('users', schemaUser);
 export { register, User, JSONUser };
