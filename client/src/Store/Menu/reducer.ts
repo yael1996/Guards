@@ -2,8 +2,8 @@ import { MenuState, MenuAction, SHOW_PAGE } from "./types";
 
 const initialState: MenuState = {
     items: [{
-        text: "Test item",
-        page: "test"
+        text: "Companies",
+        page: "/dashboard/companies"
     }]
 }
 

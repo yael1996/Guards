@@ -56,7 +56,11 @@ class DashBoard extends Component<Props> {
                             </Switch>
                         </section>
                         <section className="col-3 mt-3">
-                            <SideMenuComp menuItems={items}/>
+                            <Switch>
+                                <Route path="/dashboard" children={({ history, location }) => (
+                                    <SideMenuComp menuItems={items} history={history} location={location} />
+                                )} />
+                            </Switch>
                         </section>
                     </section>
                 </section>
