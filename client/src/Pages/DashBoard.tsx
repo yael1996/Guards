@@ -36,17 +36,17 @@ class DashBoard extends Component<Props> {
         return (
             <div className="App">
                 <Switch>
-                    <Route path="/dashboard" children={({ history }) => {
+                    <Route path="/dashboard" children={({ history }) => (
                         <HeaderComp companies={companies} amount={3} user={user} history={history} />
-                    }} />
+                    )} />
                 </Switch>
                 <section className="container-fluid bg-light ">
                     <section className="row">
                         <section className="col-9 mt-3">
                             <Switch>
-                                <Route exact path="/dashboard/companies" children={({ history }) => {
+                                <Route exact path="/dashboard/companies" children={({ history }) => (
                                     <Companies companies={companies} history={history} />
-                                }} />
+                                )} />
                                 <Route exact path="/dashboard/create" children={({ history }) => (
                                     <BoardCreation />
                                 )} />
