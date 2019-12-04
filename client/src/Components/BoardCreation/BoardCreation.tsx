@@ -206,7 +206,7 @@ class BoardCreation extends Component<Props, State> {
                         <section className="card-body">
                             <span className="d-flex flex-column align-content-center">
                                 <p>With holidays<input className="ml-2" type="radio" name="holiday" value="true"/></p>
-                                <p>Without holidays<input className="ml-2" type="radio" name="holiday" value="false"/></p>
+                                <p>Without holidays<input className="ml-2" type="radio" name="holiday" value="false" checked/></p>
                             </span>
                             <span className="d-flex flex-column">
                                 <p>Shift length: <input type="text" onChange={holiday(length)} value={holidayShiftSettings.length}/></p>
