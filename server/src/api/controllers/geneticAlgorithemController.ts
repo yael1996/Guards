@@ -1,14 +1,13 @@
 import { Router } from "express";
-import { AlgorithemService } from "../../services/algorithemService";
-import { Month } from "../../../../common/objects/time/month";
-const Hebcal = require("hebcal");
+import { GeneticAlgorithm } from "../../geneticAlgorithem/geneticAlgorithem";
+
 export class GeneticAlgorithemController {
   public routs: Router;
-  private algorithemService: AlgorithemService;
+  private algorithem: GeneticAlgorithm;
 
   constructor() {
     this.routs = Router();
-    this.algorithemService = new AlgorithemService();
+    this.algorithem = new GeneticAlgorithm();
     this.InitRoutes();
   }
 
@@ -17,7 +16,7 @@ export class GeneticAlgorithemController {
       const bordId = req.query.bord;
       const month = req.body.month as Month;
 
-      const best = await this.algorithemService.runAlgorithem(bordId, month);
+      const best = await this.algorithem.run();
       res.json({ best: best });
     });
   }

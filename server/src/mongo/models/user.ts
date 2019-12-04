@@ -1,8 +1,10 @@
 import { Schema, model, Document } from "mongoose";
+import { USER_TYPE } from "../../utiles/userTypeEnum";
+import { Month, schemaMonth } from "./concreteBoard";
 
 interface Constraint {
-  time: Date,
-  text: string
+  time: Date;
+  text: string;
 }
 const schemaConstraint = new Schema<Constraint>({
   time: {
@@ -16,12 +18,12 @@ const schemaConstraint = new Schema<Constraint>({
 });
 
 interface MonthlyConstraints {
-  month: number,
-  constraints: Constraint[]
+  month: Month;
+  constraints: Constraint[];
 }
 const schemaMonthlyConstraints = new Schema<MonthlyConstraints>({
   month: {
-    type: Schema.Types.Number,
+    type: schemaMonth,
     required: true
   },
   constraints: {
@@ -30,19 +32,19 @@ const schemaMonthlyConstraints = new Schema<MonthlyConstraints>({
 });
 
 interface JSONUser {
-  firstname: string,
-  lastname: string,
-  email: string,
-  tokens: [string],
-  type: string,
-  boardId: string,
-  satisfiedConstraints: number,
-  monthlyConstraints: MonthlyConstraints
+  firstname: string;
+  lastname: string;
+  email: string;
+  tokens: [string];
+  type: USER_TYPE;
+  boardId: string;
+  satisfiedConstraints: number;
+  monthlyConstraints: MonthlyConstraints;
 }
 interface User extends JSONUser, Document {}
 const schemaUser = new Schema<User>({
   firstname: {
-    type: Schema.Types.String,
+    type: schemaMonth,
     required: true
   },
   lastname: {
@@ -57,8 +59,8 @@ const schemaUser = new Schema<User>({
     type: Schema.Types.String
   },
   type: {
-    type: Schema.Types.String,
-    enum: ['user', 'manager'],
+    type: Schema.Types.Number,
+    enum: [USER_TYPE.MANAGER, USER_TYPE.WORKER],
     required: true
   },
   boardId: {
@@ -74,7 +76,7 @@ const schemaUser = new Schema<User>({
   }
 });
 
-schemaUser.pre('save', function(this: User, next) {
+schemaUser.pre("save", function(this: User, next) {
   next();
 });
 

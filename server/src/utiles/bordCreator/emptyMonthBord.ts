@@ -1,5 +1,5 @@
-import { BordSettings } from "../../../../common/objects/settings/boardSettings";
-import { Month } from "../../../../common/objects/time/month";
+import { BoardSettings } from "../../mongo/models/board";
+import { Month } from "../../mongo/models/concreteBoard";
 import { HolidaysDates } from "./holidaysDates";
 
 export class EmptyMonthBord {
@@ -7,12 +7,12 @@ export class EmptyMonthBord {
   public specialDays: Array<Date>;
   public regularDays: Array<Date>;
 
-  private bordSettings: BordSettings;
+  private bordSettings: BoardSettings;
   private year: number;
   private month: number;
   private holidays: HolidaysDates;
 
-  constructor(month: Month, bordSettings: BordSettings) {
+  constructor(month: Month, bordSettings: BoardSettings) {
     this.year = month.year;
     this.month = month.month;
     this.bordSettings = bordSettings;
@@ -40,7 +40,7 @@ export class EmptyMonthBord {
   }
 
   private isDateSpecial(currDate: Date): boolean {
-    if (!this.bordSettings.specialDates) return false;
+    if (!this.bordSettings.specialDatesSettings.dates) return false;
     else {
       return this.holidays.isDateHoliday(currDate);
       // return !!this.bordSettings.specialDates.dates.find(date => {
@@ -50,9 +50,11 @@ export class EmptyMonthBord {
   }
 
   private isDaySpecial(currDate: Date): boolean {
-    if (!this.bordSettings.specialDays) return false;
+    if (!this.bordSettings.specialDaysSettings.daySettings) return false;
     else {
-      return this.bordSettings.specialDays.days.includes(currDate.getDay());
+      return this.bordSettings.specialDaysSettings.days.includes(
+        currDate.getDay()
+      );
     }
   }
 

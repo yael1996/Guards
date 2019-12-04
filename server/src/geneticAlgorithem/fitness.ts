@@ -1,4 +1,4 @@
-import { Shift } from "../../../common/objects/shifts/shift";
+import { Shift } from "../mongo/models/concreteBoard";
 import { ConstraintService } from "../services/constraintService";
 
 export class Fitness {

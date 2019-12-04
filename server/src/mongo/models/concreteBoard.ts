@@ -92,4 +92,12 @@ schemaConcreteBoard.pre("save", function(this: ConcreteBoard, next) {
 const register = () =>
   model<ConcreteBoard>("concreteBoards", schemaConcreteBoard);
 
-export { register, ConcreteBoard, JSONConcreteBoard };
+export {
+  register,
+  ConcreteBoard,
+  JSONConcreteBoard,
+  Month,
+  Shift,
+  schemaMonth,
+  ShiftTime
+};

@@ -1,19 +1,18 @@
-import { Shift } from "../../../../common/objects/shifts/shift";
+import { Shift, ShiftTime } from "../../mongo/models/concreteBoard";
 import { SHIFT_TYPE } from "../shiftTypeEnum";
-import { Month } from "../../../../common/objects/time/month";
+import { Month } from "../../mongo/models/concreteBoard";
 import { EmptyMonthBord } from "./emptyMonthBord";
-import { ShiftTime } from "../../../../common/objects/shifts/shiftTime";
-import { Bord } from "../../../../common/objects/bord/bord";
+import { Board } from "../../mongo/models/board";
 
 export class GeneratFirstPopulation {
   private month: Month;
-  private bord: Bord;
+  private board: Board;
   private emptyBord: EmptyMonthBord;
 
-  constructor(bord: Bord, month: Month) {
+  constructor(bord: Board, month: Month) {
     this.month = month;
-    this.bord = bord;
-    this.emptyBord = new EmptyMonthBord(this.month, this.bord.settings);
+    this.board = bord;
+    this.emptyBord = new EmptyMonthBord(this.month, this.board.boardSettings);
   }
 
   public buildFirstPopulation(populationSize: number): Array<Array<Shift>> {
@@ -33,21 +32,21 @@ export class GeneratFirstPopulation {
 
     this.fillShiftsByType(
       specialDates,
-      this.bord.settings.specialDates,
+      this.board.boardSettings.specialDatesSettings,
       SHIFT_TYPE.SPECIAL_DATE,
       monthShift
     );
 
     this.fillShiftsByType(
       specialDays,
-      this.bord.settings.specialDays,
+      this.board.boardSettings.specialDaysSettings,
       SHIFT_TYPE.SPECIAL_DAY,
       monthShift
     );
 
     this.fillShiftsByType(
       regularDays,
-      this.bord.settings.regularDays,
+      this.board.boardSettings.regularDaySettings,
       SHIFT_TYPE.REGULAR_DAY,
       monthShift
     );
@@ -88,7 +87,7 @@ export class GeneratFirstPopulation {
       startShift.getDay(),
       startShift.getHours() + shiftSettings.shiftLengthInHouers
     );
-    return new ShiftTime(startShift, toTime);
+    return new ShiftTime({ fromTime: startShift, toTime: toTime });
   }
 
   private createNewShift(shiftTime, type, numWorkers: number): Shift {
@@ -97,7 +96,7 @@ export class GeneratFirstPopulation {
     while (numAddedWorkers < numWorkers) {
       let workerId = this.getRandomWorkerId();
       if (!this.isWorkerAlreadyInShift(shift, workerId)) {
-        shift.addWorkerToShift(workerId);
+        shift.workersId.push(workerId);
         numAddedWorkers++;
       }
     }
@@ -105,12 +104,12 @@ export class GeneratFirstPopulation {
   }
 
   private getRandomWorkerId(): string {
-    return this.bord.workersIds[
-      Math.floor(Math.random() * this.bord.workersIds.length)
+    return this.board.workerIds[
+      Math.floor(Math.random() * this.board.workerIds.length)
     ];
   }
 
   private isWorkerAlreadyInShift(shift: Shift, workerId: string): boolean {
-    return shift.workersIds.includes(workerId);
+    return shift.workersId.includes(workerId);
   }
 }

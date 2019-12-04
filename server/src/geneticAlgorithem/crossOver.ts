@@ -1,4 +1,4 @@
-import { Shift } from "../../../common/objects/shifts/shift";
+import { Shift } from "../mongo/models/concreteBoard";
 
 export class CrossOver {
   constructor() {}
