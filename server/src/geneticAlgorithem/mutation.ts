@@ -13,12 +13,12 @@ export class Mutation {
 
   private switchTwoShifts(resultPhenotype) {
     // can do for and switch more then two
-    const randomIndex1 = this.getRandomShiftIndex(resultPhenotype);
-    const randomIndex2 = this.getRandomShiftIndex(resultPhenotype);
+    const index1 = this.getRandomShiftIndex(resultPhenotype);
+    const index2 = this.getRandomShiftIndex(resultPhenotype);
 
-    const temp = resultPhenotype[randomIndex1];
-    resultPhenotype[randomIndex1] = resultPhenotype[randomIndex2];
-    resultPhenotype[randomIndex2] = temp;
+    const temp = resultPhenotype[index1].workersIds;
+    resultPhenotype[index1].workersIds = resultPhenotype[index2].workersIds;
+    resultPhenotype[index2].workersIds = temp;
 
     return resultPhenotype;
   }
