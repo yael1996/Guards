@@ -10,7 +10,7 @@ class CompanyComp extends Component<Props> {
     render() {
         const { title } = this.props.company;
         return (
-            <article className="card w-25 d-inline-block  mx-4">
+            <article className="card w-25 d-inline-block mx-4 my-4">
                 <section className="card-body">
                     <h5 className="card-title">{title}</h5>
                 </section>

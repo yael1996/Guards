@@ -13,6 +13,7 @@ import { UserState } from "../Store/User/types";
 import { CalendarState } from "../Store/Calendar/types";
 import { MenuState } from "../Store/Menu/types";
 import BoardCreation from "../Components/BoardCreation/BoardCreation";
+import Companies from "../Components/Companies/Companies";
 
 interface ReduxState {
     companies: CompanyState,
@@ -34,14 +35,17 @@ class DashBoard extends Component<Props> {
         
         return (
             <div className="App">
-                <HeaderComp companies={companies} user={user} />
+                <HeaderComp companies={companies} amount={3} user={user} />
                 <section className="container-fluid bg-light ">
                     <section className="row">
                         <section className="col-9 mt-3">
                             <Switch>
-                                <Route exact path="/dashboard/create">
-                                    <BoardCreation />
+                                <Route exact path="/dashboard/companies">
+                                    <Companies companies={companies} />
                                 </Route>
+                                <Route exact path="/dashboard/create" children={({ history }) => (
+                                    <BoardCreation />
+                                )} />
                                 <Route exact path="/dashboard">
                                     <Calendar className="min-vh-100"
                                         localizer={momentLocalizer(Moment)}

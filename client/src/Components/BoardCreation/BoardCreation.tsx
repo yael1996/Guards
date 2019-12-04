@@ -8,7 +8,7 @@ interface ShiftSettings {
     workerCount: string
 }
 
-interface Props {
+interface Props{
 
 }
 
