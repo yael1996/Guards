@@ -1,5 +1,0 @@
-export enum SHIFT_TYPE {
-  REGULAR_DAY = 1,
-  SPECIAL_DAY,
-  SPECIAL_DATE
-}

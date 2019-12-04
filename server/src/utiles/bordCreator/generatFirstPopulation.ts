@@ -1,5 +1,5 @@
 import { Shift } from "../../../../common/objects/shifts/shift";
-import { SHIFT_TYPE } from "../../../../common/objects/shifts/shiftTypeEnum";
+import { SHIFT_TYPE } from "../shiftTypeEnum";
 import { Month } from "../../../../common/objects/time/month";
 import { EmptyMonthBord } from "./emptyMonthBord";
 import { ShiftTime } from "../../../../common/objects/shifts/shiftTime";
