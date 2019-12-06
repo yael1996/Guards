@@ -8,23 +8,44 @@ const GoogleUserService = require("../../Services/GoogleUserService/googleUserSe
 const router = Router();
 
 
-router.post("/register", async (req, res) => {
-    let code = req.body.code;
+router.post("/login", async (req, res) => {
+    //TODO: add code to check if logged in, return current page else go to google auth below
+
+    let code = req.query.code;
     let gu = new GoogleUserService(googleConfig,defaultScope); //TODO: grab googleConfig and defaultScope from env property
     //get new user object to save in DB
-    gu.getGoogleAccountFromCode(code)
-        .then((newUser) => {
-            console.log(newUser._id);
-            //save user in DB
-            newUser.save(function (err, task) {
-                if (err) res.send(err);
-                res.json(task)
+
+})
+    .get("/register", async (req, res) => {
+        let gu = new GoogleUserService(googleConfig,defaultScope); //TODO: grab googleConfig and defaultScope from env property
+        gu.getGoogleUrl()
+            .then((url=>{
+                console.log(url);
+                res.redirect(url) //redirect goes to /google-auth
+            }))
+            .catch((err=>{
+                console.log("Failed to get GoogleURL \n %v",err)
+            }))
+    })
+    .get('/google-auth', async (req, res)=>{
+        //TODO: here we check if this is a registered user or not and redirect accordingly (register or login)
+
+        let code = req.query.code;
+        let gu = new GoogleUserService(googleConfig,defaultScope); //TODO: grab googleConfig and defaultScope from env property
+        gu.getAuthorizedGoogleAccountFromCode(code)
+            .then((auth) => {
+                if gu.isUserRegistered()
+                console.log(newUser.firstname);
+                //save user in DB
+                newUser.save(function (err, task) {
+                    if (err) res.send(err);
+                    res.json(task)
+                });
+            })
+            .catch((err) => {
+                console.log(err)
             });
-        })
-        .catch((err) => {
-            console.log(err)
-        });
-});
+    });
 
 router.get("/", async (req, res) => {
     try {
@@ -78,9 +99,9 @@ router.patch("/:id", async (req, res) => {
 export { router };
 
 const googleConfig = {
-    clientId: '1016798324260-bba0ir8efu5qd30ajuulpogqototugpc.apps.googleusercontent.com', // e.g. asdfghjkljhgfdsghjk.apps.googleusercontent.com
-    clientSecret: 'ashtkFhSmw1o-Vg69cb1eaH3', // e.g. _ASDFA%DFASDFASDFASD#FAD-
-    redirect: 'http://localhost:3000/google-auth' // this must match your google api settings
+    clientId: '1016798324260-cn24vnlh62ijn94h2sguklrelvpjntgu.apps.googleusercontent.com', // e.g. asdfghjkljhgfdsghjk.apps.googleusercontent.com
+    clientSecret: 'JSzG4-1lYJS7wCVKkJcNlxNV', // e.g. _ASDFA%DFASDFASDFASD#FAD-
+    redirect: 'http://localhost:3000/user/google-auth' // this must match your google api settings
 };
 
 // let ga = new GoogleAuthService(googleConfig,defaultScope);
@@ -89,4 +110,6 @@ const googleConfig = {
 const defaultScope = [
     'https://www.googleapis.com/auth/plus.me',
     'https://www.googleapis.com/auth/userinfo.email',
+    'https://www.googleapis.com/auth/userinfo.profile',
+
 ];

@@ -1,11 +1,11 @@
-import {JSONUser, User} from "../../mongo/models/user";
+import { User} from "../../mongo/models/user";
+import { models } from "../../mongo/Connection";
+
 
 
 const GoogleAuthService = require('./googleAuthService'),
     {google} = require('googleapis'),
-    mongoose = require('mongoose'),
-    User = mongoose.model('User');
-
+    mongoose = require('mongoose');
 
 class GoogleUserService extends GoogleAuthService {
     constructor(config, scope) {
@@ -13,11 +13,11 @@ class GoogleUserService extends GoogleAuthService {
     }
 
     async getGooglePlusApi(auth) {
-        return await google.plus({version: 'v1', auth});
+        return await google.people({version: 'v1', auth});
     }
 
     // userLogin (user, code){
-    //     this.getGoogleAccountFromCode(code)
+    //     this.getAuthorizedGoogleAccountFromCode(code)
     //         .then((res)=>{
     //             return res
     //         })
@@ -26,9 +26,9 @@ class GoogleUserService extends GoogleAuthService {
     //         });
     // }
     // async getNewUser(code){
-    //     const newUser: User = await this.getGoogleAccountFromCode(code);
+    //     const newUser: User = await this.getAuthorizedGoogleAccountFromCode(code);
     //
-    //     // return await this.getGoogleAccountFromCode(code)
+    //     // return await this.getAuthorizedGoogleAccountFromCode(code)
     //     //     .then((newUser)=>{
     //     //         return new User ({
     //     //             _id: newUser.id,
@@ -50,7 +50,7 @@ class GoogleUserService extends GoogleAuthService {
     /**
      * Extract the email and id of the google account from the "code" parameter.
      */
-    async getGoogleAccountFromCode(code): User {
+    async getAuthorizedGoogleAccountFromCode(code) {
         // get the auth "tokens" from the request
         const auth = await super.createConnection();
         const data = await auth.getToken(code); //TODO: Create a new getAuth function in GoogleAuth?
@@ -59,26 +59,44 @@ class GoogleUserService extends GoogleAuthService {
         // add the tokens to the google api so we have access to the account
         auth.setCredentials(tokens);
 
+        return auth;
         // connect to google plus - need this to get the user's email
-        const plusApi = await this.getGooglePlusApi(auth);
-        return this.getUserFromGoogleApi(plusApi, tokens);
+        // const peopleApi = await this.getGooglePlusApi(auth);
+        // return this.getUserFromGoogleApi(tokens, auth);
     }
 
-    async getUserFromGoogleApi(api, tokens): User{
-        const me = await api.people.get({userId: 'me'});
-
+    async getUserFromGoogleApi(tokens, auth): Promise<User>{
+        const peopleApi = await this.getGooglePlusApi(auth);
+        const me = await peopleApi.people.get({
+                resourceName: 'people/me',
+            personFields: 'emailAddresses,names',
+            auth: auth}
+            );
+        console.log(me);
         // get the google id and email
         // const userGoogleId = me.data.id;
-        const userGoogleName = me.data.name;
-        const userGoogleEmail = me.data.emails && me.data.emails.length && me.data.emails[0].value;
+        //TODO: ugly but current model has 1 name/email per user
+        const userGoogleName = me.data.names[0];
+        const userGoogleEmail = me.data.emailAddresses[0].value;
+        //TODO: displayName exists - consider grabbing and using it in frontend
 
-        const retUser: User = new User;
+        const retUser: User = new models.user;
 
-        retUser.firstname = userGoogleName;
+        retUser.firstname = userGoogleName.givenName;
+        retUser.lastname = userGoogleName.familyName;
         retUser.email = userGoogleEmail;
-        retUser.tokens = tokens;
+        // retUser.tokens = tokens; //can be saved to the user if you ever want to get their details without making them log in again
+
+
+        retUser.type = 'user';
+        retUser.boardId = "5de2e4f1157640446cbefab7";
         // return so we can login or sign up the user
         return retUser;
+    }
+
+    async isUserRegistered(userToken) {
+        const user = models.user;
+        user.find( )
     }
 }
 module.exports = GoogleUserService;

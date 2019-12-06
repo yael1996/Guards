@@ -54,7 +54,7 @@ const schemaUser = new Schema<User>({
     required: true
   },
   tokens: {
-    type: Schema.Types.String
+    type: [Schema.Types.String]
   },
   type: {
     type: Schema.Types.String,
