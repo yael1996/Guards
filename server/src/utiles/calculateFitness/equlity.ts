@@ -1,60 +1,44 @@
+import { models } from "../../mongo/Connection";
+
 export class Equlity {
   private workersId: Array<string>;
+  private workersDissatisfied: { [id: string]: number };
+
   constructor() {}
 
-  public getEqulityMeasurement(workersId: Array<string>): number {
+  public getEqulityMeasurement(
+    workersId: Array<string>,
+    workersDissatisfied: { [id: string]: number }
+  ): number {
     this.workersId = workersId;
+    this.workersDissatisfied = workersDissatisfied;
 
-    let workerNumDissatisfied = this.getWorkersDissatisfied();
-    let totalDissatisfied = this.getTotalDissatisfied(workerNumDissatisfied);
+    let totalDissatisfied = this.getTotalDissatisfied();
     let avgDissatisfied = this.getWorkersAvgDissatisfied(totalDissatisfied);
-    let sumVariance = this.getSumVariance(
-      workerNumDissatisfied,
-      avgDissatisfied
-    );
+    let sumVariance = this.getSumVariance(avgDissatisfied);
 
     return sumVariance / totalDissatisfied;
-  }
-
-  private getWorkersDissatisfied() {
-    let workersDissatisfied: { [id: string]: number } = {};
-
-    for (let worker of this.workersId) {
-      workersDissatisfied[worker] = this.getWorkerDissatisfiedFromDB(worker);
-    }
-
-    return workersDissatisfied;
-  }
-
-  private getWorkerDissatisfiedFromDB(worker: string): number {
-    // get from db
-    return 0;
   }
 
   private getWorkersAvgDissatisfied(totalDissatisfied: number) {
     return totalDissatisfied / this.workersId.length;
   }
 
-  private getTotalDissatisfied(workersDissatisfied: {
-    [id: string]: number;
-  }): number {
+  private getTotalDissatisfied(): number {
     let totalDissatisfied = 0;
-    for (let worker in workersDissatisfied) {
-      totalDissatisfied += workersDissatisfied[worker];
+    for (let worker in this.workersDissatisfied) {
+      totalDissatisfied += this.workersDissatisfied[worker];
     }
 
     return totalDissatisfied;
   }
 
-  private getSumVariance(
-    workerNumDissatisfied: { [id: string]: number },
-    workersAvgDissatisfied: number
-  ) {
+  private getSumVariance(workersAvgDissatisfied: number) {
     let sumVariance = 0;
 
     for (let worker of this.workersId) {
       sumVariance += Math.abs(
-        workerNumDissatisfied[worker] - workersAvgDissatisfied
+        this.workersDissatisfied[worker] - workersAvgDissatisfied
       );
     }
 
