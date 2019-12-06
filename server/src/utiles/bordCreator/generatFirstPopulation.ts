@@ -15,17 +15,17 @@ export class GeneratFirstPopulation {
     this.emptyBord = new EmptyMonthBord(this.month, this.board.boardSettings);
   }
 
-  public buildFirstPopulation(populationSize: number): Array<Array<Shift>> {
-    let monthShiftsOptions = new Array<Array<Shift>>();
+  public buildFirstPopulation(populationSize: number): Shift[][] {
+    let monthShiftsOptions = [];
     for (let i = 0; i < populationSize; i++) {
-      let monthShift: Array<Shift> = this.fillOneMonthWithShifts();
+      let monthShift: Shift[] = this.fillOneMonthWithShifts();
       monthShiftsOptions.push(monthShift);
     }
     return monthShiftsOptions;
   }
 
-  private fillOneMonthWithShifts(): Array<Shift> {
-    let monthShift = new Array<Shift>();
+  private fillOneMonthWithShifts(): Shift[] {
+    let monthShift = [];
     let specialDates = this.emptyBord.specialDates;
     let specialDays = this.emptyBord.specialDays;
     let regularDays = this.emptyBord.regularDays;
@@ -55,10 +55,10 @@ export class GeneratFirstPopulation {
   }
 
   private fillShiftsByType(
-    days: Array<Date>,
+    days: Date[],
     settings,
     type: SHIFT_TYPE,
-    monthShift: Array<Shift>
+    monthShift: Shift[]
   ): void {
     for (let day of days) {
       let startShift = new Date(

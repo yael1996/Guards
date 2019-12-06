@@ -3,7 +3,7 @@ import { Shift } from "../mongo/models/concreteBoard";
 export class Mutation {
   constructor() {}
 
-  getMutation = (oldPhenotype: Array<Shift>): Array<Shift> => {
+  getMutation = (oldPhenotype: Shift[]): Shift[] => {
     // use oldPhenotype and some random
     // function to make a change to your
     // phenotype
@@ -23,7 +23,7 @@ export class Mutation {
     return resultPhenotype;
   }
 
-  private getRandomShiftIndex(oldPhenotype: Array<Shift>): number {
+  private getRandomShiftIndex(oldPhenotype: Shift[]): number {
     return Math.floor(Math.random() * oldPhenotype.length);
   }
 }

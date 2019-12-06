@@ -1,28 +1,54 @@
 import { Shift } from "../mongo/models/concreteBoard";
-import { ConstraintService } from "../services/constraintService";
+import { AmountShifts } from "../utiles/calculateFitness/amountShifts";
+import { Equlity } from "../utiles/calculateFitness/equlity";
+import { SatisfiedPeople } from "../utiles/calculateFitness/satisfiedPeople";
+import { Constraint } from "../mongo/models/User";
 
 export class Fitness {
-  private constraintsService: ConstraintService;
+  private amount: AmountShifts;
+  private equlity: Equlity;
+  private Satisfie: SatisfiedPeople;
+
   constructor() {
-    this.constraintsService = new ConstraintService();
+    this.amount = new AmountShifts();
+    this.equlity = new Equlity();
+    this.Satisfie = new SatisfiedPeople();
   }
 
-  getFitness = (monthShifts: Array<Shift>, workersIds: string[]): number => {
+  getFitness = (
+    monthShifts: Shift[],
+    workersDissatisfied: { [id: string]: number },
+    workersConstraints: { [id: string]: Constraint[] },
+    workersIds: string[]
+  ): number => {
     // use phenotype and possibly some other information
     // to determine the fitness number.  Higher is better, lower is worse.
     let fitness = 0;
-    //fitness += this.workersConstraints(monthShifts);
+    fitness += this.fitness(
+      monthShifts,
+      workersDissatisfied,
+      workersConstraints,
+      workersIds
+    );
     return fitness;
   };
 
-  private fitness = () => {
+  private fitness = (
+    monthShifts: Shift[],
+    workersDissatisfied: { [id: string]: number },
+    workersConstraints: { [id: string]: Constraint[] },
+    workersIds: string[]
+  ) => {
     const amountShiftsPart = 0;
     const equityPart = 0;
     const satisfiedPeoplePart = 0;
 
-    let amountShifts = this.getAmountShifts();
-    let equit = this.getEquity();
-    let satisfiedPeople = this.getSatisfiedPeople();
+    let amountShifts = this.getAmountShifts(workersIds, monthShifts);
+    let equit = this.getEquity(workersIds, workersDissatisfied);
+    let satisfiedPeople = this.getSatisfiedPeople(
+      monthShifts,
+      workersConstraints
+    );
 
     return -(
       amountShifts * amountShiftsPart +
@@ -31,37 +57,27 @@ export class Fitness {
     );
   };
 
-  private getAmountShifts = (): number => {
-    return 0;
+  private getAmountShifts = (
+    workersId: string[],
+    monthShifts: Shift[]
+  ): number => {
+    return this.amount.getAmountShiftMeasurement(workersId, monthShifts);
   };
 
-  private getEquity = (): number => {
-    return 0;
+  private getEquity = (
+    workersId: string[],
+    workersDissatisfied: { [id: string]: number }
+  ): number => {
+    return this.equlity.getEqulityMeasurement(workersId, workersDissatisfied);
   };
 
-  private getSatisfiedPeople = (): number => {
-    return 0;
+  private getSatisfiedPeople = (
+    monthShifts: Shift[],
+    workersConstraints: { [id: string]: Constraint[] }
+  ): number => {
+    return this.Satisfie.getSatisfiedPeopleMeasurement(
+      monthShifts,
+      workersConstraints
+    );
   };
 }
-
-// private workersConstraints(monthShifts: Array<Shift>): number {
-//   let numSatisfiedWorkers = 0;
-
-//   for (let shift of monthShifts) {
-//     const month = shift.shiftTime.month;
-
-//     for (let worker of shift.workersId) {
-//       if (
-//         !this.constraintsService.isShiftInWorkerConstraints(
-//           worker,
-//           shift.shiftTime,
-//           month
-//         )
-//       )
-//         // maby + more then one
-//         numSatisfiedWorkers++;
-//     }
-//   }
-
-//   return numSatisfiedWorkers;
-// }

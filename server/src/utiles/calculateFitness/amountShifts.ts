@@ -1,14 +1,14 @@
 import { Shift } from "../../mongo/models/concreteBoard";
 
 export class AmountShifts {
-  private workersId: Array<string>;
-  private monthShifts: Array<Shift>;
+  private workersId: string[];
+  private monthShifts: Shift[];
 
   constructor() {}
 
   public getAmountShiftMeasurement(
-    workersId: Array<string>,
-    monthShifts: Array<Shift>
+    workersId: string[],
+    monthShifts: Shift[]
   ): number {
     this.workersId = workersId;
     this.monthShifts = monthShifts;

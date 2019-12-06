@@ -2,13 +2,13 @@ import { Shift } from "../../mongo/models/concreteBoard";
 import { Constraint } from "../../mongo/models/User";
 
 export class SatisfiedPeople {
-  private monthShifts: Array<Shift>;
+  private monthShifts: Shift[];
   private workersConstraints: { [id: string]: Constraint[] };
 
   constructor() {}
 
   public getSatisfiedPeopleMeasurement(
-    monthShifts: Array<Shift>,
+    monthShifts: Shift[],
     workersConstraints: { [id: string]: Constraint[] }
   ): number {
     this.monthShifts = monthShifts;

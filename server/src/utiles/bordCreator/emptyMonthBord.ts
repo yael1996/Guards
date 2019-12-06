@@ -3,9 +3,9 @@ import { Month } from "../../mongo/models/concreteBoard";
 import { HolidaysDates } from "./holidaysDates";
 
 export class EmptyMonthBord {
-  public specialDates: Array<Date>;
-  public specialDays: Array<Date>;
-  public regularDays: Array<Date>;
+  public specialDates: Date[];
+  public specialDays: Date[];
+  public regularDays: Date[];
 
   private bordSettings: BoardSettings;
   private year: number;
@@ -23,9 +23,9 @@ export class EmptyMonthBord {
   }
 
   private datesByType() {
-    this.specialDates = new Array<Date>();
-    this.specialDays = new Array<Date>();
-    this.regularDays = new Array<Date>();
+    this.specialDates = [];
+    this.specialDays = [];
+    this.regularDays = [];
     this.orgenizeDatesByType();
   }
 

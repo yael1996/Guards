@@ -1,13 +1,13 @@
 import { models } from "../../mongo/Connection";
 
 export class Equlity {
-  private workersId: Array<string>;
+  private workersId: string[];
   private workersDissatisfied: { [id: string]: number };
 
   constructor() {}
 
   public getEqulityMeasurement(
-    workersId: Array<string>,
+    workersId: string[],
     workersDissatisfied: { [id: string]: number }
   ): number {
     this.workersId = workersId;

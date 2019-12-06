@@ -17,8 +17,8 @@ export class GeneticAlgorithemController {
       const bordId = req.query.bord;
       const month = req.body.month as Month;
 
-      const best = await this.algorithem.run();
-      res.json({ best: best });
+      const reasult = await this.algorithem.runGeneticAlgorithm(bordId, month);
+      res.json({ reasult: reasult });
     });
   }
 }

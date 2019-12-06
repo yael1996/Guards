@@ -17,15 +17,10 @@ const schemaMonth = new Schema<Month>({
 });
 
 interface ShiftTime {
-  month: Month;
   fromTime: Date;
   toTime: Date;
 }
 const schemaShiftTime = new Schema<ShiftTime>({
-  month: {
-    type: schemaMonth,
-    required: true
-  },
   fromTime: {
     type: Schema.Types.Date,
     required: true
@@ -61,13 +56,13 @@ const schemaShift = new Schema<Shift>({
 });
 
 interface JSONConcreteBoard {
-  metaId: string;
+  bordId: string;
   month: Month;
   shifts: Shift[];
 }
 interface ConcreteBoard extends JSONConcreteBoard, Document {}
 const schemaConcreteBoard = new Schema<ConcreteBoard>({
-  metaId: {
+  bordId: {
     type: Schema.Types.ObjectId,
     required: true
   },
@@ -99,5 +94,6 @@ export {
   Month,
   Shift,
   schemaMonth,
-  ShiftTime
+  ShiftTime,
+  schemaShiftTime
 };
