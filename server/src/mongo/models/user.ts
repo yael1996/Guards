@@ -1,14 +1,19 @@
 import { Schema, model, Document } from "mongoose";
 import { USER_TYPE } from "../../utiles/userTypeEnum";
-import { Month, schemaMonth } from "./concreteBoard";
+import {
+  Month,
+  schemaMonth,
+  ShiftTime,
+  schemaShiftTime
+} from "./concreteBoard";
 
 interface Constraint {
-  time: Date;
+  time: ShiftTime;
   text: string;
 }
 const schemaConstraint = new Schema<Constraint>({
   time: {
-    type: Schema.Types.Date,
+    type: schemaShiftTime,
     required: true
   },
   text: {
@@ -39,7 +44,7 @@ interface JSONUser {
   type: USER_TYPE;
   boardId: string;
   unSatisfiedConstraints: number;
-  monthlyConstraints: MonthlyConstraints;
+  monthlyConstraints: MonthlyConstraints[];
 }
 interface User extends JSONUser, Document {}
 const schemaUser = new Schema<User>({
@@ -81,4 +86,4 @@ schemaUser.pre("save", function(this: User, next) {
 });
 
 const register = () => model<User>("users", schemaUser);
-export { register, User, JSONUser };
+export { register, User, JSONUser, Constraint, MonthlyConstraints };
