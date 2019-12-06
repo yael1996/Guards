@@ -40,7 +40,7 @@ export class GeneticAlgorithm {
   private async getBestReasult() {
     await this.algorithm.evolve();
     const best = await this.algorithm.best();
-    await this.updateDB(best);
+    await this.updateDissatisfiedInDB(best);
     return best;
   }
 
@@ -54,7 +54,9 @@ export class GeneticAlgorithm {
     return await models.board.findById(boardId);
   }
 
-  private async updateDB(best: Shift[]) {}
+  private async updateDissatisfiedInDB(best: Shift[]) {
+    // ToDo
+  }
 
   private async getWorkersData(allWorkers: string[]) {
     this.workersConstraints = {};
