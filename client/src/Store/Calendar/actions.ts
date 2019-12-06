@@ -1,12 +1,9 @@
 import { Event } from "react-big-calendar";
 import { CalendarAction, GET_EVENTS,
     UPDATE_EVENTS, NEXT_MONTH, PREVIOUS_MONTH,
-    CreationState, CalendarState } from "./types";
-import { ThunkAction } from "redux-thunk";
+    CreationState, ThunkResult } from "./types";
 
-type ThunkResult<result> = ThunkAction<result, CalendarState, undefined, CalendarAction>;
-
-export function createCalendar(creationState: CreationState): ThunkResult<void>  {
+export function createCalendar(creationState: CreationState): ThunkResult<Promise<void>> {
     return async (dispatch, getState) => {
         
     }

@@ -6,6 +6,10 @@ export interface Company {
 
 export type CompanyState = Company[];
 
+export interface CompanyStateWrapper {
+    companies: CompanyState
+}
+
 export const GET_COMPANIES = "GET_COMPANIES";
 
 interface GetCompaniesAction {

@@ -1,9 +1,14 @@
 import { Event } from "react-big-calendar";
 import { Action } from "redux";
+import { ThunkAction } from "redux-thunk";
+
+export interface CalendarStateWrapper {
+    calendar: CalendarState
+}
 
 export interface CalendarState {
     currentDate: Date,
-    events: Event[]
+    events: Event[]  
 }
 
 export type DayMap = [boolean, boolean, boolean, boolean, boolean, boolean, boolean];
@@ -66,3 +71,5 @@ interface UpdateEvents {
 }
 
 export type CalendarAction = CreateAction | GetEventsAction | NextMonthAction | PreviousMonth | UpdateEvents;
+
+export type ThunkResult<result> = ThunkAction<result, CalendarStateWrapper, undefined, CalendarAction>;

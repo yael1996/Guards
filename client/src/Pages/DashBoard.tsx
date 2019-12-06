@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { RootState } from "../Store/store";
-import { Dispatch } from "redux";
+import { RootState, AppDispatch, AppAction } from "../Store/store";
 import HeaderComp from "../Components/Header/Header";
 import { Switch, Route } from "react-router-dom";
 import Moment from "moment";
@@ -10,11 +9,16 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import SideMenuComp from "../Components/SideMenu/SideMenu";
 import { CompanyState } from "../Store/Company/types";
 import { UserState } from "../Store/User/types";
-import { CalendarState, CreationState, CalendarAction } from "../Store/Calendar/types";
+import { CalendarState, CreationState } from "../Store/Calendar/types";
 import { MenuState } from "../Store/Menu/types";
 import BoardCreation from "../Components/BoardCreation/BoardCreation";
 import Companies from "../Components/Companies/Companies";
 import { createCalendar } from "../Store/Calendar/actions";
+import { History } from "history";
+
+interface OwnProps {
+    history: History<any>
+}
 
 interface ReduxState {
     companies: CompanyState,
@@ -24,18 +28,23 @@ interface ReduxState {
 }
 
 interface ReduxDispatch {
-    // createCalendar: (creationState: CreationState) => void
+    createCalendar: (creationState: CreationState) => Promise<void>
 }
 
-type Props = ReduxState & ReduxDispatch;
+type Props = OwnProps & ReduxState & ReduxDispatch;
 
 class DashBoard extends Component<Props> {
     constructor(props: any) {
         super(props);
+        this.onCreate = this.onCreate.bind(this);
+    }
+
+    onCreate(creationState: CreationState) {
+        this.props.createCalendar(creationState);
     }
 
     render() {
-        const { companies, user, calendar } = this.props;
+        const { companies, user, calendar, createCalendar } = this.props;
         const { items } = this.props.menu;
         
         return (
@@ -53,7 +62,7 @@ class DashBoard extends Component<Props> {
                                     <Companies companies={companies} history={history} />
                                 )} />
                                 <Route exact path="/dashboard/create" children={({ history }) => (
-                                    <BoardCreation history={history} onCreate={() => {}} />
+                                    <BoardCreation history={history} onCreate={createCalendar} />
                                 )} />
                                 <Route exact path="/dashboard/:boardId/:month">
                                     <Calendar className="min-vh-100"
@@ -88,9 +97,9 @@ const mapStateToProps = (state: RootState): ReduxState => {
     };
 }
 
-const mapDispatchToProps = (dispatch: Dispatch): ReduxDispatch => {
+const mapDispatchToProps = (dispatch: AppDispatch): ReduxDispatch => {
     return {
-        // createCalendar: (creationState: CreationState) => dispatch(createCalendar(creationState))
+        createCalendar: (creationState: CreationState) => dispatch(createCalendar(creationState))
     }
 }
 

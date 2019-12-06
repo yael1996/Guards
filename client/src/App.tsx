@@ -15,9 +15,9 @@ class App extends Component {
             <Provider store={store}>
                 <Router>
                     <Switch>
-                        <Route path="/dashboard">
-                            <DashBoard />
-                        </Route>
+                        <Route path="/dashboard" children={({ history }) => (
+                            <DashBoard history={history} />
+                        )} />
                         <Route path="/register">
                             <Register />
                         </Route>

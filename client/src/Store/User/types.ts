@@ -5,6 +5,10 @@ export interface UserState {
     imageUrl: string
 }
 
+export interface UserStateWrapper {
+    user: UserState
+}
+
 export const LOGIN = "LOGIN";
 
 interface LoginAction {
