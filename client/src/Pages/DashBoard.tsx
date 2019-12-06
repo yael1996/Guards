@@ -37,15 +37,21 @@ class DashBoard extends Component<Props> {
     constructor(props: any) {
         super(props);
         this.onCreate = this.onCreate.bind(this);
+        this.onDateChange = this.onDateChange.bind(this);
     }
 
     onCreate(creationState: CreationState) {
         this.props.createCalendar(creationState);
     }
 
+    onDateChange(date: Date) {
+        
+    }
+
     render() {
         const { companies, user, calendar, createCalendar } = this.props;
         const { items } = this.props.menu;
+        const onDateChange = this.onDateChange;
         
         return (
             <div className="App">
@@ -69,7 +75,11 @@ class DashBoard extends Component<Props> {
                                         localizer={momentLocalizer(Moment)}
                                         events={calendar.events}
                                         defaultDate={new Date()}
-                                        defaultView="month" />
+                                        defaultView="month"
+                                        onNavigate={function(newDate: Date) { onDateChange(newDate); }}
+                                        views={{
+                                            month: true
+                                        }} />
                                 </Route>
                             </Switch>
                         </section>
