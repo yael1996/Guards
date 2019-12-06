@@ -89,7 +89,6 @@ export class GeneratFirstPopulation {
     );
 
     let shiftTime: ShiftTime = {
-      month: this.month,
       fromTime: startShift,
       toTime: toTime
     };

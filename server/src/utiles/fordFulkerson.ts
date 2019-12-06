@@ -1,11 +1,11 @@
 import { FlowNetwork, FordFulkerson, FlowEdge } from "js-graph-algorithms";
-import { Shift } from "../../../common/objects/shifts/shift";
-import { ShiftSettings } from "../../../common/objects/settings/shiftSettings";
+import { Shift } from "../mongo/models/concreteBoard";
+import { ShiftSettings } from "../mongo/models/board";
 import { SHIFT_TYPE } from "./shiftTypeEnum";
 
 const shiftWorkers = (shifts: Shift[]): string[] => {
-  return shifts.reduce((base: string[], { workersIds }) => {
-    workersIds.forEach(x => {
+  return shifts.reduce((base: string[], { workersId }) => {
+    workersId.forEach(x => {
       base.push(x);
     });
     return base;
@@ -67,8 +67,8 @@ const createGraph = (
   }
 
   // Connect shift edges to worker edges
-  shifts.forEach(({ workersIds }, index) => {
-    workersIds.forEach(workerId => {
+  shifts.forEach(({ workersId }, index) => {
+    workersId.forEach(workerId => {
       const workerIndex = workersBaseIndex + workers[workerId];
       graph.addEdge(new FlowEdge(workerIndex, shiftBaseIndex + index, 1));
     });
