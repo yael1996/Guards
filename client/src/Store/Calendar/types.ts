@@ -5,10 +5,18 @@ export interface CalendarState {
     events: Event[]
 }
 
+export const CREATE = "CREATE";
 export const GET_EVENTS = "GET_EVENTS";
 export const NEXT_MONTH = "NEXT_MONTH";
 export const PREVIOUS_MONTH = "PREVIOUS_MONTH";
 export const UPDATE_EVENTS = "UPDATE_EVENTS";
+
+interface CreateAction {
+    type: typeof CREATE,
+    payload: {
+        
+    }
+}
 
 interface GetEventsAction {
     type: typeof GET_EVENTS,
