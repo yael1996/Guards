@@ -38,7 +38,7 @@ const schemaShiftTime = new Schema<ShiftTime>({
 interface Shift {
   shiftTime: ShiftTime;
   shiftType: SHIFT_TYPE;
-  workersId: [string];
+  workersId: string[];
 }
 const schemaShift = new Schema<Shift>({
   shiftTime: {

@@ -87,11 +87,23 @@ export class GeneratFirstPopulation {
       startShift.getDay(),
       startShift.getHours() + shiftSettings.shiftLengthInHouers
     );
-    return new ShiftTime({ fromTime: startShift, toTime: toTime });
+
+    let shiftTime: ShiftTime = {
+      month: this.month,
+      fromTime: startShift,
+      toTime: toTime
+    };
+
+    return shiftTime;
   }
 
   private createNewShift(shiftTime, type, numWorkers: number): Shift {
-    let shift: Shift = new Shift(shiftTime, type);
+    let shift: Shift = {
+      shiftTime: shiftTime,
+      shiftType: type,
+      workersId: []
+    };
+
     let numAddedWorkers = 0;
     while (numAddedWorkers < numWorkers) {
       let workerId = this.getRandomWorkerId();
@@ -100,6 +112,7 @@ export class GeneratFirstPopulation {
         numAddedWorkers++;
       }
     }
+
     return shift;
   }
 
