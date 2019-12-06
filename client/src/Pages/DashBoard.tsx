@@ -10,10 +10,11 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import SideMenuComp from "../Components/SideMenu/SideMenu";
 import { CompanyState } from "../Store/Company/types";
 import { UserState } from "../Store/User/types";
-import { CalendarState, CreationState } from "../Store/Calendar/types";
+import { CalendarState, CreationState, CalendarAction } from "../Store/Calendar/types";
 import { MenuState } from "../Store/Menu/types";
 import BoardCreation from "../Components/BoardCreation/BoardCreation";
 import Companies from "../Components/Companies/Companies";
+import { createCalendar } from "../Store/Calendar/actions";
 
 interface ReduxState {
     companies: CompanyState,
@@ -23,7 +24,7 @@ interface ReduxState {
 }
 
 interface ReduxDispatch {
-
+    // createCalendar: (creationState: CreationState) => void
 }
 
 type Props = ReduxState & ReduxDispatch;
@@ -31,11 +32,6 @@ type Props = ReduxState & ReduxDispatch;
 class DashBoard extends Component<Props> {
     constructor(props: any) {
         super(props);
-        this.onCreate = this.onCreate.bind(this);
-    }
-
-    onCreate(creationState: CreationState) {
-
     }
 
     render() {
@@ -57,7 +53,7 @@ class DashBoard extends Component<Props> {
                                     <Companies companies={companies} history={history} />
                                 )} />
                                 <Route exact path="/dashboard/create" children={({ history }) => (
-                                    <BoardCreation history={history} onCreate={this.onCreate} />
+                                    <BoardCreation history={history} onCreate={() => {}} />
                                 )} />
                                 <Route exact path="/dashboard/:boardId/:month">
                                     <Calendar className="min-vh-100"
@@ -94,7 +90,7 @@ const mapStateToProps = (state: RootState): ReduxState => {
 
 const mapDispatchToProps = (dispatch: Dispatch): ReduxDispatch => {
     return {
-
+        // createCalendar: (creationState: CreationState) => dispatch(createCalendar(creationState))
     }
 }
 

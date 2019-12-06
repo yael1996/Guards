@@ -1,4 +1,5 @@
 import { Event } from "react-big-calendar";
+import { Action } from "redux";
 
 export interface CalendarState {
     currentDate: Date,
@@ -30,9 +31,7 @@ export const UPDATE_EVENTS = "UPDATE_EVENTS";
 
 interface CreateAction {
     type: typeof CREATE,
-    payload: {
-        
-    }
+    payload: CreationState
 }
 
 interface GetEventsAction {
@@ -66,4 +65,4 @@ interface UpdateEvents {
     }
 }
 
-export type CalendarAction = GetEventsAction | NextMonthAction | PreviousMonth | UpdateEvents;
+export type CalendarAction = CreateAction | GetEventsAction | NextMonthAction | PreviousMonth | UpdateEvents;
