@@ -5,6 +5,23 @@ export interface CalendarState {
     events: Event[]
 }
 
+export type DayMap = [boolean, boolean, boolean, boolean, boolean, boolean, boolean];
+
+export interface ShiftSettings {
+    length: string,
+    amount: string,
+    workerCount: string
+}
+
+export interface CreationState {
+    standardDays: DayMap,
+    standardShiftSettings: ShiftSettings,
+    specialDays: DayMap,
+    specialShiftSettings: ShiftSettings,
+    withHolidays: boolean,
+    holidayShiftSettings: ShiftSettings
+}
+
 export const CREATE = "CREATE";
 export const GET_EVENTS = "GET_EVENTS";
 export const NEXT_MONTH = "NEXT_MONTH";

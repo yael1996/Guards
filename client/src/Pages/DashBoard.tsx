@@ -10,7 +10,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import SideMenuComp from "../Components/SideMenu/SideMenu";
 import { CompanyState } from "../Store/Company/types";
 import { UserState } from "../Store/User/types";
-import { CalendarState } from "../Store/Calendar/types";
+import { CalendarState, CreationState } from "../Store/Calendar/types";
 import { MenuState } from "../Store/Menu/types";
 import BoardCreation from "../Components/BoardCreation/BoardCreation";
 import Companies from "../Components/Companies/Companies";
@@ -29,6 +29,15 @@ interface ReduxDispatch {
 type Props = ReduxState & ReduxDispatch;
 
 class DashBoard extends Component<Props> {
+    constructor(props: any) {
+        super(props);
+        this.onCreate = this.onCreate.bind(this);
+    }
+
+    onCreate(creationState: CreationState) {
+
+    }
+
     render() {
         const { companies, user, calendar } = this.props;
         const { items } = this.props.menu;
@@ -48,9 +57,9 @@ class DashBoard extends Component<Props> {
                                     <Companies companies={companies} history={history} />
                                 )} />
                                 <Route exact path="/dashboard/create" children={({ history }) => (
-                                    <BoardCreation />
+                                    <BoardCreation history={history} onCreate={this.onCreate} />
                                 )} />
-                                <Route exact path="/dashboard">
+                                <Route exact path="/dashboard/:boardId/:month">
                                     <Calendar className="min-vh-100"
                                         localizer={momentLocalizer(Moment)}
                                         events={calendar.events}

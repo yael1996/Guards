@@ -1,30 +1,19 @@
 import React, { Component } from "react";
+import { DayMap, ShiftSettings, CreationState } from "../../Store/Calendar/types";
+import { History } from "history";
+import { RootState } from "../../Store/store";
+import { Dispatch } from "redux";
+import { connect } from "react-redux";
 
-type DayMap = [boolean, boolean, boolean, boolean, boolean, boolean, boolean];
-
-interface ShiftSettings {
-    length: string,
-    amount: string,
-    workerCount: string
-}
-
-interface Props{
-
-}
-
-interface State {
-    standardDays: DayMap,
-    standardShiftSettings: ShiftSettings,
-    specialDays: DayMap,
-    specialShiftSettings: ShiftSettings,
-    withHolidays: boolean,
-    holidayShiftSettings: ShiftSettings
+interface Props {
+    history: History<any>,
+    onCreate: (creationState: CreationState) => void
 }
 
 type ShiftUpdate = (settings: ShiftSettings, e: React.ChangeEvent<HTMLInputElement>) => ShiftSettings;
 
-class BoardCreation extends Component<Props, State> {
-    constructor(props: Props) {
+class BoardCreation extends Component<Props, CreationState> {
+    constructor(props: any) {
         super(props);
         this.state = {
             standardDays: [false, false, true, false, false, false, false],
@@ -54,6 +43,7 @@ class BoardCreation extends Component<Props, State> {
         this.updateStandardSettings = this.updateStandardSettings.bind(this);
         this.updateSpecialSettings = this.updateSpecialSettings.bind(this);
         this.updateHolidaySettings = this.updateHolidaySettings.bind(this);
+        this.onCreate = this.onCreate.bind(this);
     }
 
     markDay(type: string, contrastsWith: DayMap[]) {
@@ -76,7 +66,7 @@ class BoardCreation extends Component<Props, State> {
                 }
                 dayMap[ordinal] = !dayMap[ordinal];
 
-                let newState: State;
+                let newState: CreationState;
                 switch (type) {
                     case "standard":
                         newState = Object.assign({}, this.state, { standardDays: dayMap });
@@ -87,7 +77,7 @@ class BoardCreation extends Component<Props, State> {
                     default:
                         throw new Error("Bad type");
                 }
-                this.setState(newState);    
+                this.setState(newState);
             }
         }
     }
@@ -135,6 +125,10 @@ class BoardCreation extends Component<Props, State> {
                 fn(e);
             }
         }
+    }
+
+    onCreate() {
+        this.props.onCreate(this.state);
     }
 
     render() {
@@ -217,7 +211,7 @@ class BoardCreation extends Component<Props, State> {
                     </section>
                     <section className="card">
                         <section className="card-footer">
-                            <button className="btn btn-success">
+                            <button className="btn btn-success" onClick={this.onCreate}>
                                 Create
                             </button>
                         </section>
