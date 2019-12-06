@@ -1,7 +1,8 @@
 import { Shift } from "../../mongo/models/concreteBoard";
 
 export class AmountShifts {
-  private workersSiftsCount: { [id: string]: number };
+  private workersId: Array<string>;
+  private monthShifts: Array<Shift>;
 
   constructor() {}
 
@@ -9,29 +10,51 @@ export class AmountShifts {
     workersId: Array<string>,
     monthShifts: Array<Shift>
   ): number {
-    this.initWorkersSifts(workersId);
-    this.getAmountForPerson(monthShifts);
-    let sumVariance = 0;
-    let avgShiftsForPerson = monthShifts.length / workersId.length;
-    for (let worker of workersId) {
-      sumVariance += Math.abs(
-        this.workersSiftsCount[worker] - avgShiftsForPerson
-      );
-    }
-    return sumVariance;
+    this.workersId = workersId;
+    this.monthShifts = monthShifts;
+
+    let workerNumShifts = this.getWorkerNumShifts();
+    let workersAvgShifts = this.getWorkersAvgShifts();
+    let sumVariance = this.getSumVariance(workerNumShifts, workersAvgShifts);
+
+    return sumVariance / monthShifts.length;
   }
 
-  private initWorkersSifts(workersId: Array<string>) {
-    for (let worker of workersId) {
-      this.workersSiftsCount[worker] = 0;
-    }
-  }
+  private getWorkerNumShifts() {
+    let workersSiftsCount = this.initWorkersSifts();
 
-  private getAmountForPerson(monthShifts: Array<Shift>) {
-    for (let shift of monthShifts) {
+    for (let shift of this.monthShifts) {
       for (let worker of shift.workersId) {
-        this.workersSiftsCount[worker]++;
+        workersSiftsCount[worker]++;
       }
     }
+
+    return workersSiftsCount;
+  }
+
+  private initWorkersSifts(): { [id: string]: number } {
+    let workersSiftsCount: { [id: string]: number } = {};
+    for (let worker of this.workersId) {
+      workersSiftsCount[worker] = 0;
+    }
+
+    return workersSiftsCount;
+  }
+
+  private getWorkersAvgShifts() {
+    return this.monthShifts.length / this.workersId.length;
+  }
+
+  private getSumVariance(
+    workersSiftsCount: { [id: string]: number },
+    avgShiftsForPerson: number
+  ) {
+    let sumVariance = 0;
+
+    for (let worker of this.workersId) {
+      sumVariance += Math.abs(workersSiftsCount[worker] - avgShiftsForPerson);
+    }
+
+    return sumVariance;
   }
 }
