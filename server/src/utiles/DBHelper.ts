@@ -135,9 +135,9 @@ export class DBHelper {
     //   workersConstraints[workerId] = usersConstraints;
     // }
 
-    for (let workerId of allWorkers) {
+    allWorkers.forEach(workerId => {
       workersConstraints[workerId] = [];
-    }
+    });
 
     return workersConstraints;
   }
