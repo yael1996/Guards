@@ -17,8 +17,10 @@ class CompanyComp extends Component<Props> {
     onMouseDown() {
         const { history } = this.props;
         const { id } = this.props.company;
-        const month = new Date().getMonth();
-        history.push(`/dashboard/${id}/${month}`);
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = today.getMonth();
+        history.push(`/dashboard/${id}/${year}/${month}`);
     }
     
     render() {

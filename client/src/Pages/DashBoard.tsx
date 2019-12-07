@@ -70,7 +70,7 @@ class DashBoard extends Component<Props> {
                                 <Route exact path="/dashboard/create" children={({ history }) => (
                                     <BoardCreation history={history} onCreate={createCalendar} />
                                 )} />
-                                <Route exact path="/dashboard/:boardId/:month">
+                                <Route exact path="/dashboard/:boardId/:year/:month">
                                     <Calendar className="min-vh-100"
                                         localizer={momentLocalizer(Moment)}
                                         events={calendar.events}
