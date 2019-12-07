@@ -66,7 +66,7 @@ export class GeneratFirstPopulation {
         day.getMonth(),
         day.getDay(),
         settings.daySettings.startHour.hour,
-        settings.daySettings.startHour.min
+        settings.daySettings.startHour.minute
       );
       for (var i = 1; i <= settings.daySettings.numShiftsInDay; i++) {
         let shiftTime = this.getShiftTime(startShift, settings.shiftSettings);
@@ -85,7 +85,7 @@ export class GeneratFirstPopulation {
       startShift.getFullYear(),
       startShift.getMonth(),
       startShift.getDay(),
-      startShift.getHours() + shiftSettings.shiftLengthInHouers
+      startShift.getHours() + shiftSettings.shiftLengthInHours
     );
 
     let shiftTime: ShiftTime = {

@@ -7,7 +7,7 @@ const algorithem = new GeneticAlgorithm();
 
 router.post("/", async (req, res) => {
   try {
-    const bordId = req.query.bord; //req.param
+    const bordId = "1"; //req.query.bord; //req.param
     const month = req.body.month as Month;
     const result = await algorithem.runGeneticAlgorithm(bordId, month);
     res.status(201).end(JSON.stringify(result));

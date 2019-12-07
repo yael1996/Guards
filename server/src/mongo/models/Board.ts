@@ -117,11 +117,11 @@ const schemaBoardSettings = new Schema<BoardSettings>({
   },
   specialDaysSettings: {
     type: schemaSpecialDaysSettings,
-    required: true
+    required: false
   },
   specialDatesSettings: {
     type: schemaSpecialDatesSettings,
-    required: true
+    required: false
   }
 });
 
@@ -168,6 +168,7 @@ export {
   JSONBoard,
   BoardSettings,
   SpecialDaysSettings,
+  SpecialDatesSettings,
   RegularDaySettings,
   DaySettings,
   ShiftSettings,

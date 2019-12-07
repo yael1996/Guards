@@ -40,8 +40,9 @@ export class EmptyMonthBord {
   }
 
   private isDateSpecial(currDate: Date): boolean {
-    if (!this.bordSettings.specialDatesSettings.dates) return false;
-    else {
+    if (!this.bordSettings.specialDatesSettings.dates) {
+      return false;
+    } else {
       return this.holidays.isDateHoliday(currDate);
       // return !!this.bordSettings.specialDates.dates.find(date => {
       //   return date.getTime() == currDate.getTime();
@@ -50,8 +51,9 @@ export class EmptyMonthBord {
   }
 
   private isDaySpecial(currDate: Date): boolean {
-    if (!this.bordSettings.specialDaysSettings.daySettings) return false;
-    else {
+    if (!this.bordSettings.specialDaysSettings.days) {
+      return false;
+    } else {
       return this.bordSettings.specialDaysSettings.days.includes(
         currDate.getDay()
       );
