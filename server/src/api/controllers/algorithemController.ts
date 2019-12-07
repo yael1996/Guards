@@ -7,9 +7,9 @@ const algorithem = new GeneticAlgorithm();
 
 router.post("/", async (req, res) => {
   try {
-    const bordId = req.query.bord;
+    const boardId = req.query.board;
     const month = req.body.month as Month;
-    const result = await algorithem.runGeneticAlgorithm(bordId, month);
+    const result = await algorithem.runGeneticAlgorithm(boardId, month);
     res.status(201).end(JSON.stringify(result));
   } catch (error) {
     res.status(406).end(JSON.stringify({ error: error.message }));

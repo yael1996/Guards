@@ -27,6 +27,7 @@ export class GeneticAlgorithm {
       allWorkers,
       this.month
     );
+
     const firstPopulation = await this.getFirstPopulation();
     const config = await this.getConfiguration(
       allWorkers,
@@ -62,7 +63,7 @@ export class GeneticAlgorithm {
   private async getBestReasult() {
     await this.algorithm.evolve();
     const best = await this.algorithm.best();
-    await this.db.updateDissatisfiedInDB(best);
+    await this.db.saveBestToDB(best);
     return best;
   }
 

@@ -19,6 +19,11 @@ export class DBHelper {
     // save
   }
 
+  public async saveBestToDB(best: Shift[][]) {
+    // ToDo
+    // save
+  }
+
   public getTestBord(): Board {
     let daySettings: DaySettings = {
       numShiftsInDay: 2,
