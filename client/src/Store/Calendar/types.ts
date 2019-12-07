@@ -1,6 +1,7 @@
 import { Event } from "react-big-calendar";
 import { Action } from "redux";
 import { ThunkAction } from "redux-thunk";
+import { JSONConcreteBoard } from "../../../../server/src/mongo/models/concreteBoard";
 
 export interface CalendarStateWrapper {
     calendar: CalendarState
@@ -33,6 +34,7 @@ export const CREATE = "CREATE";
 export const GET_EVENTS = "GET_EVENTS";
 export const NEXT_MONTH = "NEXT_MONTH";
 export const PREVIOUS_MONTH = "PREVIOUS_MONTH";
+export const SET_EVENTS = "SET_EVENTS";
 export const UPDATE_EVENTS = "UPDATE_EVENTS";
 
 interface CreateAction {
@@ -62,6 +64,11 @@ interface PreviousMonth {
     }
 }
 
+interface SetEvents {
+    type: typeof SET_EVENTS,
+    payload: Event[]
+}
+
 interface UpdateEvents {
     type: typeof UPDATE_EVENTS,
     payload: {
@@ -71,6 +78,6 @@ interface UpdateEvents {
     }
 }
 
-export type CalendarAction = CreateAction | GetEventsAction | NextMonthAction | PreviousMonth | UpdateEvents;
+export type CalendarAction = CreateAction | GetEventsAction | NextMonthAction | PreviousMonth | SetEvents | UpdateEvents;
 
 export type ThunkResult<result> = ThunkAction<result, CalendarStateWrapper, undefined, CalendarAction>;

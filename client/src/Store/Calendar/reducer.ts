@@ -1,4 +1,4 @@
-import { CalendarState, CalendarAction, GET_EVENTS, UPDATE_EVENTS } from "./types";
+import { CalendarState, CalendarAction, GET_EVENTS, UPDATE_EVENTS, SET_EVENTS } from "./types";
 
 const initialState: CalendarState = {
     boardId: "1",
@@ -14,6 +14,11 @@ export function reducer(state: CalendarState = initialState, action: CalendarAct
         case UPDATE_EVENTS:
             return state;
             break;
+        case SET_EVENTS:
+            const { payload } = action;
+            const newState = Object.assign({}, state);
+            newState.events = payload;
+            return newState;
         default:
             return state;
     }

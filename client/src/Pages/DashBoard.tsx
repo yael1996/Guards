@@ -4,7 +4,7 @@ import { RootState, AppDispatch, AppAction } from "../Store/store";
 import HeaderComp from "../Components/Header/Header";
 import { Switch, Route } from "react-router-dom";
 import Moment from "moment";
-import { Calendar, momentLocalizer } from "react-big-calendar";
+import { Calendar, momentLocalizer, Event } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import SideMenuComp from "../Components/SideMenu/SideMenu";
 import { CompanyState } from "../Store/Company/types";
@@ -16,6 +16,7 @@ import Companies from "../Components/Companies/Companies";
 import { createCalendar, getEvents } from "../Store/Calendar/actions";
 import { History } from "history";
 import { JSONBoard } from "../../../server/src/mongo/models/Board";
+import { JSONConcreteBoard } from "../../../server/src/mongo/models/concreteBoard";
 
 interface OwnProps {
     history: History<any>
@@ -30,7 +31,7 @@ interface ReduxState {
 
 interface ReduxDispatch {
     createCalendar: (creationState: CreationState, user: UserState) => Promise<JSONBoard>,
-    getEvents: (boardId: string, year: number, month: number) => Promise<JSONBoard>
+    getEvents: (boardId: string, year: number, month: number) => Promise<Event[]>
 }
 
 type Props = OwnProps & ReduxState & ReduxDispatch;
@@ -54,7 +55,7 @@ class DashBoard extends Component<Props> {
         const { boardId } = this.props.calendar;
         const year = date.getFullYear();
         const month = date.getMonth();
-        this.props.getEvents(boardId, year, month).then(() => {
+        this.props.getEvents(boardId, year, month).then((board) => {
             history.push(`/dashboard/${boardId}/${year}/${month}`);
         });
     }
