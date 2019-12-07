@@ -31,11 +31,11 @@ router.get("/login", async (req, res) => {
                     gu.getUserFromDB(googleUser.email).then((dbUser)=> {
                         if (dbUser != null) {
                             //user found in DB
-                            redirectUrl = process.env.CLIENT_URL+"?user=" + Buffer.from(JSON.stringify(dbUser)).toString("base64");
+                            redirectUrl = process.env.CLIENT_URL+"/register?user=" + Buffer.from(JSON.stringify(googleUser)).toString("base64");
                             res.redirect(redirectUrl)
 
                         } else {
-                            redirectUrl = process.env.CLIENT_URL+"?user=" + Buffer.from(JSON.stringify(googleUser)).toString("base64");
+                            redirectUrl = process.env.CLIENT_URL+"/login?user=" + Buffer.from(JSON.stringify(dbUser)).toString("base64");
                             res.redirect(redirectUrl)//redirect to site/register
                         }
                     });
