@@ -7,9 +7,6 @@ import "./Styles/App.css";
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
 import DashBoard from "./Pages/DashBoard";
-import { config } from "dotenv";
-
-config();
 
 class App extends Component {
     render() {
