@@ -54,7 +54,7 @@ const schemaUser = new Schema<User>({
     required: true
   },
   tokens: {
-    type: Schema.Types.String
+    type: [Schema.Types.String]
   },
   type: {
     type: Schema.Types.String,
@@ -78,5 +78,5 @@ schemaUser.pre('save', function(this: User, next) {
   next();
 });
 
-const register = () => model<User>("users", schemaUser);
+const register = () => model<User>('users', schemaUser);
 export { register, User, JSONUser };
