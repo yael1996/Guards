@@ -3,6 +3,10 @@ import { RootState } from "../Store/store";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import { History, Location } from "history";
+import { CalendarState } from "../Store/Calendar/types";
+import { JSONUser } from "../../../server/src/mongo/models/user";
+import { removeQuerySymbol, parseParams } from "../Utils/queryParamParse";
+import config from "../config/config";
 
 interface OwnProps {
     history: History,
@@ -10,7 +14,7 @@ interface OwnProps {
 }
 
 interface ReduxState {
-
+    calendar: CalendarState
 }
 
 interface ReduxDispatch {
@@ -24,8 +28,23 @@ class Login extends Component<Props> {
         super(props);
     }
 
+    loginPath() {
+        return `${config.backendUri}/user/login`;
+    }
+
+    registerPage() {
+        return `/register`
+    }
+
     render() {
+        const { location, history } = this.props;
+        const { loginPath } = this;
+        const params = parseParams(removeQuerySymbol(location.search));
+        
+        const data = JSON.parse(atob(params["user"])) as JSONUser;
+        
         console.log(this.props.location);
+        this.props.history.push(`/dashboard`);
         return (
             <section>
                 Login page
@@ -35,7 +54,10 @@ class Login extends Component<Props> {
 }
 
 const mapStateToProps = (state: RootState): ReduxState => {
-    return state;
+    const { calendar } = state;
+    return {
+        calendar
+    }
 }
 const mapDispatchToProps = (dispatch: Dispatch): ReduxDispatch => {
     return {

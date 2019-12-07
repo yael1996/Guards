@@ -2,17 +2,27 @@ import React, { Component } from "react";
 import { RootState } from "../Store/store";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import { UserState } from "../Store/User/types";
+import { UserState, UserAction } from "../Store/User/types";
+import { History, Location } from "history";
+import { removeQuerySymbol, parseParams } from "../Utils/queryParamParse";
+import { setUser } from "../Store/User/actions";
+import { JSONUser } from "../../../server/src/mongo/models/user";
+import config from "../config/config";
+
+interface OwnProps {
+    history: History,
+    location: Location
+}
 
 interface ReduxState {
     user: UserState
 }
 
 interface ReduxDispatch {
-
+    setUser: (user: JSONUser) => UserAction
 }
 
-type Props = ReduxState & ReduxDispatch;
+type Props = OwnProps & ReduxState & ReduxDispatch;
 
 class Register extends Component<Props> {
     constructor(props: Props | undefined) {
@@ -22,14 +32,28 @@ class Register extends Component<Props> {
     }
 
     registerUser() {
-
+        const { history } = this.props;
+        history.push("/dashboard");
     }
 
     registerManager() {
-
+        const { history } = this.props;
+        history.push("/dashboard");
     }
 
     render() {
+        const { location, setUser } = this.props;
+        const params = parseParams(removeQuerySymbol(location.search));
+        let user: JSONUser | undefined = undefined;
+        if (params["user"]) {
+            user = JSON.parse(params["user"]) as JSONUser;
+        }
+        if (user) {
+            setUser(user);
+        } else {
+            window.location.replace(`${config.backendUri}/user/login`);
+        }
+
         return (
             <section className="container-fluid d-flex justify-content-center align-content-center min-vw-100 min-vh-100">
                 <section className="jumbotron my-5">
@@ -57,7 +81,7 @@ const mapStateToProps = (state: RootState): ReduxState => {
 }
 const mapDispatchToProps = (dispatch: Dispatch): ReduxDispatch => {
     return {
-
+        setUser: (user: JSONUser) => dispatch(setUser(user))
     };
 }
 
