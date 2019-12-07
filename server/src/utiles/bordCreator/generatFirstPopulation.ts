@@ -116,7 +116,7 @@ export class GeneratFirstPopulation {
   }
 
   private getRandomWorkerId(): string {
-    return this.board.workerIds[
+    return this.board.workerIds.map(x => x.toString())[
       Math.floor(Math.random() * this.board.workerIds.length)
     ];
   }
