@@ -10,7 +10,11 @@
       "name": "Launch Program",
       "program": "${workspaceFolder}\\server\\src\\server.ts",
       "preLaunchTask": "tsc: build - server/tsconfig.json",
-      "outFiles": ["${workspaceFolder}/server/dist/**/*.js"]
+      "outFiles": ["${workspaceFolder}/server/dist/**/*.js"],
+      "env": {
+        "DB": "mongodb://guards:gw33m0yal1$@37.142.119.124:27017/guards",
+        "PORT": "4000"
+      }
     }
   ]
 }

@@ -12,7 +12,7 @@ router.post("/", async (req, res) => {
     const result = await algorithem.runGeneticAlgorithm(bordId, month);
     res.status(201).end(JSON.stringify(result));
   } catch (error) {
-    res.status(406).end({ error: error.message });
+    res.status(406).end(JSON.stringify({ error: error.message }));
   }
 });
 
