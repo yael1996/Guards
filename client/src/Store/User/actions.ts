@@ -18,7 +18,7 @@ export function Login(): UserAction {
     }
 }
 
-export function registerUser(user: UserState): ThunkResult<Promise<UserState>> {
+export function registerUser(user: UserState, type: string): ThunkResult<Promise<UserState>> {
     return async (dispatch, getState) => {
         const { firstname, lastname } = getState().user;
         const payload: JSONUser = {
@@ -31,7 +31,7 @@ export function registerUser(user: UserState): ThunkResult<Promise<UserState>> {
                 constraints: []
             },
             tokens: [""],
-            type: "USER",
+            type,
             satisfiedConstraints: 1
         };
         const result = (await axios.post(`${config.backendUri}/user`, payload)) as AxiosResponse<JSONUser>;
@@ -40,9 +40,15 @@ export function registerUser(user: UserState): ThunkResult<Promise<UserState>> {
     }
 }
 
-export function setUser(user: JSONUser): UserAction {
+export function setUserSync(user: JSONUser): UserAction {
     return {
         type: SET_USER,
         payload: user
-    };
+    }
+}
+
+export function setUser(user: JSONUser): ThunkResult<Promise<void>> {
+    return async (dispatch, getState) => {
+        dispatch(setUserSync(user));
+    }
 }

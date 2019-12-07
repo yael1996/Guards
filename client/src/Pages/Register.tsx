@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import { RootState } from "../Store/store";
+import { RootState, AppDispatch } from "../Store/store";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import { UserState, UserAction } from "../Store/User/types";
 import { History, Location } from "history";
 import { removeQuerySymbol, parseParams } from "../Utils/queryParamParse";
-import { setUser } from "../Store/User/actions";
+import { setUser, setUserSync, registerUser } from "../Store/User/actions";
 import { JSONUser } from "../../../server/src/mongo/models/user";
 import config from "../config/config";
 
@@ -14,17 +14,22 @@ interface OwnProps {
     location: Location
 }
 
+interface State {
+    params: {[key: string]: string}
+}
+
 interface ReduxState {
     user: UserState
 }
 
 interface ReduxDispatch {
-    setUser: (user: JSONUser) => UserAction
+    setUser: (user: JSONUser) => UserAction,
+    registerUser: (user: UserState, type: string) => Promise<UserState>
 }
 
 type Props = OwnProps & ReduxState & ReduxDispatch;
 
-class Register extends Component<Props> {
+class Register extends Component<Props, State> {
     constructor(props: Props | undefined) {
         super(props);
         this.registerUser = this.registerUser.bind(this);
@@ -32,21 +37,26 @@ class Register extends Component<Props> {
     }
 
     registerUser() {
-        const { history } = this.props;
-        history.push("/dashboard");
+        const { registerUser, user, history } = this.props;
+        registerUser(user, "user").then(() => {
+            history.push("/dashboard");
+        });
     }
 
     registerManager() {
-        const { history } = this.props;
-        history.push("/dashboard");
+        const { registerUser, user, history } = this.props;
+        registerUser(user, "manager").then(() => {
+            history.push("/dashboard");
+        });
     }
 
     render() {
-        const { location, setUser } = this.props;
+        const { location, history, setUser } = this.props;
         const params = parseParams(removeQuerySymbol(location.search));
         let user: JSONUser | undefined = undefined;
         if (params["user"]) {
-            user = JSON.parse(params["user"]) as JSONUser;
+            user = JSON.parse(atob(params["user"])) as JSONUser;
+            console.log(user);
         }
         if (user) {
             setUser(user);
@@ -57,7 +67,7 @@ class Register extends Component<Props> {
         return (
             <section className="container-fluid d-flex justify-content-center align-content-center min-vw-100 min-vh-100">
                 <section className="jumbotron my-5">
-                <h1>Welcome stranger!</h1>
+                    <h1>Welcome stranger!</h1>
                     <h3>
                         <p>Welcome stranger, we have noticed you aren't known to us!<br/>
                         First of all we wish to congratulate you for trying our application!<br/>
@@ -79,9 +89,10 @@ const mapStateToProps = (state: RootState): ReduxState => {
         user
     };
 }
-const mapDispatchToProps = (dispatch: Dispatch): ReduxDispatch => {
+const mapDispatchToProps = (dispatch: AppDispatch): ReduxDispatch => {
     return {
-        setUser: (user: JSONUser) => dispatch(setUser(user))
+        setUser: (user: JSONUser) => dispatch(setUserSync(user)),
+        registerUser: (user: UserState, type: string) => dispatch(registerUser(user, type))
     };
 }
 
