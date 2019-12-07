@@ -73,7 +73,7 @@ interface SpecialDaysSettings {
 const schemaSpecialDaysSettings = new Schema<SpecialDaysSettings>({
   days: {
     type: [Schema.Types.Number],
-    required: true
+    required: false
   },
   daySettings: {
     type: schemaDaySettings,
@@ -93,7 +93,7 @@ interface SpecialDatesSettings {
 const schemaSpecialDatesSettings = new Schema<SpecialDatesSettings>({
   dates: {
     type: [Schema.Types.Date],
-    required: true
+    required: false
   },
   daySettings: {
     type: schemaDaySettings,
