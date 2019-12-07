@@ -1,5 +1,6 @@
 
 export interface UserState {
+    id: string,
     firstname: string,
     lastname: string,
     imageUrl: string
@@ -10,6 +11,7 @@ export interface UserStateWrapper {
 }
 
 export const LOGIN = "LOGIN";
+export const GET_USER = "GET_USER";
 
 interface LoginAction {
     type: typeof LOGIN,
@@ -18,4 +20,8 @@ interface LoginAction {
     }
 }
 
-export type UserAction = LoginAction;
+interface GetUserAction {
+    type: typeof GET_USER
+}
+
+export type UserAction = LoginAction | GetUserAction;

@@ -29,7 +29,7 @@ interface ReduxState {
 }
 
 interface ReduxDispatch {
-    createCalendar: (creationState: CreationState) => Promise<JSONBoard>,
+    createCalendar: (creationState: CreationState, user: UserState) => Promise<JSONBoard>,
     getEvents: (boardId: string, year: number, month: number) => Promise<JSONBoard>
 }
 
@@ -43,7 +43,10 @@ class DashBoard extends Component<Props> {
     }
 
     onCreate(creationState: CreationState) {
-        this.props.createCalendar(creationState);
+        const { user } = this.props;
+        this.props.createCalendar(creationState, user).then((board) => {
+            
+        });
     }
 
     onDateChange(date: Date) {
@@ -57,7 +60,7 @@ class DashBoard extends Component<Props> {
     }
 
     render() {
-        const { companies, user, calendar, createCalendar } = this.props;
+        const { companies, user, calendar } = this.props;
         const { items } = this.props.menu;
         const onDateChange = this.onDateChange;
         
@@ -76,7 +79,7 @@ class DashBoard extends Component<Props> {
                                     <Companies companies={companies} history={history} />
                                 )} />
                                 <Route exact path="/dashboard/create" children={({ history }) => (
-                                    <BoardCreation history={history} onCreate={createCalendar} />
+                                    <BoardCreation history={history} onCreate={this.onCreate} />
                                 )} />
                                 <Route exact path="/dashboard/:boardId/:year/:month">
                                     <Calendar className="min-vh-100"
@@ -117,7 +120,7 @@ const mapStateToProps = (state: RootState): ReduxState => {
 
 const mapDispatchToProps = (dispatch: AppDispatch): ReduxDispatch => {
     return {
-        createCalendar: (creationState: CreationState) => dispatch(createCalendar(creationState)),
+        createCalendar: (creationState: CreationState, user: UserState) => dispatch(createCalendar(creationState, user)),
         getEvents: (boardId: string, year: number, month: number) => dispatch(getEvents(boardId, year, month))
     }
 }
