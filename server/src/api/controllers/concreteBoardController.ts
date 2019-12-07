@@ -3,7 +3,7 @@ import { models } from "../../mongo/connection";
 
 const router = Router();
 
-router.get("/:metaId/:month", async (req, res) => {
+router.get("/:metaId/:year/:month", async (req, res) => {
     try {
         const { metaId, month } = req.params;
         const result = await models.concreteBoard.findOne({ metaId, month });
@@ -13,19 +13,6 @@ router.get("/:metaId/:month", async (req, res) => {
         res.status(200).end(result);
     } catch (error) {
         res.status(400).end(error);
-    }
-});
-router.get("/:metaId", async (req, res) => {
-    try {
-        const { metaId } = req.params;
-        const month = new Date().getMonth();
-        const result = await models.concreteBoard.findOne({ metaId, month });
-        if (!result) {
-            return res.sendStatus(404);
-        }
-        res.status(200).end(JSON.stringify(result));
-    } catch (error) {
-        res.status(400).end({ error: error.message });
     }
 });
 router.patch("/:id", async (req, res) => {

@@ -58,6 +58,7 @@ const schemaShift = new Schema<Shift>({
 
 interface JSONConcreteBoard {
     metaId: string,
+    year: number,
     month: number,
     shifts: Shift[]
 }
@@ -65,6 +66,10 @@ interface ConcreteBoard extends JSONConcreteBoard, Document {}
 const schemaConcreteBoard = new Schema<ConcreteBoard>({
     metaId: {
         type: Schema.Types.ObjectId,
+        required: true
+    },
+    year: {
+        type: Schema.Types.Number,
         required: true
     },
     month: {
