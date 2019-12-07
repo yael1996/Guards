@@ -67,8 +67,8 @@ export class GeneticAlgorithm {
   }
 
   private async getFirstPopulation() {
-    //const bord = await this.db.getBordById(this.bordId);
-    const bord = this.db.getTestBord();
+    //const bord = this.db.getTestBord();
+    const bord = await this.db.getBordById(this.bordId);
     const population = new GeneratFirstPopulation(bord, this.month);
     return await population.buildFirstPopulation(this.POPULATION_SIZE);
   }
