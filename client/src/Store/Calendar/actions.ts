@@ -1,5 +1,13 @@
 import { Event } from "react-big-calendar";
-import { CalendarAction, GET_EVENTS, UPDATE_EVENTS, NEXT_MONTH, PREVIOUS_MONTH } from "./types";
+import { CalendarAction, GET_EVENTS,
+    UPDATE_EVENTS, NEXT_MONTH, PREVIOUS_MONTH,
+    CreationState, ThunkResult } from "./types";
+
+export function createCalendar(creationState: CreationState): ThunkResult<Promise<void>> {
+    return async (dispatch, getState) => {
+        
+    }
+}
 
 export function getEvents(metaId: string, month: number): CalendarAction {
     return {

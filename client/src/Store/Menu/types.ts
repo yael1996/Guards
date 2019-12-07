@@ -8,6 +8,10 @@ export interface MenuState {
     items: MenuItem[]
 }
 
+export interface MenuStateWrapper {
+    menu: MenuState
+}
+
 export const SHOW_PAGE = "SHOW_PAGE";
 
 interface ShowPageAction {

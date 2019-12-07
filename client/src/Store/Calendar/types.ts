@@ -1,8 +1,31 @@
 import { Event } from "react-big-calendar";
+import { Action } from "redux";
+import { ThunkAction } from "redux-thunk";
+
+export interface CalendarStateWrapper {
+    calendar: CalendarState
+}
 
 export interface CalendarState {
     currentDate: Date,
-    events: Event[]
+    events: Event[]  
+}
+
+export type DayMap = [boolean, boolean, boolean, boolean, boolean, boolean, boolean];
+
+export interface ShiftSettings {
+    length: string,
+    amount: string,
+    workerCount: string
+}
+
+export interface CreationState {
+    standardDays: DayMap,
+    standardShiftSettings: ShiftSettings,
+    specialDays: DayMap,
+    specialShiftSettings: ShiftSettings,
+    withHolidays: boolean,
+    holidayShiftSettings: ShiftSettings
 }
 
 export const CREATE = "CREATE";
@@ -13,9 +36,7 @@ export const UPDATE_EVENTS = "UPDATE_EVENTS";
 
 interface CreateAction {
     type: typeof CREATE,
-    payload: {
-        
-    }
+    payload: CreationState
 }
 
 interface GetEventsAction {
@@ -49,4 +70,6 @@ interface UpdateEvents {
     }
 }
 
-export type CalendarAction = GetEventsAction | NextMonthAction | PreviousMonth | UpdateEvents;
+export type CalendarAction = CreateAction | GetEventsAction | NextMonthAction | PreviousMonth | UpdateEvents;
+
+export type ThunkResult<result> = ThunkAction<result, CalendarStateWrapper, undefined, CalendarAction>;
