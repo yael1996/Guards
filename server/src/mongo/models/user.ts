@@ -36,7 +36,7 @@ const schemaMonthlyConstraints = new Schema<MonthlyConstraints>({
   }
 });
 
-interface JSONUser {
+interface UserModel {
   firstname: string;
   lastname: string;
   email: string;
@@ -46,7 +46,10 @@ interface JSONUser {
   unSatisfiedConstraints: number;
   monthlyConstraints: MonthlyConstraints[];
 }
-interface User extends JSONUser, Document {}
+interface JSONUser extends UserModel {
+  _id: string;
+}
+interface User extends UserModel, Document {}
 const schemaUser = new Schema<User>({
   firstname: {
     type: schemaMonth,

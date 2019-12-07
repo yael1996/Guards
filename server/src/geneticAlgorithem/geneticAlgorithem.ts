@@ -63,7 +63,7 @@ export class GeneticAlgorithm {
   private async getBestReasult() {
     await this.algorithm.evolve();
     const best = await this.algorithm.best();
-    await this.db.saveBestToDB(best);
+    await this.db.saveBestToDB(best, this.month, this.bordId);
     return best;
   }
 
