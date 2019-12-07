@@ -2,10 +2,10 @@ import { Event } from "react-big-calendar";
 import { CalendarAction,
     UPDATE_EVENTS, NEXT_MONTH, PREVIOUS_MONTH,
     CreationState, ThunkResult, DayMap } from "./types";
-import { JSONBoard, ShiftSettings } from "../../../../server/src/mongo/models/Board";
+import { JSONBoard } from "../../../../server/src/mongo/models/Board";
+import { JSONConcreteBoard } from "../../../../server/src/mongo/models/concreteBoard";
 import axios, { AxiosResponse } from "axios";
 import config from "../../config/config";
-import { getUser } from "../User/actions";
 import { UserState } from "../User/types";
 
 export function createCalendar(creationState: CreationState, user: UserState): ThunkResult<Promise<JSONBoard>> {
@@ -91,9 +91,10 @@ export function createCalendar(creationState: CreationState, user: UserState): T
     }
 }
 
-export function getEvents(metaId: string, year: number, month: number): ThunkResult<Promise<JSONBoard>> {
+export function getEvents(metaId: string, year: number, month: number): ThunkResult<Promise<JSONConcreteBoard>> {
     return async (dispatch, getState) => {
-        const result = (await axios.get(`${config.backendUri}/board`)) as AxiosResponse<JSONBoard>;
+        const reqUrl = `${config.backendUri}/concreteBoard/${metaId}/${year}/${month}`;
+        const result = (await axios.get(reqUrl)) as AxiosResponse<JSONConcreteBoard>;
         return result.data;
     }
 }
