@@ -5,8 +5,8 @@ const router = Router();
 
 router.get("/:metaId/:year/:month", async (req, res) => {
     try {
-        const { metaId, month } = req.params;
-        const result = await models.concreteBoard.findOne({ metaId, month });
+        const { metaId, year, month } = req.params;
+        const result = await models.concreteBoard.findOne({ metaId, year, month });
         if (!result) {
             return res.sendStatus(404);
         }
