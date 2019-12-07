@@ -1,6 +1,7 @@
 import { CalendarState, CalendarAction, GET_EVENTS, UPDATE_EVENTS } from "./types";
 
 const initialState: CalendarState = {
+    boardId: "1",
     currentDate: new Date(),
     events: []
 }

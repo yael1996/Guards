@@ -13,8 +13,9 @@ import { CalendarState, CreationState } from "../Store/Calendar/types";
 import { MenuState } from "../Store/Menu/types";
 import BoardCreation from "../Components/BoardCreation/BoardCreation";
 import Companies from "../Components/Companies/Companies";
-import { createCalendar } from "../Store/Calendar/actions";
+import { createCalendar, getEvents } from "../Store/Calendar/actions";
 import { History } from "history";
+import { JSONBoard } from "../../../server/src/mongo/models/Board";
 
 interface OwnProps {
     history: History<any>
@@ -28,7 +29,8 @@ interface ReduxState {
 }
 
 interface ReduxDispatch {
-    createCalendar: (creationState: CreationState) => Promise<void>
+    createCalendar: (creationState: CreationState) => Promise<JSONBoard>,
+    getEvents: (boardId: string, year: number, month: number) => Promise<JSONBoard>
 }
 
 type Props = OwnProps & ReduxState & ReduxDispatch;
@@ -45,7 +47,13 @@ class DashBoard extends Component<Props> {
     }
 
     onDateChange(date: Date) {
-        
+        const { history } = this.props;
+        const { boardId } = this.props.calendar;
+        const year = date.getFullYear();
+        const month = date.getMonth();
+        this.props.getEvents(boardId, year, month).then(() => {
+            history.push(`/dashboard/${boardId}/${year}/${month}`);
+        });
     }
 
     render() {
@@ -109,7 +117,8 @@ const mapStateToProps = (state: RootState): ReduxState => {
 
 const mapDispatchToProps = (dispatch: AppDispatch): ReduxDispatch => {
     return {
-        createCalendar: (creationState: CreationState) => dispatch(createCalendar(creationState))
+        createCalendar: (creationState: CreationState) => dispatch(createCalendar(creationState)),
+        getEvents: (boardId: string, year: number, month: number) => dispatch(getEvents(boardId, year, month))
     }
 }
 

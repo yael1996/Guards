@@ -7,8 +7,9 @@ export interface CalendarStateWrapper {
 }
 
 export interface CalendarState {
+    boardId: string,
     currentDate: Date,
-    events: Event[]  
+    events: Event[]
 }
 
 export type DayMap = [boolean, boolean, boolean, boolean, boolean, boolean, boolean];

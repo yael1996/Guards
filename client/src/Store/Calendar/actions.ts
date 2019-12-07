@@ -1,21 +1,20 @@
 import { Event } from "react-big-calendar";
-import { CalendarAction, GET_EVENTS,
+import { CalendarAction,
     UPDATE_EVENTS, NEXT_MONTH, PREVIOUS_MONTH,
     CreationState, ThunkResult } from "./types";
+import { JSONBoard } from "../../../../server/src/mongo/models/Board";
+import axios, { AxiosResponse } from "axios";
 
-export function createCalendar(creationState: CreationState): ThunkResult<Promise<void>> {
+export function createCalendar(creationState: CreationState): ThunkResult<Promise<JSONBoard>> {
     return async (dispatch, getState) => {
-        
+        return (await axios.post("")).data;
     }
 }
 
-export function getEvents(metaId: string, month: number): CalendarAction {
-    return {
-        type: GET_EVENTS,
-        payload: {
-            metaId,
-            month
-        }
+export function getEvents(metaId: string, year: number, month: number): ThunkResult<Promise<JSONBoard>> {
+    return async (dispatch, getState) => {
+        const result = await axios.get("");
+        return result.data;
     }
 }
 
