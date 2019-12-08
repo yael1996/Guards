@@ -77,7 +77,8 @@ const schemaUser = new Schema<User>({
   },
   monthlyConstraints: {
     type: schemaMonthlyConstraints,
-    required: false
+    required: false,
+    default: []
   }
 });
 

@@ -13,6 +13,7 @@ import { GeneticAlgorithm } from "../../geneticAlgorithem/geneticAlgorithem";
 import { Month } from "../../mongo/models/concreteBoard";
 import { Fitness } from "../../geneticAlgorithem/fitness";
 import { DBHelper } from "../DBHelper";
+import { MonthlyConstraints, Constraint } from "../../mongo/models/User";
 
 export class TestAlgo {
   private db: DBHelper;
@@ -20,6 +21,11 @@ export class TestAlgo {
   constructor() {
     this.db = new DBHelper();
     this.algo = new GeneticAlgorithm();
+  }
+
+  public async getbest(boardId: string, month: Month, x, y, z) {
+    const best = await this.algo.runGeneticAlgorithm(boardId, month, x, y, z);
+    return best;
   }
 
   public async test(boardId: string, month: Month) {
@@ -30,13 +36,7 @@ export class TestAlgo {
         const y = j;
         const z = 1 - (i + j);
 
-        const best = await this.algo.runGeneticAlgorithm(
-          boardId,
-          month,
-          x,
-          y,
-          z
-        );
+        const best = await this.getbest(boardId, month, x, y, z);
 
         const workersIds = await this.db.getAllWorkers(boardId);
         const workersDissatisfied = await this.db.getWorkerDissatisfieds(
@@ -64,6 +64,7 @@ export class TestAlgo {
       return testResult;
     }
   }
+
   public async createFullBoard() {
     const NUM_USERS = 8;
     const board = await this.createBoard();
@@ -138,5 +139,21 @@ export class TestAlgo {
     await board.save();
   }
 
-  public addUserConstraints() {}
+  public async addUserConstraints(boardId: string, month: Month) {
+    const board = await models.board.findById(boardId);
+    for (let workerId of board.workerIds) {
+      const user = await models.user.findById(workerId);
+      const constraints: Constraint[] = [
+        {
+          text: "",
+          time: { fromTime: new Date(), toTime: new Date() }
+        }
+      ];
+      const monthConstraint: MonthlyConstraints = {
+        month: month,
+        constraints: constraints
+      };
+      user.monthlyConstraints;
+    }
+  }
 }
