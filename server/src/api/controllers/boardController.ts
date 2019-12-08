@@ -33,7 +33,11 @@ router.post("/", async (req, res) => {
 });
 router.delete("/:id", async (req, res) => {
   try {
-    const result = await models.board.findByIdAndRemove(req.params.id);
+    const result = await models.board.findById(req.params.id);
+    for (let workerId of result.workerIds) {
+      await models.user.findByIdAndRemove(workerId);
+    }
+    await result.remove();
     res.status(200).end(JSON.stringify(result));
   } catch (error) {
     res.status(400).end(JSON.stringify({ error: error.message }));

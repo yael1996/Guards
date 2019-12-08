@@ -23,6 +23,11 @@ router.get("/:id", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     const result = await models.user.create(req.body);
+    // add user to bord
+    const board = await models.board.findById(result.boardId);
+    await board.workerIds.push(result.id);
+    await board.save();
+
     res.status(201).end(JSON.stringify(result));
   } catch (error) {
     res.status(406).end(JSON.stringify({ error: error.message }));
@@ -30,7 +35,12 @@ router.post("/", async (req, res) => {
 });
 router.delete("/:id", async (req, res) => {
   try {
-    const result = await models.user.findByIdAndRemove(req.params.id);
+    const user = await models.user.findById(req.params.id);
+    // update workers in bord
+    const board = await models.board.findById(user.boardId);
+    board.workerIds = await board.workerIds.filter(x => x != user.id);
+    await board.save();
+    const result = await user.remove();
     res.status(200).end(JSON.stringify(result));
   } catch (error) {
     res.status(400).end(JSON.stringify({ error: error.message }));

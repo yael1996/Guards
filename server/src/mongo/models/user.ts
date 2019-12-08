@@ -40,7 +40,6 @@ interface UserModel {
   firstname: string;
   lastname: string;
   email: string;
-  tokens: [string];
   type: USER_TYPE;
   boardId: string;
   unSatisfiedConstraints: number;
@@ -52,7 +51,7 @@ interface JSONUser extends UserModel {
 interface User extends UserModel, Document {}
 const schemaUser = new Schema<User>({
   firstname: {
-    type: schemaMonth,
+    type: Schema.Types.String,
     required: true
   },
   lastname: {
@@ -62,9 +61,6 @@ const schemaUser = new Schema<User>({
   email: {
     type: Schema.Types.String,
     required: true
-  },
-  tokens: {
-    type: Schema.Types.String
   },
   type: {
     type: Schema.Types.Number,
@@ -80,7 +76,8 @@ const schemaUser = new Schema<User>({
     default: 0
   },
   monthlyConstraints: {
-    type: schemaMonthlyConstraints
+    type: schemaMonthlyConstraints,
+    required: false
   }
 });
 
