@@ -156,7 +156,8 @@ const schemaBoard = new Schema<Board>({
   },
   workerIds: {
     type: [Schema.Types.ObjectId],
-    required: true
+    required: false,
+    default: []
   }
 });
 

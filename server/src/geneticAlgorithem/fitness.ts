@@ -3,23 +3,36 @@ import { AmountShifts } from "../utiles/calculateFitness/amountShifts";
 import { Equlity } from "../utiles/calculateFitness/equlity";
 import { SatisfiedPeople } from "../utiles/calculateFitness/satisfiedPeople";
 import { Constraint } from "../mongo/models/User";
-import { DBHelper } from "../utiles/DBHelper";
 
 export class Fitness {
   private amount: AmountShifts;
   private equlity: Equlity;
   private satisfie: SatisfiedPeople;
+  private amountShiftsPart;
+  private equityPart;
+  private satisfiedPeoplePart;
+
   private workersDissatisfied;
   private workersConstraints;
   private workersIds;
 
-  constructor(workersDissatisfied, workersConstraints, workersIds) {
+  constructor(
+    workersDissatisfied,
+    workersConstraints,
+    workersIds,
+    amountShiftsPart,
+    equityPart,
+    satisfiedPeoplePart
+  ) {
     this.amount = new AmountShifts();
     this.equlity = new Equlity();
     this.satisfie = new SatisfiedPeople();
     this.workersDissatisfied = workersDissatisfied;
     this.workersConstraints = workersConstraints;
     this.workersIds = workersIds;
+    this.amountShiftsPart = amountShiftsPart;
+    this.equityPart = equityPart;
+    this.satisfiedPeoplePart = satisfiedPeoplePart;
   }
 
   getFitness = (monthShifts: Shift[]): number => {
@@ -42,10 +55,6 @@ export class Fitness {
     workersConstraints: { [id: string]: Constraint[] },
     workersIds: string[]
   ) => {
-    const amountShiftsPart = 0;
-    const equityPart = 0;
-    const satisfiedPeoplePart = 0;
-
     let amountShifts = this.getAmountShifts(workersIds, monthShifts);
     let equit = this.getEquity(workersIds, workersDissatisfied);
     let satisfiedPeople = this.getSatisfiedPeople(
@@ -53,11 +62,12 @@ export class Fitness {
       workersConstraints
     );
 
-    return -(
-      amountShifts * amountShiftsPart +
-      equit * equityPart +
-      satisfiedPeople * satisfiedPeoplePart
-    );
+    const fitness =
+      amountShifts * this.amountShiftsPart +
+      equit * this.equityPart +
+      satisfiedPeople * this.satisfiedPeoplePart;
+
+    return -fitness;
   };
 
   private getAmountShifts = (

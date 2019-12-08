@@ -20,6 +20,7 @@ export class SatisfiedPeople {
     let notAppliedConstraints = this.getTotalNotAppliedConstraints();
     let totalConstraints = this.getTotalConstraintsByMonth();
 
+    if (totalConstraints == 0) return 0;
     return notAppliedConstraints / totalConstraints;
   }
 

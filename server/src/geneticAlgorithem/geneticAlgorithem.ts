@@ -16,7 +16,13 @@ export class GeneticAlgorithm {
 
   constructor() {}
 
-  public async runGeneticAlgorithm(bordId: string, month: Month) {
+  public async runGeneticAlgorithm(
+    bordId: string,
+    month: Month,
+    amountShiftsPart = 0.3,
+    equityPart = 0.3,
+    satisfiedPeoplePart = 0.4
+  ) {
     this.bordId = bordId;
     this.month = month;
     this.db = new DBHelper();
@@ -33,6 +39,9 @@ export class GeneticAlgorithm {
       allWorkers,
       workersDissatisfied,
       workersConstraints,
+      amountShiftsPart,
+      equityPart,
+      satisfiedPeoplePart,
       firstPopulation
     );
     this.algorithm = await geneticalgorithm(config);
@@ -43,6 +52,9 @@ export class GeneticAlgorithm {
     allWorkers,
     workersDissatisfied,
     workersConstraints,
+    amountShiftsPart,
+    equityPart,
+    satisfiedPeoplePart,
     firstPopulation: Shift[][] = []
   ) {
     const config = {
@@ -51,7 +63,10 @@ export class GeneticAlgorithm {
       fitnessFunction: new Fitness(
         workersDissatisfied,
         workersConstraints,
-        allWorkers
+        allWorkers,
+        amountShiftsPart,
+        equityPart,
+        satisfiedPeoplePart
       ).getFitness,
       population: firstPopulation,
       populationSize: firstPopulation.length // defaults to 100
