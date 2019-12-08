@@ -1,5 +1,3 @@
-import { models } from "../../mongo/Connection";
-
 export class Equlity {
   private workersId: string[];
   private workersDissatisfied: { [id: string]: number };

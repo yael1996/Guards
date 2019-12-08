@@ -14,9 +14,47 @@ import {
 export class DBHelper {
   constructor() {}
 
-  public async updateDissatisfiedInDB(best: Shift[]) {
-    // ToDo
-    // save
+  public async updateDissatisfiedInDB(
+    best: Shift[],
+    workers: string[],
+    month: Month
+  ) {
+    const workersConstraints = this.getWorkerConstraints(workers, month);
+    for (let worker in workers) {
+      const dissatisfieds = await this.getWorkerNotAppliedConstraints(
+        worker,
+        best,
+        workersConstraints
+      );
+
+      const user = await this.getUserById(worker);
+      const old = user.unSatisfiedConstraints;
+      user.unSatisfiedConstraints = old + dissatisfieds;
+      await user.save();
+    }
+  }
+
+  public getWorkerNotAppliedConstraints(
+    workerId: string,
+    monthShifts: Shift[],
+    workersConstraints
+  ): number {
+    let workerNotApplied = 0;
+    let workerConstraint = workersConstraints[workerId];
+
+    for (let constraint of workerConstraint) {
+      let shift = this.getConstraintShift(constraint, monthShifts);
+      if (shift.workersId.some(x => x == workerId)) workerNotApplied++;
+    }
+    return workerNotApplied;
+  }
+
+  private getConstraintShift(constraint: Constraint, monthShifts: Shift[]) {
+    return monthShifts.find(
+      x =>
+        x.shiftTime.fromTime == constraint.time.fromTime &&
+        x.shiftTime.toTime == constraint.time.toTime
+    );
   }
 
   public async saveBestToDB(best: Shift[][], month: Month, bordId: string) {

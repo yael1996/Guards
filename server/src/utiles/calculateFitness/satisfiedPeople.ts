@@ -1,9 +1,11 @@
 import { Shift } from "../../mongo/models/concreteBoard";
 import { Constraint } from "../../mongo/models/User";
+import { DBHelper } from "../DBHelper";
 
 export class SatisfiedPeople {
   private monthShifts: Shift[];
   private workersConstraints: { [id: string]: Constraint[] };
+  private utiles: DBHelper;
 
   constructor() {}
 
@@ -13,6 +15,7 @@ export class SatisfiedPeople {
   ): number {
     this.monthShifts = monthShifts;
     this.workersConstraints = workersConstraints;
+    this.utiles = new DBHelper();
 
     let notAppliedConstraints = this.getTotalNotAppliedConstraints();
     let totalConstraints = this.getTotalConstraintsByMonth();
@@ -23,29 +26,14 @@ export class SatisfiedPeople {
   private getTotalNotAppliedConstraints(): number {
     let notAppliedConstraints = 0;
     for (let workerId in this.workersConstraints) {
-      notAppliedConstraints += this.getWorkerNotAppliedConstraints(workerId);
+      notAppliedConstraints += this.utiles.getWorkerNotAppliedConstraints(
+        workerId,
+        this.monthShifts,
+        this.workersConstraints
+      );
     }
 
     return notAppliedConstraints;
-  }
-
-  private getWorkerNotAppliedConstraints(workerId: string): number {
-    let workerNotApplied = 0;
-    let workerConstraint = this.workersConstraints[workerId];
-
-    for (let constraint of workerConstraint) {
-      let shift = this.getConstraintShift(constraint);
-      if (shift.workersId.some(x => x == workerId)) workerNotApplied++;
-    }
-    return workerNotApplied;
-  }
-
-  private getConstraintShift(constraint: Constraint) {
-    return this.monthShifts.find(
-      x =>
-        x.shiftTime.fromTime == constraint.time.fromTime &&
-        x.shiftTime.toTime == constraint.time.toTime
-    );
   }
 
   private getTotalConstraintsByMonth(): number {
