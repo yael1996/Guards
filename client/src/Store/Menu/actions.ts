@@ -1,10 +1,11 @@
-import { MenuAction, SHOW_PAGE } from "./types";
+import { MenuAction, LOAD_PAGES } from "./types";
+import { UserState } from "../User/types";
 
-export function ShowPage(page: string): MenuAction {
+export function ShowPage(user: UserState): MenuAction {
     return {
-        type: SHOW_PAGE,
+        type: LOAD_PAGES,
         payload: {
-            page
+            user
         }
     }
 }
