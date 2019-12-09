@@ -33,12 +33,12 @@ class UserInformationComp extends Component<Props> {
     }
 
     render() {
-        const { firstname, lastname } = this.props.user;
+        const { imageUrl, firstname, lastname } = this.props.user;
         const { onLogout } = this;
         return (
             <section className="card">
                 <section className="card-body">
-                    {/* <img className="rounded-circle" src={imageUrl} /> */}
+                    <img className="rounded-circle" width="150px" src={imageUrl} />
                     <p>Welcome {`${firstname} ${lastname}`}</p>
                     <button className="btn btn-link" onClick={onLogout}>Logout</button>
                 </section>

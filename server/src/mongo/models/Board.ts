@@ -126,7 +126,7 @@ const schemaBoardSettings = new Schema<BoardSettings>({
 });
 
 interface JSONBoard {
-    id: string,
+    id?: string,
     name: string,
     description: string,
     ownerId: string,

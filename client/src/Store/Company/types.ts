@@ -11,8 +11,13 @@ export interface CompanyStateWrapper {
     companies: CompanyState
 }
 
+export const CLEAR_COMPANIES = "CLEAR_COMPANIES";
 export const SET_COMPANIES = "SET_COMPANIES";
 export const GET_COMPANIES = "GET_COMPANIES";
+
+interface ClearCompaniesAction {
+    type: typeof CLEAR_COMPANIES
+}
 
 interface SetCompaniesAction {
     type: typeof SET_COMPANIES,
@@ -26,5 +31,5 @@ interface GetCompaniesAction {
     }
 }
 
-export type CompanyAction = SetCompaniesAction | GetCompaniesAction;
+export type CompanyAction = ClearCompaniesAction | SetCompaniesAction | GetCompaniesAction;
 export type ThunkResult<result> = ThunkAction<result, CompanyStateWrapper, undefined, CompanyAction>;

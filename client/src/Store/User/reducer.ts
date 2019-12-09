@@ -11,7 +11,8 @@ const initialState: UserState = {
     monthlyConstraints: {
         month: 0,
         constraints: []
-    }
+    },
+    imageUrl: "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
 }
 
 export function reducer(state: UserState = initialState, action: UserAction): UserState {

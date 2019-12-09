@@ -10,11 +10,12 @@ export interface UserState {
     tokens: string[],
     type: string,
     satisfiedConstraints: number,
-    monthlyConstraints: MonthlyConstraints
+    monthlyConstraints: MonthlyConstraints,
+    imageUrl: string
 }
 
 export interface UserStateWrapper {
-    user: JSONUser
+    user: UserState
 }
 
 export const LOGOUT = "LOGOUT";
