@@ -7,12 +7,9 @@ router.get("/:metaId/:year/:month", async (req, res) => {
     try {
         const { metaId, year, month } = req.params;
         const result = await models.concreteBoard.findOne({ metaId, year, month });
-        if (!result) {
-            return res.sendStatus(404);
-        }
-        res.status(200).end(JSON.stringify(result));
+        res.status(200).json(result || {}).end();
     } catch (error) {
-        res.status(400).end(JSON.stringify(error));
+        res.status(400).json(error).end();
     }
 });
 router.patch("/:id", async (req, res) => {
@@ -25,9 +22,9 @@ router.patch("/:id", async (req, res) => {
             concreteBoard[prop] = req.body[prop];
         });
         const result = await concreteBoard.save();
-        res.status(200).end(JSON.stringify(result));
+        res.status(200).json(result).end();
     } catch (error) {
-        res.status(400).end(JSON.stringify({ error: error.message }));
+        res.status(400).json({ error: error.message }).end();
     }
 });
 

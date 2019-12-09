@@ -126,13 +126,20 @@ const schemaBoardSettings = new Schema<BoardSettings>({
 });
 
 interface JSONBoard {
+    id: string,
     name: string,
     description: string,
     ownerId: string,
     boardSettings: BoardSettings,
     workerIds: string[]
 }
-interface Board extends JSONBoard, Document {}
+interface Board extends Document {
+    name: string,
+    description: string,
+    ownerId: string,
+    boardSettings: BoardSettings,
+    workerIds: string[]
+}
 const schemaBoard = new Schema<Board>({
     name: {
         type: Schema.Types.String,

@@ -6,9 +6,9 @@ const router = Router();
 router.get("/", async (req, res) => {
     try {
         const result = await models.board.find();
-        res.status(200).end(JSON.stringify(result));
+        res.status(200).json(result).end();
     } catch (error) {
-        res.status(400).end(JSON.stringify({ error: error.message }));
+        res.status(400).json({ error: error.message }).end();
     }
 });
 router.get("/:id", async (req, res) => {
@@ -17,25 +17,41 @@ router.get("/:id", async (req, res) => {
         if (!result) {
             return res.sendStatus(404);
         }
-        res.status(200).end(JSON.stringify(result));
+        res.status(200).json(result).end();
     } catch (error) {
-        res.status(400).end(JSON.stringify({ error: error.message }));
+        res.status(400).json({ error: error.message }).end();
     }
 });
+router.get("/user/:id", async (req, res) => {
+    try {
+        const result = await models.board.find({ workerIds: { $eq: req.params.id } });
+        res.status(200).json(result || []).end();
+    } catch (error) {
+        res.status(400).json({ error: error.message }).end();
+    }
+})
+router.get("/manager/:id", async (req, res) => {
+    try {
+        const result = await models.board.find({ ownerId: req.params.id });
+        res.status(200).json(result || []).end();
+    } catch (error) {
+        res.status(400).json({ error: error.message }).end();
+    }
+})
 router.post("/", async (req, res) => {
     try {
         const result = await models.board.create(req.body);
-        res.status(201).end(JSON.stringify(result));
+        res.status(201).json(result).end();
     } catch (error) {
-        res.status(400).end(JSON.stringify({ error: error.message }));
+        res.status(400).json({ error: error.message }).end();
     }
 });
 router.delete("/:id", async (req, res) => {
     try {
         const result = await models.board.findByIdAndRemove(req.params.id);
-        res.status(200).end(JSON.stringify(result));
+        res.status(200).json(result).end();
     } catch (error) {
-        res.status(400).end(JSON.stringify({ error: error.message }));
+        res.status(400).json({ error: error.message }).end();
     }
 });
 router.patch("/:id", async (req, res) => {
@@ -48,9 +64,9 @@ router.patch("/:id", async (req, res) => {
             board[prop] = req.body[prop];
         });
         const result = await board.save();
-        res.status(200).end(JSON.stringify(result));
+        res.status(200).json(result).end();
     } catch (error) {
-        res.status(400).end(JSON.stringify({ error: error.message }));
+        res.status(400).json({ error: error.message }).end();
     }
 });
 

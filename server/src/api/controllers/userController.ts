@@ -54,34 +54,33 @@ router.get("/login", async (req, res) => {
 router.get("/", async (req, res) => {
     try {
         const result = await models.user.find();
-        res.status(200).end(JSON.stringify(result));
+        res.status(200).json(result || []).end();
     } catch (error) {
-        res.status(400).end(JSON.stringify({ error: error.message }));
+        res.status(400).json({ error: error.message }).end();
     }
-    res.end(await models.user.find());
 });
 router.get("/:id", async (req, res) => {
     try {
         const result = await models.user.findById(req.params.id);
-        res.status(200).end(JSON.stringify(result));
+        res.status(200).json(result || {}).end();
     } catch (error) {
-        res.status(400).end(JSON.stringify({ error: error.message }));
+        res.status(400).json({ error: error.message }).end();
     }
 });
 router.post("/", async (req, res) => {
     try {
         const result = await models.user.create(req.body);
-        res.status(201).end(JSON.stringify(result));
+        res.status(201).json(result).end();
     } catch (error) {
-        res.status(406).end(JSON.stringify({ error: error.message }));
+        res.status(406).json({ error: error.message }).end();
     }
 });
 router.delete("/:id", async (req, res) => {
     try {
         const result = await models.user.findByIdAndRemove(req.params.id);
-        res.status(200).end(JSON.stringify(result));
+        res.status(200).json(result).end();
     } catch (error) {
-        res.status(400).end(JSON.stringify({ error: error.message }));
+        res.status(400).json({ error: error.message }).end();
     }
 });
 router.patch("/:id", async (req, res) => {
@@ -94,9 +93,9 @@ router.patch("/:id", async (req, res) => {
             user[name] = req.body[name];
         });
         const result = await user.save();
-        res.status(200).end(JSON.stringify(result));
+        res.status(200).json(result).end();
     } catch (error) {
-        res.status(400).end(JSON.stringify({ error: error.message }));
+        res.status(400).json({ error: error.message }).end();
     }
 });
 
