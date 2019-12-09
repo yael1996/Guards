@@ -86,7 +86,7 @@ const schemaSpecialDaysSettings = new Schema<SpecialDaysSettings>({
 });
 
 interface SpecialDatesSettings {
-    dates: Date[],
+    dates?: Date[],
     daySettings: DaySettings,
     shiftSettings: ShiftSettings
 }

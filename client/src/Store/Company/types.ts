@@ -10,6 +10,8 @@ export interface ShiftSettings {
 }
 
 export interface CreationState {
+    name: string,
+    description: string,
     standardDays: DayMap,
     standardShiftSettings: ShiftSettings,
     specialDays: DayMap,
@@ -19,7 +21,7 @@ export interface CreationState {
 }
 
 export interface Company {
-    id: string,
+    id?: string,
     name: string,
     description: string,
     ownerId: string,

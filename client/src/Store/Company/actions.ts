@@ -25,9 +25,16 @@ export function getCompanies(user: UserState): ThunkResult<Promise<CompanyState>
     }
 }
 
-export function createCompany(company: CompanyState): ThunkResult<Promise<CompanyState>> {
+export function createCompany(company: Company, withHolidays: boolean): ThunkResult<Promise<Company>> {
     return async (dispatch, getState) => {
-        const result = await Axios.post(`${config.backendUri}/board`, company) as AxiosResponse<CompanyState>
+        let url: string = `${config.backendUri}/board`;
+        if (withHolidays) {
+            url = `${config.backendUri}/board/holidays`;
+        }
+        const result = await Axios.post(url, company) as AxiosResponse<Company>
+        const newState = getState();
+        newState.companies.push(result.data);
+        dispatch(setCompanies(newState.companies));
         return result.data;
     }
 }
