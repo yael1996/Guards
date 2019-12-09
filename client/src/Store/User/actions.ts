@@ -1,22 +1,8 @@
-import { UserAction, LOGIN, GET_USER, SET_USER, UserState, REGISTER_USER } from "./types";
+import { UserAction, SET_USER, UserState, LOGOUT } from "./types";
 import { JSONUser } from "../../../../server/src/mongo/models/user";
 import { ThunkResult } from "./types";
 import axios, { AxiosResponse } from "axios";
 import config from "../../config/config";
-
-export function getUser(): UserAction {
-    return {
-        type: GET_USER
-    }
-}
-export function Login(): UserAction {
-    return {
-        type: LOGIN,
-        payload: {
-            
-        }
-    }
-}
 
 export function registerUser(user: UserState, type: string): ThunkResult<Promise<UserState>> {
     return async (dispatch, getState) => {
@@ -37,5 +23,11 @@ export function setUserSync(user: JSONUser): UserAction {
 export function setUser(user: JSONUser): ThunkResult<Promise<void>> {
     return async (dispatch, getState) => {
         dispatch(setUserSync(user));
+    }
+}
+
+export function logout(): UserAction {
+    return {
+        type: LOGOUT
     }
 }

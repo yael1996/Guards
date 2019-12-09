@@ -1,4 +1,4 @@
-import { UserState, UserAction, LOGIN, GET_USER, SET_USER } from "./types";
+import { UserState, UserAction, SET_USER, LOGOUT } from "./types";
 
 const initialState: UserState = {
     _id: "",
@@ -16,13 +16,11 @@ const initialState: UserState = {
 
 export function reducer(state: UserState = initialState, action: UserAction): UserState {
     switch (action.type) {
-        case GET_USER:
-            return state;
-        case LOGIN:
-            return state;
         case SET_USER:
             const newState = Object.assign({}, state, action.payload);
             return newState;
+        case LOGOUT:
+            return initialState;
         default:
             return state;
     }

@@ -69,7 +69,7 @@ class DashBoard extends Component<Props> {
             <div className="App">
                 <Switch>
                     <Route path="/dashboard" children={({ history }) => (
-                        <HeaderComp companies={companies} amount={3} user={user} history={history} />
+                        <HeaderComp amount={3} history={history} />
                     )} />
                 </Switch>
                 <section className="container-fluid bg-light ">

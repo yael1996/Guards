@@ -17,31 +17,19 @@ export interface UserStateWrapper {
     user: JSONUser
 }
 
-export const LOGIN = "LOGIN";
+export const LOGOUT = "LOGOUT";
 export const GET_USER = "GET_USER";
 export const REGISTER_USER = "REGISTER_USER";
 export const SET_USER = "SET_USER";
-
-interface LoginAction {
-    type: typeof LOGIN,
-    payload: {
-        
-    }
-}
-
-interface GetUserAction {
-    type: typeof GET_USER
-}
-
-interface RegisterUserAction {
-    type: typeof REGISTER_USER,
-    payload: JSONUser
-}
 
 interface SetUserAction {
     type: typeof SET_USER,
     payload: JSONUser
 }
 
-export type UserAction = LoginAction | GetUserAction | RegisterUserAction | SetUserAction;
+interface LogoutAction {
+    type: typeof LOGOUT
+}
+
+export type UserAction = SetUserAction | LogoutAction;
 export type ThunkResult<result> = ThunkAction<result, UserStateWrapper, undefined, UserAction>;
