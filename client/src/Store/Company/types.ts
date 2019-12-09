@@ -1,8 +1,30 @@
 import { ThunkAction } from "redux-thunk";
+import { BoardSettings } from "../../../../server/src/mongo/models/Board";
+
+export type DayMap = [boolean, boolean, boolean, boolean, boolean, boolean, boolean];
+
+export interface ShiftSettings {
+    length: string,
+    amount: string,
+    workerCount: string
+}
+
+export interface CreationState {
+    standardDays: DayMap,
+    standardShiftSettings: ShiftSettings,
+    specialDays: DayMap,
+    specialShiftSettings: ShiftSettings,
+    withHolidays: boolean,
+    holidayShiftSettings: ShiftSettings
+}
 
 export interface Company {
     id: string,
-    title: string
+    name: string,
+    description: string,
+    ownerId: string,
+    boardSettings: BoardSettings,
+    workerIds: string[]
 }
 
 export type CompanyState = Company[];
