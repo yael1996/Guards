@@ -56,11 +56,11 @@ class Register extends Component<Props, State> {
         let user: JSONUser | undefined = undefined;
         if (params["user"]) {
             user = JSON.parse(atob(params["user"])) as JSONUser;
-            console.log(user);
         }
         if (user) {
             setUser(user);
-        } else {
+            history.push(`/register/ready`);
+        } else if (location.pathname !== "/register/ready") {
             window.location.replace(`${config.backendUri}/user/login`);
         }
 

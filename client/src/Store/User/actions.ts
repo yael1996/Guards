@@ -20,20 +20,7 @@ export function Login(): UserAction {
 
 export function registerUser(user: UserState, type: string): ThunkResult<Promise<UserState>> {
     return async (dispatch, getState) => {
-        const { firstname, lastname } = getState().user;
-        const payload: JSONUser = {
-            boardId: "",
-            email: "",
-            firstname,
-            lastname,
-            monthlyConstraints: {
-                month: 1,
-                constraints: []
-            },
-            tokens: [""],
-            type,
-            satisfiedConstraints: 1
-        };
+        const payload: UserState = Object.assign({}, user, { type });
         const result = (await axios.post(`${config.backendUri}/user`, payload)) as AxiosResponse<JSONUser>;
         dispatch(setUser(result.data));
         return getState().user;

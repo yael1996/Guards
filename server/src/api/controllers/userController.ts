@@ -31,11 +31,13 @@ router.get("/login", async (req, res) => {
                     gu.getUserFromDB(googleUser.email).then((dbUser)=> {
                         if (dbUser != null) {
                             //user found in DB
-                            redirectUrl = process.env.CLIENT_URL+"/register?user=" + Buffer.from(JSON.stringify(googleUser)).toString("base64");
+                            redirectUrl = process.env.CLIENT_URL+"login?user=" + Buffer.from(JSON.stringify(dbUser)).toString("base64");
+                            console.log(redirectUrl)
                             res.redirect(redirectUrl)
 
                         } else {
-                            redirectUrl = process.env.CLIENT_URL+"/login?user=" + Buffer.from(JSON.stringify(dbUser)).toString("base64");
+                            redirectUrl = process.env.CLIENT_URL+"register?user=" + Buffer.from(JSON.stringify(googleUser)).toString("base64");
+                            console.log(redirectUrl)
                             res.redirect(redirectUrl)//redirect to site/register
                         }
                     });
@@ -54,7 +56,7 @@ router.get("/", async (req, res) => {
         const result = await models.user.find();
         res.status(200).end(JSON.stringify(result));
     } catch (error) {
-        res.status(400).end({ error: error.message });
+        res.status(400).end(JSON.stringify({ error: error.message }));
     }
     res.end(await models.user.find());
 });
@@ -63,7 +65,7 @@ router.get("/:id", async (req, res) => {
         const result = await models.user.findById(req.params.id);
         res.status(200).end(JSON.stringify(result));
     } catch (error) {
-        res.status(400).end({ error: error.message });
+        res.status(400).end(JSON.stringify({ error: error.message }));
     }
 });
 router.post("/", async (req, res) => {
@@ -71,7 +73,7 @@ router.post("/", async (req, res) => {
         const result = await models.user.create(req.body);
         res.status(201).end(JSON.stringify(result));
     } catch (error) {
-        res.status(406).end({ error: error.message });
+        res.status(406).end(JSON.stringify({ error: error.message }));
     }
 });
 router.delete("/:id", async (req, res) => {
@@ -79,7 +81,7 @@ router.delete("/:id", async (req, res) => {
         const result = await models.user.findByIdAndRemove(req.params.id);
         res.status(200).end(JSON.stringify(result));
     } catch (error) {
-        res.status(400).end({ error: error.message });
+        res.status(400).end(JSON.stringify({ error: error.message }));
     }
 });
 router.patch("/:id", async (req, res) => {
@@ -94,7 +96,7 @@ router.patch("/:id", async (req, res) => {
         const result = await user.save();
         res.status(200).end(JSON.stringify(result));
     } catch (error) {
-        res.status(400).end({ error: error.message });
+        res.status(400).end(JSON.stringify({ error: error.message }));
     }
 });
 

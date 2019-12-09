@@ -7,5 +7,5 @@ export interface Config {
 config();
 
 export default {
-    backendUri: process.env.SERVER_URL
+    backendUri: "http://localhost:4000"
 } as Config;

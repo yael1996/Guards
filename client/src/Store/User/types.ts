@@ -1,16 +1,20 @@
 // Need to also add the id to the JSON object, maybe create a wrapper over them?
-import { JSONUser } from "../../../../server/src/mongo/models/user";
+import { JSONUser, MonthlyConstraints } from "../../../../server/src/mongo/models/user";
 import { ThunkAction } from "redux-thunk";
 
 export interface UserState {
-    id: string,
+    _id: string,
     firstname: string,
     lastname: string,
-    imageUrl: string
+    email: string,
+    tokens: string[],
+    type: string,
+    satisfiedConstraints: number,
+    monthlyConstraints: MonthlyConstraints
 }
 
 export interface UserStateWrapper {
-    user: UserState
+    user: JSONUser
 }
 
 export const LOGIN = "LOGIN";
@@ -31,7 +35,7 @@ interface GetUserAction {
 
 interface RegisterUserAction {
     type: typeof REGISTER_USER,
-    payload: UserState
+    payload: JSONUser
 }
 
 interface SetUserAction {

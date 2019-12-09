@@ -30,16 +30,26 @@ const schemaMonthlyConstraints = new Schema<MonthlyConstraints>({
 });
 
 interface JSONUser {
+  _id: string,
   firstname: string,
   lastname: string,
   email: string,
   tokens: [string],
   type: string,
-  boardId: string,
+  boardId?: string,
   satisfiedConstraints: number,
   monthlyConstraints: MonthlyConstraints
 }
-interface User extends JSONUser, Document {}
+interface User extends Document {
+  firstname: string,
+  lastname: string,
+  email: string,
+  tokens: [string],
+  type: string,
+  boardId?: string,
+  satisfiedConstraints: number,
+  monthlyConstraints: MonthlyConstraints
+}
 const schemaUser = new Schema<User>({
   firstname: {
     type: Schema.Types.String,
@@ -62,8 +72,7 @@ const schemaUser = new Schema<User>({
     required: true
   },
   boardId: {
-    type: Schema.Types.ObjectId,
-    required: true
+    type: Schema.Types.ObjectId
   },
   satisfiedConstraints: {
     type: Schema.Types.Number,
@@ -79,4 +88,4 @@ schemaUser.pre('save', function(this: User, next) {
 });
 
 const register = () => model<User>('users', schemaUser);
-export { register, User, JSONUser };
+export { register, User, JSONUser, Constraint, MonthlyConstraints };

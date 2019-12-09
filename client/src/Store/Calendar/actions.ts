@@ -33,7 +33,7 @@ export function createCalendar(creationState: CreationState, user: UserState): T
     }
 
     return async (dispatch, getState) => {
-        const { id } = user;
+        const { _id } = user;
         const { standardDays, specialDays } = creationState;
         const {
             amount: stdAmount, length: stdLength, workerCount: stdWorkerCount
@@ -50,7 +50,7 @@ export function createCalendar(creationState: CreationState, user: UserState): T
         } = creationState.holidayShiftSettings;
 
         let payload: JSONBoard = {
-            ownerId: id,
+            ownerId: _id,
             description: "",
             name: "",
             workerIds: [],

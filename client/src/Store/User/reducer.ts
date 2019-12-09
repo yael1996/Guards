@@ -1,10 +1,17 @@
 import { UserState, UserAction, LOGIN, GET_USER, SET_USER } from "./types";
 
 const initialState: UserState = {
-    id: "123",
-    firstname: "test",
-    lastname: "test",
-    imageUrl: "https://randomuser.me/api/portraits/men/59.jpg"
+    _id: "",
+    firstname: "",
+    lastname: "",
+    email: "",
+    tokens: [],
+    type: "",
+    satisfiedConstraints: 0,
+    monthlyConstraints: {
+        month: 0,
+        constraints: []
+    }
 }
 
 export function reducer(state: UserState = initialState, action: UserAction): UserState {
@@ -14,10 +21,7 @@ export function reducer(state: UserState = initialState, action: UserAction): Us
         case LOGIN:
             return state;
         case SET_USER:
-            const { firstname, lastname } = action.payload;
-            const newState = Object.assign({}, state);
-            newState.firstname = firstname;
-            newState.lastname = lastname;
+            const newState = Object.assign({}, state, action.payload);
             return newState;
         default:
             return state;

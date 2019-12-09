@@ -7,11 +7,11 @@ interface Props {
 
 class UserInformationComp extends Component<Props> {
     render() {
-        const { imageUrl, firstname, lastname } = this.props.user;
+        const { firstname, lastname } = this.props.user;
         return (
             <section className="card">
                 <section className="card-body">
-                    <img className="rounded-circle" src={imageUrl} />
+                    {/* <img className="rounded-circle" src={imageUrl} /> */}
                     <p>Welcome {`${firstname} ${lastname}`}</p>
                     <a href="#" className="btn btn-link">Logout</a>
                 </section>

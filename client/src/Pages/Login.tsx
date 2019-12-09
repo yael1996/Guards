@@ -38,7 +38,7 @@ class Login extends Component<Props> {
     }
 
     render() {
-        const { location, history } = this.props;
+        const { location, setUser ,history } = this.props;
         const params = parseParams(removeQuerySymbol(location.search));
         
         if (params["user"]) {

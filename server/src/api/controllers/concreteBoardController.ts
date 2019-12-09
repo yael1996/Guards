@@ -10,9 +10,9 @@ router.get("/:metaId/:year/:month", async (req, res) => {
         if (!result) {
             return res.sendStatus(404);
         }
-        res.status(200).end(result);
+        res.status(200).end(JSON.stringify(result));
     } catch (error) {
-        res.status(400).end(error);
+        res.status(400).end(JSON.stringify(error));
     }
 });
 router.patch("/:id", async (req, res) => {
@@ -27,7 +27,7 @@ router.patch("/:id", async (req, res) => {
         const result = await concreteBoard.save();
         res.status(200).end(JSON.stringify(result));
     } catch (error) {
-        res.status(400).end({ error: error.message });
+        res.status(400).end(JSON.stringify({ error: error.message }));
     }
 });
 

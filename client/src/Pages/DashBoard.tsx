@@ -16,7 +16,6 @@ import Companies from "../Components/Companies/Companies";
 import { createCalendar, getEvents } from "../Store/Calendar/actions";
 import { History } from "history";
 import { JSONBoard } from "../../../server/src/mongo/models/Board";
-import { JSONConcreteBoard } from "../../../server/src/mongo/models/concreteBoard";
 
 interface OwnProps {
     history: History<any>
@@ -64,6 +63,7 @@ class DashBoard extends Component<Props> {
         const { companies, user, calendar } = this.props;
         const { items } = this.props.menu;
         const onDateChange = this.onDateChange;
+        console.log(user);
         
         return (
             <div className="App">
