@@ -16,6 +16,7 @@ import Companies from "../Components/Companies/Companies";
 import { getEvents } from "../Store/Calendar/actions";
 import { History } from "history";
 import { JSONBoard } from "../../../server/src/mongo/models/Board";
+import WorkerManager from "../Components/WorkerManager/WorkerManager";
 
 interface OwnProps {
     history: History<any>
@@ -84,6 +85,9 @@ class DashBoard extends Component<Props> {
                                             month: true
                                         }} />
                                 </Route>
+                                <Route exact path="/dashboard/:boardId" children={() => (
+                                    <WorkerManager />
+                                )} />
                             </Switch>
                         </section>
                         <section className="col-3 mt-3">
