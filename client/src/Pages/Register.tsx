@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { RootState, AppDispatch } from "../Store/store";
-import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import { UserState, UserAction } from "../Store/User/types";
 import { History, Location } from "history";
 import { removeQuerySymbol, parseParams } from "../Utils/queryParamParse";
-import { setUser, setUserSync, registerUser } from "../Store/User/actions";
+import { setUserSync, registerUser } from "../Store/User/actions";
 import { JSONUser } from "../../../server/src/mongo/models/user";
+import { USER_TYPE } from "../Store/User/types";
 import config from "../config/config";
 
 interface OwnProps {
@@ -24,7 +24,7 @@ interface ReduxState {
 
 interface ReduxDispatch {
     setUser: (user: JSONUser) => UserAction,
-    registerUser: (user: UserState, type: string) => Promise<UserState>
+    registerUser: (user: UserState, type: number) => Promise<UserState>
 }
 
 type Props = OwnProps & ReduxState & ReduxDispatch;
@@ -38,14 +38,14 @@ class Register extends Component<Props, State> {
 
     registerUser() {
         const { registerUser, user, history } = this.props;
-        registerUser(user, "user").then(() => {
+        registerUser(user, USER_TYPE.WORKER).then(() => {
             history.push("/dashboard");
         });
     }
 
     registerManager() {
         const { registerUser, user, history } = this.props;
-        registerUser(user, "manager").then(() => {
+        registerUser(user, USER_TYPE.MANAGER).then(() => {
             history.push("/dashboard");
         });
     }
@@ -92,7 +92,7 @@ const mapStateToProps = (state: RootState): ReduxState => {
 const mapDispatchToProps = (dispatch: AppDispatch): ReduxDispatch => {
     return {
         setUser: (user: JSONUser) => dispatch(setUserSync(user)),
-        registerUser: (user: UserState, type: string) => dispatch(registerUser(user, type))
+        registerUser: (user: UserState, type: number) => dispatch(registerUser(user, type))
     };
 }
 

@@ -2,13 +2,19 @@
 import { JSONUser, MonthlyConstraints } from "../../../../server/src/mongo/models/user";
 import { ThunkAction } from "redux-thunk";
 
+export enum USER_TYPE {
+    MANAGER = 1,
+    WORKER
+}
+
+
 export interface UserState {
     _id: string,
     firstname: string,
     lastname: string,
     email: string,
     tokens: string[],
-    type: string,
+    type: number,
     satisfiedConstraints: number,
     monthlyConstraints: MonthlyConstraints,
     imageUrl: string

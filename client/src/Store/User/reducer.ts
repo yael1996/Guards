@@ -1,4 +1,4 @@
-import { UserState, UserAction, SET_USER, LOGOUT } from "./types";
+import { UserState, UserAction, SET_USER, LOGOUT, USER_TYPE } from "./types";
 
 const initialState: UserState = {
     _id: "",
@@ -6,10 +6,13 @@ const initialState: UserState = {
     lastname: "",
     email: "",
     tokens: [],
-    type: "",
+    type: 0,
     satisfiedConstraints: 0,
     monthlyConstraints: {
-        month: 0,
+        month: {
+            month: 0,
+            year: 0
+        },
         constraints: []
     },
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
