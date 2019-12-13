@@ -19,6 +19,10 @@ export function reducer(state: MenuState = initialState, action: MenuAction): Me
                 case "user":
                     break;
                 case "manager":
+                    newState.items.push({
+                        text: "Create a board",
+                        page: "/dashboard/create"
+                    });
                     break;
             }
             return newState;

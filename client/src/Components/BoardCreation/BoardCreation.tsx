@@ -199,6 +199,7 @@ class BoardCreation extends Component<Props, CreationState> {
                 }
             }
         };
+        console.log(company);
         this.props.create(company, withHolidays).then(() => {
             this.props.history.push(`${config.backendUri}/dashboard`);
         });

@@ -24,11 +24,11 @@ class CompanyComp extends Component<Props> {
     }
     
     render() {
-        const { title } = this.props.company;
+        const { name } = this.props.company;
         return (
             <article className="card w-25 d-inline-block mx-4 my-4">
                 <section className="card-body">
-                    <h5 className="card-title">{title}</h5>
+                    <h5 className="card-title">{name}</h5>
                 </section>
                 <section className="card-footer">
                     <a href="#" onMouseDown={this.onMouseDown} className="btn btn-link">Select</a>

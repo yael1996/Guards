@@ -17,6 +17,7 @@ import { getEvents } from "../Store/Calendar/actions";
 import { History } from "history";
 import { JSONBoard } from "../../../server/src/mongo/models/Board";
 import WorkerManager from "../Components/WorkerManager/WorkerManager";
+import { loadPages } from "../Store/Menu/actions";
 
 interface OwnProps {
     history: History<any>
@@ -30,7 +31,8 @@ interface ReduxState {
 }
 
 interface ReduxDispatch {
-    getEvents: (boardId: string, year: number, month: number) => Promise<Event[]>
+    getEvents: (boardId: string, year: number, month: number) => Promise<Event[]>,
+    getMenu: (user: UserState) => AppAction
 }
 
 type Props = OwnProps & ReduxState & ReduxDispatch;
@@ -39,6 +41,11 @@ class DashBoard extends Component<Props> {
     constructor(props: any) {
         super(props);
         this.onDateChange = this.onDateChange.bind(this);
+    }
+
+    componentWillMount() {
+        const { user, getMenu } = this.props;
+        getMenu(user);
     }
 
     onDateChange(date: Date) {
@@ -56,7 +63,7 @@ class DashBoard extends Component<Props> {
         const { items } = this.props.menu;
         const onDateChange = this.onDateChange;
         console.log(user);
-        
+
         return (
             <div className="App">
                 <Switch>
@@ -80,13 +87,13 @@ class DashBoard extends Component<Props> {
                                         events={calendar.events}
                                         defaultDate={new Date()}
                                         defaultView="month"
-                                        onNavigate={function(newDate: Date) { onDateChange(newDate); }}
+                                        onNavigate={function (newDate: Date) { onDateChange(newDate); }}
                                         views={{
                                             month: true
                                         }} />
                                 </Route>
-                                <Route exact path="/dashboard/:boardId" children={() => (
-                                    <WorkerManager />
+                                <Route exact path="/dashboard/:boardId" children={({ history, match }) => (
+                                    <WorkerManager history={history} match={match} />
                                 )} />
                             </Switch>
                         </section>
@@ -116,7 +123,8 @@ const mapStateToProps = (state: RootState): ReduxState => {
 
 const mapDispatchToProps = (dispatch: AppDispatch): ReduxDispatch => {
     return {
-        getEvents: (boardId: string, year: number, month: number) => dispatch(getEvents(boardId, year, month))
+        getEvents: (boardId: string, year: number, month: number) => dispatch(getEvents(boardId, year, month)),
+        getMenu: (user: UserState) => dispatch(loadPages(user))
     }
 }
 
