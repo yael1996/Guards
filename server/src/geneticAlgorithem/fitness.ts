@@ -8,6 +8,7 @@ export class Fitness {
   private amount: AmountShifts;
   private equlity: Equlity;
   private satisfie: SatisfiedPeople;
+
   private amountShiftsPart;
   private equityPart;
   private satisfiedPeoplePart;

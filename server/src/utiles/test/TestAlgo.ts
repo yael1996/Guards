@@ -18,6 +18,7 @@ import { MonthlyConstraints, Constraint } from "../../mongo/models/User";
 export class TestAlgo {
   private db: DBHelper;
   private algo: GeneticAlgorithm;
+  public NUM_WORKE_CONSTRAINTSR = 10;
   constructor() {
     this.db = new DBHelper();
     this.algo = new GeneticAlgorithm();
@@ -154,35 +155,33 @@ export class TestAlgo {
   }
 
   private async getUserConstraint(best) {
-    const numShifts = best.length - 1;
-    const index1 = Math.floor(Math.random() * numShifts);
-    const index2 = this.getSecondIndex(index1, numShifts);
+    const indexies = [];
+    const constraints: Constraint[] = [];
 
-    const constraints: Constraint[] = [
-      {
-        text: "1",
-        time: {
-          fromTime: new Date(best[index1].shiftTime.fromTime),
-          toTime: new Date(best[index1].shiftTime.toTime)
-        }
-      },
-      {
-        text: "2",
-        time: {
-          fromTime: new Date(best[index2].shiftTime.fromTime),
-          toTime: new Date(best[index2].shiftTime.toTime)
-        }
-      }
-    ];
+    for (let i = 0; i < this.NUM_WORKE_CONSTRAINTSR; i++) {
+      const index = this.getIndex(indexies, best.length - 1);
+      indexies.push(index);
+      constraints.push(this.createConstraint(i, index, best));
+    }
 
     return constraints;
   }
 
-  private getSecondIndex(index1, numShifts): number {
-    let index2 = Math.floor(Math.random() * numShifts);
-    while (index2 == index1) {
-      index2 = Math.floor(Math.random() * numShifts);
+  private createConstraint(text, index, best) {
+    return {
+      text: text.toString(),
+      time: {
+        fromTime: new Date(best[index].shiftTime.fromTime),
+        toTime: new Date(best[index].shiftTime.toTime)
+      }
+    };
+  }
+
+  private getIndex(indexies: number[], numShifts): number {
+    let index = Math.floor(Math.random() * numShifts);
+    while (indexies.some(x => x == index)) {
+      index = Math.floor(Math.random() * numShifts);
     }
-    return index2;
+    return index;
   }
 }

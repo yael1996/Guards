@@ -1,6 +1,6 @@
 import { Shift } from "../../mongo/models/concreteBoard";
 import { Constraint } from "../../mongo/models/User";
-import { DBHelper } from "../DBHelper";
+import { DBHelper } from "../../utiles/DBHelper";
 
 export class SatisfiedPeople {
   private monthShifts: Shift[];
