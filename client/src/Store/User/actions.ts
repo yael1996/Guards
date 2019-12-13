@@ -4,7 +4,7 @@ import { ThunkResult } from "./types";
 import Axios, { AxiosResponse } from "axios";
 import config from "../../config/config";
 
-export function registerUser(user: UserState, type: string): ThunkResult<Promise<UserState>> {
+export function registerUser(user: UserState, type: number): ThunkResult<Promise<UserState>> {
     return async (dispatch, getState) => {
         const payload: UserState = Object.assign({}, user, { type });
         const result = (await Axios.post(`${config.backendUri}/user`, payload)) as AxiosResponse<JSONUser>;
