@@ -1,15 +1,6 @@
 import { models } from "../mongo/connection";
 import { Shift, Month } from "../mongo/models/concreteBoard";
 import { Constraint } from "../mongo/models/User";
-import {
-  Board,
-  DaySettings,
-  ShiftSettings,
-  RegularDaySettings,
-  SpecialDaysSettings,
-  SpecialDatesSettings,
-  BoardSettings
-} from "../mongo/models/board";
 
 export class DBHelper {
   constructor() {}
@@ -24,7 +15,7 @@ export class DBHelper {
       const dissatisfieds = await this.getWorkerNotAppliedConstraints(
         worker,
         best,
-        workersConstraints
+        workersConstraints[worker]
       );
 
       const user = await this.getUserById(worker);
@@ -40,9 +31,8 @@ export class DBHelper {
     workersConstraints
   ): number {
     let workerNotApplied = 0;
-    let workerConstraint = workersConstraints[workerId];
 
-    for (let constraint of workerConstraint) {
+    for (let constraint of workersConstraints) {
       let shift = this.getConstraintShift(constraint, monthShifts);
       if (shift.workersId.some(x => x == workerId)) workerNotApplied++;
     }
@@ -50,11 +40,21 @@ export class DBHelper {
   }
 
   private getConstraintShift(constraint: Constraint, monthShifts: Shift[]) {
-    return monthShifts.find(
-      x =>
-        x.shiftTime.fromTime == constraint.time.fromTime &&
-        x.shiftTime.toTime == constraint.time.toTime
-    );
+    let shift;
+    try {
+      shift = monthShifts.find((x, index) => {
+        console.log(index);
+
+        return (
+          x.shiftTime.fromTime.getTime() ==
+            constraint.time.fromTime.getTime() &&
+          x.shiftTime.toTime.getTime() == constraint.time.toTime.getTime()
+        );
+      });
+    } catch (e) {
+      console.log(e);
+    }
+    return shift;
   }
 
   public async saveBestToDB(best: Shift[][], month: Month, bordId: string) {
@@ -104,9 +104,9 @@ export class DBHelper {
         //ToDo
       }
       // ToDo - refactor or get from db
-      if (user.monthlyConstraints) {
+      if (user.monthlyConstraints.length > 0) {
         const usersConstraints = await user.monthlyConstraints.find(
-          x => x.month.year == month.month && x.month.year == month.year
+          x => x.month.year == month.year && x.month.month == month.month
         ).constraints;
 
         workersConstraints[workerId] = usersConstraints;

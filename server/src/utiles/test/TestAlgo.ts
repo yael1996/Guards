@@ -10,7 +10,7 @@ import {
 import { USER_TYPE } from "../userTypeEnum";
 import { ITestReasult } from "./ITestReasult";
 import { GeneticAlgorithm } from "../../geneticAlgorithem/geneticAlgorithem";
-import { Month } from "../../mongo/models/concreteBoard";
+import { Month, Shift } from "../../mongo/models/concreteBoard";
 import { Fitness } from "../../geneticAlgorithem/fitness";
 import { DBHelper } from "../DBHelper";
 import { MonthlyConstraints, Constraint } from "../../mongo/models/User";
@@ -139,21 +139,51 @@ export class TestAlgo {
     await board.save();
   }
 
-  public async addUserConstraints(boardId: string, month: Month) {
+  public async addUsersConstraints(boardId: string, month: Month) {
+    const best: Shift[] = await this.getbest(boardId, month, 0.2, 0.2, 0.6);
     const board = await models.board.findById(boardId);
     for (let workerId of board.workerIds) {
       const user = await models.user.findById(workerId);
-      const constraints: Constraint[] = [
-        {
-          text: "",
-          time: { fromTime: new Date(), toTime: new Date() }
-        }
-      ];
+      const constraints: Constraint[] = await this.getUserConstraint(best);
       const monthConstraint: MonthlyConstraints = {
         month: month,
         constraints: constraints
       };
-      user.monthlyConstraints;
+      user.monthlyConstraints = [monthConstraint];
+      await user.save();
     }
+  }
+
+  private async getUserConstraint(best) {
+    const numShifts = best.length - 1;
+    const index1 = Math.floor(Math.random() * numShifts);
+    const index2 = this.getSecondIndex(index1, numShifts);
+
+    const constraints: Constraint[] = [
+      {
+        text: "1",
+        time: {
+          fromTime: new Date(best[index1].shiftTime.fromTime),
+          toTime: new Date(best[index1].shiftTime.toTime)
+        }
+      },
+      {
+        text: "2",
+        time: {
+          fromTime: new Date(best[index2].shiftTime.fromTime),
+          toTime: new Date(best[index2].shiftTime.toTime)
+        }
+      }
+    ];
+
+    return constraints;
+  }
+
+  private getSecondIndex(index1, numShifts): number {
+    let index2 = Math.floor(Math.random() * numShifts);
+    while (index2 == index1) {
+      index2 = Math.floor(Math.random() * numShifts);
+    }
+    return index2;
   }
 }

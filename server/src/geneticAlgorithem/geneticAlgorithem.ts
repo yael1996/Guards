@@ -8,7 +8,7 @@ import { GeneratFirstPopulation } from "../utiles/bordCreator/generatFirstPopula
 import { DBHelper } from "../utiles/DBHelper";
 
 export class GeneticAlgorithm {
-  private POPULATION_SIZE = 100; // get from config
+  private POPULATION_SIZE = 30; // get from config
   private algorithm;
   private month: Month;
   private bordId: string;
