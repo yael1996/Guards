@@ -45,7 +45,7 @@ class DashBoard extends Component<Props> {
         this.onDateChange = this.onDateChange.bind(this);
     }
 
-    componentWillMount() {
+    componentWillUpdate() {
         const { user, getCompanies, getMenu } = this.props;
         getCompanies(user);
         getMenu(user);
