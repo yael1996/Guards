@@ -1,3 +1,4 @@
+import { UserState } from "../User/types";
 
 export interface MenuItem {
     text: string,
@@ -12,13 +13,13 @@ export interface MenuStateWrapper {
     menu: MenuState
 }
 
-export const SHOW_PAGE = "SHOW_PAGE";
+export const LOAD_PAGES = "LOAD_PAGES";
 
-interface ShowPageAction {
-    type: typeof SHOW_PAGE,
+interface LoadPagesAction {
+    type: typeof LOAD_PAGES,
     payload: {
-        page: string
+        user: UserState
     }
 }
 
-export type MenuAction = ShowPageAction;
+export type MenuAction = LoadPagesAction;

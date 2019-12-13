@@ -1,40 +1,56 @@
 import { Event } from "react-big-calendar";
-import { CalendarAction, GET_EVENTS,
-    UPDATE_EVENTS, NEXT_MONTH, PREVIOUS_MONTH,
-    CreationState, ThunkResult } from "./types";
+import { CalendarAction, UPDATE_EVENTS, ThunkResult, SET_EVENTS } from "./types";
+import { JSONConcreteBoard } from "../../../../server/src/mongo/models/concreteBoard";
+import Axios, { AxiosResponse } from "axios";
+import config from "../../config/config";
+import moment from "moment";
 
-export function createCalendar(creationState: CreationState): ThunkResult<Promise<void>> {
+function events(concreteBoard: JSONConcreteBoard) {
+    return concreteBoard.shifts.reduce((events, shift) => {
+        const { fromTime: start, toTime: end } = shift.shiftTime;
+        events.push({
+            start,
+            end,
+            title: shift.shiftType.toString(),
+            resource: shift
+        });
+        return events;
+    }, [] as Event[]);
+}
+
+export function getEvents(metaId: string, year: number, month: number): ThunkResult<Promise<Event[]>> {
     return async (dispatch, getState) => {
-        
+        const reqUrl = `${config.backendUri}/concreteBoard/${metaId}/${year}/${month}`;
+        const result = (await Axios.get(reqUrl)) as AxiosResponse<JSONConcreteBoard>;
+        dispatch(setEvents(events(result.data)));
+        return getState().calendar.events;
     }
 }
 
-export function getEvents(metaId: string, month: number): CalendarAction {
-    return {
-        type: GET_EVENTS,
-        payload: {
-            metaId,
-            month
-        }
+export function nextMonth(): ThunkResult<Promise<Event[]>> {
+    return async (dispatch, getState) => {
+        const { boardId, currentDate } = getState().calendar;
+        const newDate = moment(currentDate).add(1, "month").toDate();
+        const year = newDate.getFullYear();
+        const month = newDate.getMonth();
+        const events = await dispatch(getEvents(boardId, year, month));
+        dispatch(setEvents(events));
+        return getState().calendar.events;
     }
 }
 
-export function nextMonth(): CalendarAction {
-    return {
-        type: NEXT_MONTH,
-        payload: {
+// export function previousMonth(): ThunkResult<Promise<JSONConcreteBoard>> {
+//     return async (dispatch, getState) {
+//         const { calendar } = getState();
+//         return {}
+//     }
+// }
 
-        }
-    }
-}
-
-export function previousMonth(): CalendarAction {
+export function setEvents(events: Event[]): CalendarAction {
     return {
-        type: PREVIOUS_MONTH,
-        payload: {
-            
-        }
-    }
+        type: SET_EVENTS,
+        payload: events
+    };
 }
 
 export function updateEvents(metaId: string, month: number, newState: Event[] ): CalendarAction {

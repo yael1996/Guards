@@ -4,17 +4,23 @@ import CompaniesComp from "../Companies/Companies";
 import UserInformationComp from "../UserInformation/UserInformation";
 import { UserState } from "../../Store/User/types";
 import { History } from "history";
+import { connect } from "react-redux";
+import { RootState } from "../../Store/store";
 
-interface Props {
-    amount: number,
-    companies: CompanyState,
-    user: UserState,
-    history: History<any>
+interface OwnProps {
+    history: History<any>,
+    amount: number
 }
+
+interface ReduxProps {
+    companies: CompanyState
+}
+
+type Props = OwnProps & ReduxProps;
 
 class HeaderComp extends Component<Props> {
     render() {
-        const { amount, companies, user, history } = this.props;
+        const { amount, companies, history } = this.props;
         // const displayedCompanies = companies.filter((x, index) => index < 3);
         return (
             <header className="container-fluid bg-light pt-3">
@@ -23,7 +29,7 @@ class HeaderComp extends Component<Props> {
                         <CompaniesComp companies={companies} amount={amount} history={history} />
                     </section>
                     <section className="col-3">
-                        <UserInformationComp user={user} />
+                        <UserInformationComp history={history} />
                     </section>
                 </section>
             </header>
@@ -31,4 +37,11 @@ class HeaderComp extends Component<Props> {
     }
 }
 
-export default HeaderComp;
+const mapStateToProps = (state: RootState): ReduxProps => {
+    const { companies } = state;
+    return {
+        companies
+    }
+}
+
+export default  connect(mapStateToProps)(HeaderComp);

@@ -17,16 +17,18 @@ class CompanyComp extends Component<Props> {
     onMouseDown() {
         const { history } = this.props;
         const { id } = this.props.company;
-        const month = new Date().getMonth();
-        history.push(`/dashboard/${id}/${month}`);
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = today.getMonth();
+        history.push(`/dashboard/${id}/${year}/${month}`);
     }
     
     render() {
-        const { title } = this.props.company;
+        const { name } = this.props.company;
         return (
             <article className="card w-25 d-inline-block mx-4 my-4">
                 <section className="card-body">
-                    <h5 className="card-title">{title}</h5>
+                    <h5 className="card-title">{name}</h5>
                 </section>
                 <section className="card-footer">
                     <a href="#" onMouseDown={this.onMouseDown} className="btn btn-link">Select</a>

@@ -134,9 +134,9 @@ interface BoardModel {
 }
 
 interface JSONBoard extends BoardModel {
-  _id: string;
+  id?: string;
 }
-interface Board extends BoardModel, Document {}
+interface Board extends BoardModel, Document { }
 const schemaBoard = new Schema<Board>({
   name: {
     type: Schema.Types.String,
@@ -161,7 +161,7 @@ const schemaBoard = new Schema<Board>({
   }
 });
 
-schemaBoard.pre("save", function(this: Board, next) {
+schemaBoard.pre("save", function (this: Board, next) {
   next();
 });
 

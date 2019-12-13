@@ -3,29 +3,13 @@ import { models } from "../../mongo/connection";
 
 const router = Router();
 
-router.get("/:metaId/:month", async (req, res) => {
+router.get("/:metaId/:year/:month", async (req, res) => {
   try {
-    const { metaId, month } = req.params;
-    const result = await models.concreteBoard.findOne({ metaId, month });
-    if (!result) {
-      return res.sendStatus(404);
-    }
-    res.status(200).end(JSON.stringify(result));
+    const { metaId, year, month } = req.params;
+    const result = await models.concreteBoard.findOne({ metaId, year, month });
+    res.status(200).json(result || {}).end();
   } catch (error) {
-    res.status(400).end(JSON.stringify(error));
-  }
-});
-router.get("/:metaId", async (req, res) => {
-  try {
-    const { metaId } = req.params;
-    const month = new Date().getMonth();
-    const result = await models.concreteBoard.findOne({ metaId, month });
-    if (!result) {
-      return res.sendStatus(404);
-    }
-    res.status(200).end(JSON.stringify(result));
-  } catch (error) {
-    res.status(400).end(JSON.stringify({ error: error.message }));
+    res.status(400).json(error).end();
   }
 });
 router.patch("/:id", async (req, res) => {
@@ -34,13 +18,13 @@ router.patch("/:id", async (req, res) => {
     if (!concreteBoard) {
       return res.sendStatus(404);
     }
-    Object.getOwnPropertyNames(req.body).forEach(prop => {
+    Object.getOwnPropertyNames(req.body).forEach((prop) => {
       concreteBoard[prop] = req.body[prop];
     });
     const result = await concreteBoard.save();
-    res.status(200).end(JSON.stringify(result));
+    res.status(200).json(result).end();
   } catch (error) {
-    res.status(400).end(JSON.stringify({ error: error.message }));
+    res.status(400).json({ error: error.message }).end();
   }
 });
 
