@@ -62,7 +62,6 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   try {
     const result = await models.user.findById(req.params.id);
-    console.log(result);
     res.status(200).json(result || {}).end();
   } catch (error) {
     res.status(400).json({ error: error.message }).end();
