@@ -19,8 +19,7 @@ export function setCompanies(value: CompanyState): CompanyAction {
 export function getCompanies(user: UserState): ThunkResult<Promise<CompanyState>> {
     return async (dispatch, getState) => {
         const { _id: id, type } = user;
-        let userType = (type === USER_TYPE.WORKER)? "user" : "manager";
-        const result = await Axios.get(`${config.backendUri}/board/${userType}/${id}`) as AxiosResponse<CompanyState>;
+        const result = await Axios.get(`${config.backendUri}/board/${type}/${id}`) as AxiosResponse<CompanyState>;
         dispatch(setCompanies(result.data));
         return result.data;
     }

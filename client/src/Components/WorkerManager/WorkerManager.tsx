@@ -74,7 +74,7 @@ class WorkerManager extends Component<Props, State> {
                         </div>
                     </section>
                 </div>
-                <div className="container-fluid d-flex">
+                <div className="container-fluid d-flex flex-wrap">
                     {users.map((user) => <WorkerInformation user={user} onSelect={onHire} />)}
                 </div>
             </>

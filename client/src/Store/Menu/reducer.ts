@@ -17,9 +17,9 @@ export function reducer(state: MenuState = initialState, action: MenuAction): Me
                 }
             ]
             switch (type) {
-                case USER_TYPE.WORKER:
+                case "user":
                     break;
-                case USER_TYPE.MANAGER:
+                case "manager":
                     newState.items.push({
                         text: "Create a board",
                         page: "/dashboard/create"

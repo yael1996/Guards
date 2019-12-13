@@ -2,11 +2,7 @@
 import { JSONUser, MonthlyConstraints } from "../../../../server/src/mongo/models/user";
 import { ThunkAction } from "redux-thunk";
 
-export enum USER_TYPE {
-    MANAGER = 1,
-    WORKER
-}
-
+export type USER_TYPE = "manager" | "user" | "";
 
 export interface UserState {
     _id: string,
@@ -14,7 +10,7 @@ export interface UserState {
     lastname: string,
     email: string,
     tokens: string[],
-    type: number,
+    type: USER_TYPE,
     satisfiedConstraints: number,
     monthlyConstraints: MonthlyConstraints,
     imageUrl: string
