@@ -1,4 +1,5 @@
 import { MenuState, MenuAction, LOAD_PAGES } from "./types";
+import { USER_TYPE } from "../User/types";
 
 const initialState: MenuState = {
     items: []
@@ -16,9 +17,9 @@ export function reducer(state: MenuState = initialState, action: MenuAction): Me
                 }
             ]
             switch (type) {
-                case "user":
+                case USER_TYPE.WORKER:
                     break;
-                case "manager":
+                case USER_TYPE.MANAGER:
                     newState.items.push({
                         text: "Create a board",
                         page: "/dashboard/create"

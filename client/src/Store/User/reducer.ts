@@ -1,4 +1,4 @@
-import { UserState, UserAction, SET_USER, LOGOUT } from "./types";
+import { UserState, UserAction, SET_USER, LOGOUT, USER_TYPE } from "./types";
 
 const initialState: UserState = {
     _id: "",
@@ -6,7 +6,7 @@ const initialState: UserState = {
     lastname: "",
     email: "",
     tokens: [],
-    type: "",
+    type: 0,
     satisfiedConstraints: 0,
     monthlyConstraints: {
         month: {

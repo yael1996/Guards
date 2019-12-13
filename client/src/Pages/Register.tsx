@@ -6,7 +6,7 @@ import { History, Location } from "history";
 import { removeQuerySymbol, parseParams } from "../Utils/queryParamParse";
 import { setUserSync, registerUser } from "../Store/User/actions";
 import { JSONUser } from "../../../server/src/mongo/models/user";
-import { USER_TYPE } from "../../../server/src/utiles/userTypeEnum";
+import { USER_TYPE } from "../Store/User/types";
 import config from "../config/config";
 
 interface OwnProps {
