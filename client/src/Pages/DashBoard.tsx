@@ -18,6 +18,7 @@ import { History } from "history";
 import { JSONBoard } from "../../../server/src/mongo/models/Board";
 import WorkerManager from "../Components/WorkerManager/WorkerManager";
 import { loadPages } from "../Store/Menu/actions";
+import { getCompanies } from "../Store/Company/actions";
 
 interface OwnProps {
     history: History<any>
@@ -32,7 +33,8 @@ interface ReduxState {
 
 interface ReduxDispatch {
     getEvents: (boardId: string, year: number, month: number) => Promise<Event[]>,
-    getMenu: (user: UserState) => AppAction
+    getMenu: (user: UserState) => AppAction,
+    getCompanies: (user: UserState) => Promise<CompanyState>
 }
 
 type Props = OwnProps & ReduxState & ReduxDispatch;
@@ -45,6 +47,7 @@ class DashBoard extends Component<Props> {
 
     componentWillMount() {
         const { user, getMenu } = this.props;
+        getCompanies(user);
         getMenu(user);
     }
 
@@ -124,7 +127,8 @@ const mapStateToProps = (state: RootState): ReduxState => {
 const mapDispatchToProps = (dispatch: AppDispatch): ReduxDispatch => {
     return {
         getEvents: (boardId: string, year: number, month: number) => dispatch(getEvents(boardId, year, month)),
-        getMenu: (user: UserState) => dispatch(loadPages(user))
+        getMenu: (user: UserState) => dispatch(loadPages(user)),
+        getCompanies: (user: UserState) => dispatch(getCompanies(user))
     }
 }
 
