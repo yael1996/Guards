@@ -46,7 +46,7 @@ class DashBoard extends Component<Props> {
     }
 
     componentWillMount() {
-        const { user, getMenu } = this.props;
+        const { user, getCompanies, getMenu } = this.props;
         getCompanies(user);
         getMenu(user);
     }
