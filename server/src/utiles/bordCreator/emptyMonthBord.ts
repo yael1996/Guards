@@ -1,18 +1,18 @@
-import { BordSettings } from "../../../../common/objects/settings/boardSettings";
-import { Month } from "../../../../common/objects/time/month";
+import { BoardSettings } from "../../mongo/models/board";
+import { Month } from "../../mongo/models/concreteBoard";
 import { HolidaysDates } from "./holidaysDates";
 
 export class EmptyMonthBord {
-  public specialDates: Array<Date>;
-  public specialDays: Array<Date>;
-  public regularDays: Array<Date>;
+  public specialDates: Date[];
+  public specialDays: Date[];
+  public regularDays: Date[];
 
-  private bordSettings: BordSettings;
+  private bordSettings: BoardSettings;
   private year: number;
   private month: number;
   private holidays: HolidaysDates;
 
-  constructor(month: Month, bordSettings: BordSettings) {
+  constructor(month: Month, bordSettings: BoardSettings) {
     this.year = month.year;
     this.month = month.month;
     this.bordSettings = bordSettings;
@@ -23,9 +23,9 @@ export class EmptyMonthBord {
   }
 
   private datesByType() {
-    this.specialDates = new Array<Date>();
-    this.specialDays = new Array<Date>();
-    this.regularDays = new Array<Date>();
+    this.specialDates = [];
+    this.specialDays = [];
+    this.regularDays = [];
     this.orgenizeDatesByType();
   }
 
@@ -40,8 +40,9 @@ export class EmptyMonthBord {
   }
 
   private isDateSpecial(currDate: Date): boolean {
-    if (!this.bordSettings.specialDates) return false;
-    else {
+    if (!this.bordSettings.specialDatesSettings.dates) {
+      return false;
+    } else {
       return this.holidays.isDateHoliday(currDate);
       // return !!this.bordSettings.specialDates.dates.find(date => {
       //   return date.getTime() == currDate.getTime();
@@ -50,9 +51,12 @@ export class EmptyMonthBord {
   }
 
   private isDaySpecial(currDate: Date): boolean {
-    if (!this.bordSettings.specialDays) return false;
-    else {
-      return this.bordSettings.specialDays.days.includes(currDate.getDay());
+    if (!this.bordSettings.specialDaysSettings.days) {
+      return false;
+    } else {
+      return this.bordSettings.specialDaysSettings.days.includes(
+        currDate.getDay()
+      );
     }
   }
 
