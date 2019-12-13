@@ -60,9 +60,8 @@ export class TestAlgo {
 
         testResult.push({ x: x, y: y, z: z, fitness: bestFitness });
       }
-
-      return testResult;
     }
+    return testResult;
   }
 
   public async createFullBoard() {
