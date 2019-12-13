@@ -43,13 +43,23 @@ class DashBoard extends Component<Props> {
     constructor(props: any) {
         super(props);
         this.onDateChange = this.onDateChange.bind(this);
+        this.refreshView = this.refreshView.bind(this);
     }
 
-    componentWillUpdate() {
+    refreshView() {
         const { user, getCompanies, getMenu } = this.props;
         getCompanies(user);
         getMenu(user);
     }
+
+    componentWillMount() {
+        this.refreshView();
+    }
+
+    // Gives us recursive calls, needs a dirty flag?
+    // componentWillUpdate() {
+    //     this.refreshView();
+    // }
 
     onDateChange(date: Date) {
         const { history } = this.props;
