@@ -41,7 +41,7 @@ interface UserModel {
   lastname: string;
   email: string;
   type: USER_TYPE;
-  boardId: string;
+  boardId?: string;
   unSatisfiedConstraints: number;
   monthlyConstraints: MonthlyConstraints[];
 }
