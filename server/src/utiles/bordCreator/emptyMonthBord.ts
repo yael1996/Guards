@@ -1,4 +1,4 @@
-import { BoardSettings } from "../../mongo/models/board";
+import { BoardSettings, IndexSettings } from "../../mongo/models/board";
 import { Month } from "../../mongo/models/concreteBoard";
 import { HolidaysDates } from "./holidaysDates";
 
@@ -34,8 +34,10 @@ export class EmptyMonthBord {
       var currDate = new Date(this.year, this.month, i);
 
       if (this.isDateSpecial(currDate)) this.specialDates.push(currDate);
-      else if (this.isDaySpecial(currDate)) this.specialDays.push(currDate);
-      else this.regularDays.push(currDate);
+      else if (this.isIndexDay(currDate, this.bordSettings.specialDaysSettings))
+        this.specialDays.push(currDate);
+      else if (this.isIndexDay(currDate, this.bordSettings.regularDaySettings))
+        this.regularDays.push(currDate);
     }
   }
 
@@ -50,14 +52,28 @@ export class EmptyMonthBord {
     }
   }
 
-  private isDaySpecial(currDate: Date): boolean {
-    if (!this.bordSettings.specialDaysSettings.days) {
+  private isIndexDay(currDate: Date, settings: IndexSettings): boolean {
+    if (!settings.days) {
       return false;
     } else {
-      return this.bordSettings.specialDaysSettings.days.includes(
-        currDate.getDay()
+      return !!this.getIndexDates(settings).find(
+        x => x.getDay() === currDate.getDay()
       );
     }
+  }
+
+  private getIndexDates(settings: IndexSettings) {
+    let indexes: number[] = settings.days;
+    let specialDays: Date[] = [];
+
+    for (let index of indexes) {
+      let i = index;
+      while (i < this.numTotalDaysInMonth()) {
+        specialDays.push(new Date(this.year, this.month, i));
+        i += 7;
+      }
+    }
+    return specialDays;
   }
 
   private numTotalDaysInMonth(): number {

@@ -45,12 +45,12 @@ const schemaDaySettings = new Schema<DaySettings>({
   }
 });
 
-interface RegularDaySettings {
+interface IndexSettings {
   days: number[];
   daySettings: DaySettings;
   shiftSettings: ShiftSettings;
 }
-const schemaRegularDaySettings = new Schema<RegularDaySettings>({
+const schemaIndexSettings = new Schema<IndexSettings>({
   days: {
     type: [Schema.Types.Number],
     required: true
@@ -65,32 +65,12 @@ const schemaRegularDaySettings = new Schema<RegularDaySettings>({
   }
 });
 
-interface SpecialDaysSettings {
-  days: number[];
-  daySettings: DaySettings;
-  shiftSettings: ShiftSettings;
-}
-const schemaSpecialDaysSettings = new Schema<SpecialDaysSettings>({
-  days: {
-    type: [Schema.Types.Number],
-    required: false
-  },
-  daySettings: {
-    type: schemaDaySettings,
-    required: true
-  },
-  shiftSettings: {
-    type: schemaShiftSettings,
-    required: true
-  }
-});
-
-interface SpecialDatesSettings {
+interface DateSettings {
   dates?: Date[];
   daySettings: DaySettings;
   shiftSettings: ShiftSettings;
 }
-const schemaSpecialDatesSettings = new Schema<SpecialDatesSettings>({
+const schemaDateSettings = new Schema<DateSettings>({
   dates: {
     type: [Schema.Types.Date],
     required: false
@@ -106,21 +86,21 @@ const schemaSpecialDatesSettings = new Schema<SpecialDatesSettings>({
 });
 
 interface BoardSettings {
-  regularDaySettings: RegularDaySettings;
-  specialDaysSettings: SpecialDaysSettings;
-  specialDatesSettings: SpecialDatesSettings;
+  regularDaySettings: IndexSettings;
+  specialDaysSettings: IndexSettings;
+  specialDatesSettings: DateSettings;
 }
 const schemaBoardSettings = new Schema<BoardSettings>({
   regularDaySettings: {
-    type: schemaRegularDaySettings,
+    type: schemaIndexSettings,
     required: true
   },
   specialDaysSettings: {
-    type: schemaSpecialDaysSettings,
+    type: schemaIndexSettings,
     required: false
   },
   specialDatesSettings: {
-    type: schemaSpecialDatesSettings,
+    type: schemaDateSettings,
     required: false
   }
 });
@@ -136,7 +116,7 @@ interface BoardModel {
 interface JSONBoard extends BoardModel {
   id?: string;
 }
-interface Board extends BoardModel, Document { }
+interface Board extends BoardModel, Document {}
 const schemaBoard = new Schema<Board>({
   name: {
     type: Schema.Types.String,
@@ -161,7 +141,7 @@ const schemaBoard = new Schema<Board>({
   }
 });
 
-schemaBoard.pre("save", function (this: Board, next) {
+schemaBoard.pre("save", function(this: Board, next) {
   next();
 });
 
@@ -172,9 +152,8 @@ export {
   Board,
   JSONBoard,
   BoardSettings,
-  SpecialDaysSettings,
-  SpecialDatesSettings,
-  RegularDaySettings,
+  DateSettings,
+  IndexSettings,
   DaySettings,
   ShiftSettings,
   Time
