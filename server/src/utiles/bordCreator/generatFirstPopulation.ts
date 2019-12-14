@@ -24,7 +24,11 @@ export class GeneratFirstPopulation {
     return monthShiftsOptions;
   }
 
-  private fillOneMonthWithShifts(): Shift[] {
+  public generateEmptyShifts() {
+    return this.fillOneMonthWithShifts(true);
+  }
+
+  private fillOneMonthWithShifts(isEmpty: boolean = false): Shift[] {
     let monthShift = [];
     let specialDates = this.emptyBord.specialDates;
     let specialDays = this.emptyBord.specialDays;
@@ -34,21 +38,24 @@ export class GeneratFirstPopulation {
       specialDates,
       this.board.boardSettings.specialDatesSettings,
       SHIFT_TYPE.SPECIAL_DATE,
-      monthShift
+      monthShift,
+      isEmpty
     );
 
     this.fillShiftsByType(
       specialDays,
       this.board.boardSettings.specialDaysSettings,
       SHIFT_TYPE.SPECIAL_DAY,
-      monthShift
+      monthShift,
+      isEmpty
     );
 
     this.fillShiftsByType(
       regularDays,
       this.board.boardSettings.regularDaySettings,
       SHIFT_TYPE.REGULAR_DAY,
-      monthShift
+      monthShift,
+      isEmpty
     );
 
     return monthShift;
@@ -58,7 +65,8 @@ export class GeneratFirstPopulation {
     days: Date[],
     settings,
     type: SHIFT_TYPE,
-    monthShift: Shift[]
+    monthShift: Shift[],
+    isEmpty
   ): void {
     for (let day of days) {
       let startShift = new Date(
@@ -72,7 +80,12 @@ export class GeneratFirstPopulation {
         let shiftTime = this.getShiftTime(startShift, settings.shiftSettings);
         let numWorkers = settings.shiftSettings.numWorkersInShift;
 
-        let shift: Shift = this.createNewShift(shiftTime, type, numWorkers);
+        let shift: Shift = this.createNewShift(
+          shiftTime,
+          type,
+          numWorkers,
+          isEmpty
+        );
         monthShift.push(shift);
 
         startShift = shift.shiftTime.toTime;
@@ -96,12 +109,19 @@ export class GeneratFirstPopulation {
     return shiftTime;
   }
 
-  private createNewShift(shiftTime, type, numWorkers: number): Shift {
+  private createNewShift(
+    shiftTime,
+    type,
+    numWorkers: number,
+    isEmpty: boolean
+  ): Shift {
     let shift: Shift = {
       shiftTime: shiftTime,
       shiftType: type,
       workersId: []
     };
+
+    if (isEmpty) return shift;
 
     let numAddedWorkers = 0;
     while (numAddedWorkers < numWorkers) {

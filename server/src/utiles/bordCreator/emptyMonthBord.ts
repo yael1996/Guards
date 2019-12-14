@@ -14,7 +14,7 @@ export class EmptyMonthBord {
 
   constructor(month: Month, bordSettings: BoardSettings) {
     this.year = month.year;
-    this.month = month.month;
+    this.month = month.month - 1;
     this.bordSettings = bordSettings;
 
     this.holidays = new HolidaysDates();
@@ -30,15 +30,20 @@ export class EmptyMonthBord {
   }
 
   private orgenizeDatesByType(): void {
-    for (var i = 1; i <= this.numTotalDaysInMonth(); i++) {
-      var currDate = new Date(this.year, this.month, i);
-
+    const numTotalDaysInMonth = this.numTotalDaysInMonth();
+    for (var i = 1; i <= numTotalDaysInMonth; i++) {
+      let currDate = new Date(this.year, this.month, i);
       if (this.isDateSpecial(currDate)) this.specialDates.push(currDate);
-      else if (this.isIndexDay(currDate, this.bordSettings.specialDaysSettings))
-        this.specialDays.push(currDate);
-      else if (this.isIndexDay(currDate, this.bordSettings.regularDaySettings))
-        this.regularDays.push(currDate);
     }
+    this.specialDays = this.getIndexDates(
+      this.bordSettings.specialDaysSettings,
+      numTotalDaysInMonth
+    );
+
+    this.regularDays = this.getIndexDates(
+      this.bordSettings.regularDaySettings,
+      numTotalDaysInMonth
+    );
   }
 
   private isDateSpecial(currDate: Date): boolean {
@@ -52,31 +57,23 @@ export class EmptyMonthBord {
     }
   }
 
-  private isIndexDay(currDate: Date, settings: IndexSettings): boolean {
-    if (!settings.days) {
-      return false;
-    } else {
-      return !!this.getIndexDates(settings).find(
-        x => x.getDay() === currDate.getDay()
-      );
-    }
-  }
-
-  private getIndexDates(settings: IndexSettings) {
+  private getIndexDates(settings: IndexSettings, numTotalDaysInMonth: number) {
+    if (!settings.days) return [];
     let indexes: number[] = settings.days;
-    let specialDays: Date[] = [];
+    let dates: Date[] = [];
+    const today = new Date();
 
     for (let index of indexes) {
       let i = index;
-      while (i < this.numTotalDaysInMonth()) {
-        specialDays.push(new Date(this.year, this.month, i));
+      while (i <= numTotalDaysInMonth) {
+        dates.push(new Date(this.year, this.month, i));
         i += 7;
       }
     }
-    return specialDays;
+    return dates;
   }
 
   private numTotalDaysInMonth(): number {
-    return new Date(this.year, this.month, 0).getDate();
+    return new Date(this.year, this.month + 1, 0).getDate();
   }
 }
