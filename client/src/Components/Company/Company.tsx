@@ -12,6 +12,7 @@ class CompanyComp extends Component<Props> {
     constructor(props: Props) {
         super(props);
         this.onMouseDown = this.onMouseDown.bind(this);
+        this.onWorkers = this.onWorkers.bind(this);
     }
 
     onMouseDown() {
@@ -21,6 +22,11 @@ class CompanyComp extends Component<Props> {
         const year = today.getFullYear();
         const month = today.getMonth();
         history.push(`/dashboard/${id}/${year}/${month}`);
+    }
+
+    onWorkers() {
+        const { history, company } = this.props;
+        history.push(`/dashboard/${company.id}`);
     }
     
     render() {
@@ -32,6 +38,7 @@ class CompanyComp extends Component<Props> {
                 </section>
                 <section className="card-footer">
                     <a href="#" onMouseDown={this.onMouseDown} className="btn btn-link">Select</a>
+                    <a href="#" onMouseDown={this.onWorkers} className="btn btn-link">Workers</a>
                 </section>
             </article>
         );

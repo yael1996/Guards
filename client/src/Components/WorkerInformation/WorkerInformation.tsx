@@ -18,17 +18,18 @@ class WorkerInformation extends Component<Props> {
     }
 
     render() {
-        // const { firstname, lastname,  } = this.props.user;
+        const { firstname, lastname, email } = this.props.user;
         return (
-            <div className="card mx-3">
+            <div className="card mx-3 mb-4">
                 <section className="card-header">
                     {/* <p>Name: {`${firstname} ${lastname}`}</p> */}
                 </section>
                 <section className="card-body">
-
+                    <p>{`${firstname} ${lastname}`}</p>
+                    <p>{email}</p>
                 </section>
                 <section className="card-footer">
-                    <button onClick={this.onClick}>Hire</button>
+                    <button className="btn btn-link" onClick={this.onClick}>Hire</button>
                 </section>
             </div>
         );

@@ -13,7 +13,7 @@ export function reducer(state: MenuState = initialState, action: MenuAction): Me
             newState.items = [
                 {
                     text: "Companies",
-                    page: "dashboard/companies"
+                    page: "/dashboard/companies"
                 }
             ]
             switch (type) {

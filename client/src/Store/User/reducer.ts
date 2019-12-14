@@ -5,23 +5,23 @@ const initialState: UserState = {
     firstname: "",
     lastname: "",
     email: "",
-    tokens: [],
     type: "",
-    satisfiedConstraints: 0,
-    monthlyConstraints: {
-        month: {
-            month: 0,
-            year: 0
-        },
-        constraints: []
-    },
+    unsatisfiedConstraints: 0,
+    monthlyConstraints: [],
     imageUrl: "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
 }
 
 export function reducer(state: UserState = initialState, action: UserAction): UserState {
     switch (action.type) {
         case SET_USER:
-            const newState = Object.assign({}, state, action.payload);
+            const newState = Object.assign({}, state);
+            newState._id = action.payload._id;
+            newState.email = action.payload.email;
+            newState.firstname = action.payload.firstname;
+            newState.lastname = action.payload.lastname;
+            newState.monthlyConstraints = action.payload.monthlyConstraints;
+            newState.unsatisfiedConstraints = action.payload.unSatisfiedConstraints;
+            newState.type = (action.payload.type === 1)? "manager" : "user";
             return newState;
         case LOGOUT:
             return initialState;

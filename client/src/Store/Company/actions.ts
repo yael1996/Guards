@@ -1,7 +1,7 @@
 import { ThunkResult, CompanyState, CompanyAction, SET_COMPANIES, CLEAR_COMPANIES, Company } from "./types";
 import Axios, { AxiosResponse } from "axios";
 import config from "../../config/config";
-import { UserState, USER_TYPE } from "../User/types";
+import { UserState } from "../User/types";
 
 export function clearCompanies(): CompanyAction {
     return {

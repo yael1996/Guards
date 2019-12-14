@@ -243,14 +243,20 @@ class BoardCreation extends Component<Props, CreationState> {
                         </section>
                         <section className="card-body">
                             <div className="input-group mb-3">
-                                <div className="input-group-prepend"><span>Board name:</span></div>
+                                <div className="input-group-prepend">
+                                    <span className="input-group-text">Board name:</span>
+                                </div>
+                                <input className="form-control" type="text" onChange={this.onNameChange} value={name} />
                             </div>
-                            <input type="text" onChange={this.onNameChange} value={name} />
                             <div className="input-group mb-3">
-                                <div className="input-group-prepend"><span>Board name:</span></div>
+                                <div className="input-group-prepend">
+                                    <span className="input-group-text">Board description:</span>
+                                </div>
+                                <input className="form-control" type="text" onChange={this.onDescriptionChange} value={description} />
                             </div>
-                            <input type="text" onChange={this.onDescriptionChange} value={description} />
                         </section>
+                    </section>
+                    <section className="card w-75 mb-3">
                         <section className="card-header d-flex">
                             <h4 className="mb-0">Standard days settings</h4>
                         </section>
