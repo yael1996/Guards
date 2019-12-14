@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { EmptyMonthBord } from "../../utiles/bordCreator/emptyMonthBord";
+import { GeneratFirstPopulation } from "../../utiles/bordCreator/generatFirstPopulation";
 import { Month } from "../../mongo/models/concreteBoard";
 import { models } from "../../mongo/Connection";
 
@@ -9,10 +9,11 @@ router.post("/emptyBoard", async (req, res) => {
   try {
     const bord = await models.board.findById(req.query.board);
     const month = req.body.month as Month;
-    const emptyBoard = new EmptyMonthBord(month, bord.boardSettings);
+    const emptyBoard = new GeneratFirstPopulation(bord, month);
+    const result = emptyBoard.generateEmptyShifts();
     res
       .status(200)
-      .json(emptyBoard)
+      .json(result)
       .end();
   } catch (error) {
     res
