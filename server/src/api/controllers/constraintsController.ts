@@ -7,9 +7,9 @@ const router = Router();
 
 router.post("/emptyBoard", async (req, res) => {
   try {
-    const bord = await models.board.findById(req.query.board);
+    const board = await models.board.findById(req.query.board);
     const month = req.body.month as Month;
-    const emptyBoard = new GeneratFirstPopulation(bord, month);
+    const emptyBoard = new GeneratFirstPopulation(board, month);
     const result = emptyBoard.generateEmptyShifts();
     res
       .status(200)

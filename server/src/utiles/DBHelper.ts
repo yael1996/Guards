@@ -15,7 +15,7 @@ export class DBHelper {
       const dissatisfieds = await this.getWorkerNotAppliedConstraints(
         worker,
         best,
-        workersConstraints[worker]
+        workersConstraints
       );
 
       const user = await this.getUserById(worker);
@@ -32,27 +32,20 @@ export class DBHelper {
   ): number {
     let workerNotApplied = 0;
 
-    for (let constraint of workersConstraints) {
+    for (let constraint of workersConstraints[workerId]) {
       let shift = this.getConstraintShift(constraint, monthShifts);
-      if (shift.workersId.some(x => x == workerId)) workerNotApplied++;
+      if (shift && shift.workersId.some(x => x == workerId)) workerNotApplied++;
     }
     return workerNotApplied;
   }
 
   private getConstraintShift(constraint: Constraint, monthShifts: Shift[]) {
-    let shift;
-    try {
-      shift = monthShifts.find((x, index) => {
-        console.log(index);
-
-        return (
-          x.shiftTime.fromTime.getTime() ==
-            constraint.time.fromTime.getTime() &&
-          x.shiftTime.toTime.getTime() == constraint.time.toTime.getTime()
-        );
-      });
-    } catch (e) {
-      console.log(e);
+    let shift = monthShifts.find(x => {
+      x.shiftTime.fromTime.getTime() == constraint.time.fromTime.getTime() &&
+        x.shiftTime.toTime.getTime() == constraint.time.toTime.getTime();
+    });
+    if (!shift) {
+      const a = shift.shiftTime.fromTime;
     }
     return shift;
   }

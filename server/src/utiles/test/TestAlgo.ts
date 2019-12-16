@@ -2,9 +2,8 @@ import { models } from "../../mongo/Connection";
 import {
   DaySettings,
   ShiftSettings,
-  RegularDaySettings,
-  SpecialDaysSettings,
-  SpecialDatesSettings,
+  IndexSettings,
+  DateSettings,
   BoardSettings
 } from "../../mongo/models/board";
 import { USER_TYPE } from "../userTypeEnum";
@@ -14,6 +13,7 @@ import { Month, Shift } from "../../mongo/models/concreteBoard";
 import { Fitness } from "../../geneticAlgorithem/fitness";
 import { DBHelper } from "../DBHelper";
 import { MonthlyConstraints, Constraint } from "../../mongo/models/User";
+import { GeneratFirstPopulation } from "../bordCreator/generatFirstPopulation";
 
 export class TestAlgo {
   private db: DBHelper;
@@ -25,8 +25,7 @@ export class TestAlgo {
   }
 
   public async getbest(boardId: string, month: Month, x, y, z) {
-    const best = await this.algo.runGeneticAlgorithm(boardId, month, x, y, z);
-    return best;
+    return await this.algo.runGeneticAlgorithm(boardId, month, x, y, z);
   }
 
   public async test(boardId: string, month: Month) {
@@ -83,19 +82,19 @@ export class TestAlgo {
       shiftLengthInHours: 4
     };
 
-    let regularDaySettings: RegularDaySettings = {
+    let regularDaySettings: IndexSettings = {
       days: [1, 2, 3, 4],
       shiftSettings: shiftSettings,
       daySettings: daySettings
     };
 
-    let specialDaySettings: SpecialDaysSettings = {
+    let specialDaySettings: IndexSettings = {
       days: null,
       shiftSettings: shiftSettings,
       daySettings: daySettings
     };
 
-    let specialDateSettings: SpecialDatesSettings = {
+    let specialDateSettings: DateSettings = {
       dates: null,
       shiftSettings: shiftSettings,
       daySettings: daySettings
@@ -139,12 +138,26 @@ export class TestAlgo {
     await board.save();
   }
 
-  public async addUsersConstraints(boardId: string, month: Month) {
-    const best: Shift[] = await this.getbest(boardId, month, 0.2, 0.2, 0.6);
+  public async updateUsersHistory(boardId) {
     const board = await models.board.findById(boardId);
     for (let workerId of board.workerIds) {
       const user = await models.user.findById(workerId);
-      const constraints: Constraint[] = await this.getUserConstraint(best);
+      user.unSatisfiedConstraints = Math.floor(Math.random() * 11);
+      user.save();
+    }
+  }
+
+  public async addUsersConstraints(boardId: string, month: Month) {
+    const board = await models.board.findById(boardId);
+    const emptyBoard = new GeneratFirstPopulation(
+      board,
+      month
+    ).generateEmptyShifts();
+    for (let workerId of board.workerIds) {
+      const user = await models.user.findById(workerId);
+      const constraints: Constraint[] = await this.getUserConstraint(
+        emptyBoard
+      );
       const monthConstraint: MonthlyConstraints = {
         month: month,
         constraints: constraints
@@ -154,14 +167,14 @@ export class TestAlgo {
     }
   }
 
-  private async getUserConstraint(best) {
+  private async getUserConstraint(emptyBoard) {
     const indexies = [];
     const constraints: Constraint[] = [];
 
     for (let i = 0; i < this.NUM_WORKE_CONSTRAINTSR; i++) {
-      const index = this.getIndex(indexies, best.length - 1);
+      const index = this.getIndex(indexies, emptyBoard.length - 1);
       indexies.push(index);
-      constraints.push(this.createConstraint(i, index, best));
+      constraints.push(this.createConstraint(i, index, emptyBoard));
     }
 
     return constraints;
