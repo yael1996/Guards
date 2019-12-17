@@ -25,7 +25,31 @@ export class TestAlgo {
   }
 
   public async getbest(boardId: string, month: Month, x, y, z) {
-    return await this.algo.runGeneticAlgorithm(boardId, month, x, y, z);
+    const best = await this.algo.runGeneticAlgorithm(boardId, month, x, y, z);
+    //const fitness = this.algo.getBestFitness();
+    return best;
+  }
+
+  private async getBestFitness(boardId, month, x, y, z, best) {
+    const workersIds = await this.db.getAllWorkers(boardId);
+    const workersDissatisfied = await this.db.getWorkerDissatisfieds(
+      workersIds
+    );
+    const workersConstraints = await this.db.getWorkerConstraints(
+      workersIds,
+      month
+    );
+
+    const fitness = new Fitness(
+      workersDissatisfied,
+      workersConstraints,
+      workersIds,
+      x,
+      y,
+      z
+    );
+
+    return await fitness.getFitness(best);
   }
 
   public async test(boardId: string, month: Month) {
@@ -35,30 +59,19 @@ export class TestAlgo {
         const x = i;
         const y = j;
         const z = 1 - (i + j);
-
-        const best = await this.getbest(boardId, month, x, y, z);
-
-        const workersIds = await this.db.getAllWorkers(boardId);
-        const workersDissatisfied = await this.db.getWorkerDissatisfieds(
-          workersIds
-        );
-        const workersConstraints = await this.db.getWorkerConstraints(
-          workersIds,
-          month
-        );
-
-        const fitness = new Fitness(
-          workersDissatisfied,
-          workersConstraints,
-          workersIds,
-          x,
-          y,
-          z
-        );
-
-        const bestFitness = await fitness.getFitness(best);
-
-        testResult.push({ x: x, y: y, z: z, fitness: bestFitness });
+        if (x + y <= 1) {
+          const best = await this.getbest(boardId, month, x, y, z);
+          // const bestFitness = await this.getBestFitness(
+          //   boardId,
+          //   month,
+          //   x,
+          //   y,
+          //   z,
+          //   best
+          // );
+          const bestFitness = this.algo.getBestFitness();
+          testResult.push({ x: x, y: y, z: z, fitness: bestFitness });
+        }
       }
     }
     return testResult;
