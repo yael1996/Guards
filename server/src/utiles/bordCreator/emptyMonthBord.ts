@@ -61,7 +61,6 @@ export class EmptyMonthBord {
     if (!settings.days) return [];
     let indexes: number[] = settings.days;
     let dates: Date[] = [];
-    const today = new Date();
 
     for (let index of indexes) {
       let i = index;
