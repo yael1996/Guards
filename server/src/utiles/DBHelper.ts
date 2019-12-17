@@ -40,14 +40,11 @@ export class DBHelper {
   }
 
   private getConstraintShift(constraint: Constraint, monthShifts: Shift[]) {
-    let shift = monthShifts.find(x => {
-      x.shiftTime.fromTime.getTime() == constraint.time.fromTime.getTime() &&
-        x.shiftTime.toTime.getTime() == constraint.time.toTime.getTime();
-    });
-    if (!shift) {
-      const a = shift.shiftTime.fromTime;
-    }
-    return shift;
+    return monthShifts.find(
+      x =>
+        x.shiftTime.fromTime.getTime() === constraint.time.fromTime.getTime() &&
+        x.shiftTime.toTime.getTime() === constraint.time.toTime.getTime()
+    );
   }
 
   public async saveBestToDB(best: Shift[][], month: Month, bordId: string) {
@@ -67,6 +64,7 @@ export class DBHelper {
     if (!bord) {
       //ToDo
     }
+
     return bord.workerIds.map(x => x.toString());
   }
 
@@ -97,7 +95,7 @@ export class DBHelper {
         //ToDo
       }
       // ToDo - refactor or get from db
-      if (user.monthlyConstraints.length > 0) {
+      if (user.monthlyConstraints && user.monthlyConstraints.length > 0) {
         const usersConstraints = await user.monthlyConstraints.find(
           x => x.month.year == month.year && x.month.month == month.month
         ).constraints;

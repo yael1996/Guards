@@ -26,6 +26,16 @@ export class GeneratFirstPopulation {
 
   public generateEmptyShifts() {
     return this.fillOneMonthWithShifts(true);
+    //return this.formatShifts(empty);
+  }
+
+  private formatShifts(empty: Shift[]) {
+    const dates = [];
+    empty.forEach(x => {
+      dates.push(x.shiftTime.fromTime.toLocaleString());
+      dates.push(x.shiftTime.toTime.toLocaleString());
+    });
+    return dates;
   }
 
   private fillOneMonthWithShifts(isEmpty: boolean = false): Shift[] {
@@ -72,10 +82,11 @@ export class GeneratFirstPopulation {
       let startShift = new Date(
         day.getFullYear(),
         day.getMonth(),
-        day.getDay(),
+        day.getDate(),
         settings.daySettings.startHour.hour,
         settings.daySettings.startHour.minute
       );
+
       for (var i = 1; i <= settings.daySettings.numShiftsInDay; i++) {
         let shiftTime = this.getShiftTime(startShift, settings.shiftSettings);
         let numWorkers = settings.shiftSettings.numWorkersInShift;
@@ -97,7 +108,7 @@ export class GeneratFirstPopulation {
     let toTime = new Date(
       startShift.getFullYear(),
       startShift.getMonth(),
-      startShift.getDay(),
+      startShift.getDate(),
       startShift.getHours() + shiftSettings.shiftLengthInHours
     );
 

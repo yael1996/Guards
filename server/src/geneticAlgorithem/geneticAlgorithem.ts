@@ -78,6 +78,7 @@ export class GeneticAlgorithm {
   private async getBestReasult() {
     await this.algorithm.evolve();
     const best: Shift[] = await this.algorithm.best();
+    const bestFitness = this.algorithm.bestScore();
     //best.map(x => x.workersId);
     //await this.db.saveBestToDB(best, this.month, this.bordId);
     return best;
