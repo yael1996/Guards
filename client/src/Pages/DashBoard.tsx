@@ -59,6 +59,10 @@ class DashBoard extends Component<Props> {
         this.refreshView();
     }
 
+    shouldComponentUpdate() {
+        return true;
+    }
+
     onDateChange(date: Date) {
         const { history } = this.props;
         const { boardId } = this.props.calendar;

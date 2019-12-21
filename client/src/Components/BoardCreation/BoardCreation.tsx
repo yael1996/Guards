@@ -16,7 +16,7 @@ interface ReduxProps {
 }
 
 interface ReduxDispatch {
-    create: (creationState: Company, withHolidays: boolean) => Promise<Company>
+    create: (creationState: Company) => Promise<Company>
 }
 
 type Props = OwnProps & ReduxProps & ReduxDispatch;
@@ -248,8 +248,7 @@ class BoardCreation extends Component<Props, CreationState> {
                 }
             }
         };
-        console.log(company);
-        this.props.create(company, withHolidays).then(() => {
+        this.props.create(company).then(() => {
             this.props.history.push(`/dashboard`);
         });
     }
@@ -393,7 +392,7 @@ const mapStateToProps = (state: RootState): ReduxProps => {
 
 const mapDispatchToProps = (dispatch: AppDispatch): ReduxDispatch => {
     return {
-        create: (company: Company, withHolidays: boolean) => dispatch(createCompany(company, withHolidays))
+        create: (company: Company) => dispatch(createCompany(company))
     };
 }
 
