@@ -118,6 +118,7 @@ class DashBoard extends Component<Props> {
                                                 events={calendar.events}
                                                 defaultDate={new Date()}
                                                 defaultView="month"
+                                                onSelectEvent={function (ob, e) { console.log(ob, e) }}
                                                 onNavigate={function (newDate: Date) { onDateChange(newDate); }}
                                                 views={{
                                                     month: true
