@@ -237,12 +237,13 @@ class BoardCreation extends Component<Props, CreationState> {
                 },
                 specialDatesSettings: {
                     daySettings: {
-                        numShiftsInDay: parseInt(hdAmount),
-                        startHour: { hour: parseInt(hdHour), minute: parseInt(hdMinute) }
+                        numShiftsInDay: withHolidays? parseInt(hdAmount) : 0,
+                        startHour: { hour: withHolidays? parseInt(hdHour) : 0,
+                                     minute: withHolidays? parseInt(hdMinute): 0 }
                     },
                     shiftSettings: {
-                        numWorkersInShift: parseInt(hdWorkerCount),
-                        shiftLengthInHours: parseInt(hdLength)
+                        numWorkersInShift: withHolidays? parseInt(hdWorkerCount) : 0,
+                        shiftLengthInHours: withHolidays? parseInt(hdLength) : 0
                     }
                 }
             }
@@ -362,12 +363,12 @@ class BoardCreation extends Component<Props, CreationState> {
                                 <p>With holidays<input className="ml-2" type="radio" name="holiday" value="true" onChange={this.withHolidays(true)} checked={withHolidays} /></p>
                                 <p>Without holidays<input className="ml-2" type="radio" name="holiday" value="false" onChange={this.withHolidays(false)} checked={!withHolidays} /></p>
                             </span>
-                            <span className="d-flex flex-column">
+                            {withHolidays && <span className="d-flex flex-column">
                                 <p>Shift length: <input type="text" onChange={holiday(length)} value={holidayShiftSettings.length} /></p>
                                 <p>Number of shifts: <input type="text" onChange={holiday(amount)} value={holidayShiftSettings.amount} /></p>
                                 <p>Workers needed: <input type="text" onChange={holiday(workerCount)} value={holidayShiftSettings.workerCount} /></p>
                                 <p>Start time: <input type="text" value={hdhour} onChange={holiday(hour)} /> <input type="text" value={hdMinute} onChange={holiday(minute)} /></p>
-                            </span>
+                            </span>}
                         </section>
                     </section>
                     <section className="card">

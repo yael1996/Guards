@@ -59,17 +59,12 @@ class DashBoard extends Component<Props> {
         this.refreshView();
     }
 
-    // Gives us recursive calls, needs a dirty flag?
-    // componentWillUpdate() {
-    //     this.refreshView();
-    // }
-
     onDateChange(date: Date) {
         const { history } = this.props;
         const { boardId } = this.props.calendar;
         const year = date.getFullYear();
         const month = date.getMonth();
-        this.props.getEvents(boardId, year, month).then((board) => {
+        this.props.getEvents(boardId, year, month).then(() => {
             history.push(`/dashboard/${boardId}/${year}/${month}`);
         });
     }

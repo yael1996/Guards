@@ -6,9 +6,10 @@ import { CalendarState, CalendarAction } from "../../Store/Calendar/types";
 import { RootState, AppDispatch } from "../../Store/store";
 import { set } from "../../Store/Calendar/actions";
 import { connect } from "react-redux";
+import { UserState } from "../../Store/User/types";
 
 interface ReduxProps {
-
+    user: UserState
 }
 
 interface ReduxDispatch {
@@ -50,6 +51,7 @@ class CompanyComp extends Component<Props> {
 
     render() {
         const { name } = this.props.company;
+        const isManager = this.props.user.type === "manager";
         return (
             <article className="card w-25 d-inline-block mx-4 my-4">
                 <section className="card-body">
@@ -57,7 +59,7 @@ class CompanyComp extends Component<Props> {
                 </section>
                 <section className="card-footer">
                     <a href="#" onMouseDown={this.onMouseDown} className="btn btn-link">Select</a>
-                    <a href="#" onMouseDown={this.onWorkers} className="btn btn-link">Workers</a>
+                    { isManager && <a href="#" onMouseDown={this.onWorkers} className="btn btn-link">Workers</a> }
                 </section>
             </article>
         );
@@ -65,7 +67,9 @@ class CompanyComp extends Component<Props> {
 }
 
 const mapStateToProps = (state: RootState, props: OwnProps): ReduxProps => {
-    return {};
+    return {
+        user: state.user
+    };
 }
 
 const mapDispatchToProps = (dispatch: AppDispatch, props: OwnProps): ReduxDispatch => {
