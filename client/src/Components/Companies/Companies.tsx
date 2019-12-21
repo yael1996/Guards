@@ -16,7 +16,7 @@ class Companies extends Component<Props> {
         return (
             <section className="d-flex flex-wrap justify-content-center">
                 {take(amount || companies.length, companies).map((x) => {
-                    return <CompanyComp key={x.id} company={x} history={history} />;
+                    return <CompanyComp key={x._id} company={x} history={history} />;
                 })}
             </section>
         );
