@@ -47,8 +47,8 @@ export class DBHelper {
     );
   }
 
-  public async saveBestToDB(best: Shift[][], month: Month, bordId: string) {
-    return await new models.concreteBoard({
+  public async saveBestToDB(best: Shift[], month: Month, bordId: string) {
+    await new models.concreteBoard({
       bordId: bordId,
       month: month,
       shifts: best

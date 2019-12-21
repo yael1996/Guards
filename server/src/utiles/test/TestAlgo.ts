@@ -155,8 +155,8 @@ export class TestAlgo {
     const board = await models.board.findById(boardId);
     for (let workerId of board.workerIds) {
       const user = await models.user.findById(workerId);
-      user.unSatisfiedConstraints = Math.floor(Math.random() * 11);
-      user.save();
+      user.unSatisfiedConstraints = Math.floor(Math.random() * 21);
+      await user.save();
     }
   }
 

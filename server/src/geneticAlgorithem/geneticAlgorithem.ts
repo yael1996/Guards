@@ -89,8 +89,7 @@ export class GeneticAlgorithm {
       .evolve()
       .evolve();
     const best: Shift[] = await this.algorithm.best();
-
-    //await this.db.saveBestToDB(best, this.month, this.bordId);
+    await this.db.saveBestToDB(best, this.month, this.bordId);
     return best;
   }
 
