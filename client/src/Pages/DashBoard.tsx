@@ -4,7 +4,7 @@ import { RootState, AppDispatch, AppAction } from "../Store/store";
 import HeaderComp from "../Components/Header/Header";
 import { Switch, Route } from "react-router-dom";
 import Moment from "moment";
-import { Calendar, momentLocalizer, Event } from "react-big-calendar";
+import {Calendar, momentLocalizer, Event, stringOrDate} from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import SideMenuComp from "../Components/SideMenu/SideMenu";
 import { CompanyState } from "../Store/Company/types";
@@ -19,7 +19,7 @@ import { JSONBoard } from "../../../server/src/mongo/models/Board";
 import WorkerManager from "../Components/WorkerManager/WorkerManager";
 import { loadPages } from "../Store/Menu/actions";
 import { getCompanies } from "../Store/Company/actions";
-
+import Constraint from "../Components/Constraint/Constraint"
 interface OwnProps {
     history: History<any>
 }
@@ -44,6 +44,8 @@ class DashBoard extends Component<Props> {
         super(props);
         this.onDateChange = this.onDateChange.bind(this);
         this.refreshView = this.refreshView.bind(this);
+        this.handleSelect = this.handleSelect.bind(this);
+
     }
 
     refreshView() {
@@ -71,10 +73,24 @@ class DashBoard extends Component<Props> {
         });
     }
 
+    handleSelect(start : stringOrDate, end: stringOrDate) {
+        const title = window.prompt('New Event name');
+        console.log(start);
+        console.log(end);
+
+    }
+
+    // onDoubleClick(){
+    //     return () => { return <Constraint> </Constraint>};
+    // }
+
     render() {
         const { companies, user, calendar } = this.props;
         const { items } = this.props.menu;
         const onDateChange = this.onDateChange;
+        const handleSelect = this.handleSelect;
+
+        // const onCalendarEventClick = this.onDoubleClick;
         console.log(user);
 
         return (
@@ -96,14 +112,18 @@ class DashBoard extends Component<Props> {
                                 )} />
                                 <Route exact path="/dashboard/:boardId/:year/:month">
                                     <Calendar className="min-vh-100"
-                                        localizer={momentLocalizer(Moment)}
-                                        events={calendar.events}
-                                        defaultDate={new Date()}
-                                        defaultView="month"
-                                        onNavigate={function (newDate: Date) { onDateChange(newDate); }}
-                                        views={{
-                                            month: true
-                                        }} />
+                                              selectable
+                                              onSelectEvent={event => alert(event.title)} //TODO: implement
+                                              onSelectSlot={slotInfo => {console.log(slotInfo.start)}}
+                                              localizer={momentLocalizer(Moment)}
+                                              // onView={onCalendarEventClick()}
+                                              events={calendar.events}
+                                              defaultDate={new Date()}
+                                              defaultView="month"
+                                              onNavigate={function (newDate: Date) { onDateChange(newDate); }}
+                                              views={{
+                                                  month: true
+                                              }} />
                                 </Route>
                                 <Route exact path="/dashboard/:boardId" children={({ history, match }) => (
                                     <WorkerManager history={history} match={match} />
