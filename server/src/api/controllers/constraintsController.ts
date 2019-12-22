@@ -21,3 +21,5 @@ router.post("/emptyBoard", async (req, res) => {
       .end();
   }
 });
+
+export { router };

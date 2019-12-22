@@ -4,7 +4,7 @@ import { RootState, AppDispatch, AppAction } from "../Store/store";
 import HeaderComp from "../Components/Header/Header";
 import { Switch, Route, match } from "react-router-dom";
 import Moment from "moment";
-import {Calendar, momentLocalizer, Event, stringOrDate} from "react-big-calendar";
+import { Calendar, momentLocalizer, Event, stringOrDate } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import SideMenuComp from "../Components/SideMenu/SideMenu";
 import { CompanyState } from "../Store/Company/types";
@@ -19,7 +19,8 @@ import { JSONBoard } from "../../../server/src/mongo/models/Board";
 import WorkerManager from "../Components/WorkerManager/WorkerManager";
 import { loadPages } from "../Store/Menu/actions";
 import { getCompanies } from "../Store/Company/actions";
-import Constraint from "../Components/Constraint/Constraint"
+import { Tooltip } from "react-tippy";
+// import Constraint from "../Components/Constraint/Constraint"
 interface OwnProps {
     history: History<any>,
     match: match<any>
@@ -39,9 +40,15 @@ interface ReduxDispatch {
     optimise: (boardId: string, year: number, month: number) => Promise<void>
 }
 
+interface State {
+    isTooltipOpen: boolean,
+    fromTime: string,
+    toTime: string
+}
+
 type Props = OwnProps & ReduxState & ReduxDispatch;
 
-class DashBoard extends Component<Props> {
+class DashBoard extends Component<Props, State> {
     constructor(props: any) {
         super(props);
         this.onDateChange = this.onDateChange.bind(this);
@@ -49,6 +56,15 @@ class DashBoard extends Component<Props> {
         this.handleSelect = this.handleSelect.bind(this);
 
         this.optimise = this.optimise.bind(this);
+        this.submitConstraint = this.submitConstraint.bind(this);
+        this.onSelectEvent = this.onSelectEvent.bind(this);
+        this.closePopup = this.closePopup.bind(this);
+
+        this.state = {
+            isTooltipOpen: false,
+            fromTime: "",
+            toTime: ""
+        }
     }
 
     refreshView() {
@@ -75,7 +91,7 @@ class DashBoard extends Component<Props> {
         });
     }
 
-    handleSelect(start : stringOrDate, end: stringOrDate) {
+    handleSelect(start: stringOrDate, end: stringOrDate) {
         const title = window.prompt('New Event name');
         console.log(start);
         console.log(end);
@@ -93,6 +109,18 @@ class DashBoard extends Component<Props> {
                 this.props.optimise(boardId, +year, +month);
             }
         }
+    }
+
+    submitConstraint() {
+        this.setState({ isTooltipOpen: false });
+    }
+
+    closePopup() {
+        this.setState({ isTooltipOpen: false });
+    }
+
+    onSelectEvent(event: Event) {
+        this.setState({ isTooltipOpen: true });
     }
 
     render() {
@@ -130,19 +158,52 @@ class DashBoard extends Component<Props> {
                                                     <p>Optimise</p>
                                                 </button>
                                             </section>
+                                            <Tooltip
+                                                interactiveBorder={5}
+                                                trigger="click"
+                                                interactive
+                                                open={this.state.isTooltipOpen}
+                                                position="bottom"
+                                                html={(
+                                                    <article className="card border border-primary px-2 py-2">
+                                                        <p>test</p>
+                                                        <div className={"form-group"}>
+                                                            <label>From Time:</label>
+                                                            <input
+                                                                type="text"
+                                                                onChange={(e) => this.setState({ fromTime: e.target.value })}
+                                                                value={this.state.fromTime}
+                                                                className={"form-control"} />
+                                                        </div>
+                                                        <div className={"form-group"}>
+                                                            <label>To Time:</label>
+                                                            <input
+                                                                type="text"
+                                                                onChange={(e) => this.setState({ toTime: e.target.value })}
+                                                                value={this.state.toTime}
+                                                                className={"form-control"} />
+                                                        </div>
+                                                        <section className="d-flex justify-content-around">
+                                                            <button className="btn btn-primary" onClick={this.submitConstraint}>Submit</button>
+                                                            <button className="btn btn-primary" onClick={this.closePopup}>Close</button>
+                                                        </section>
+                                                    </article>
+                                                )}
+                                            />
                                             <Calendar className="min-vh-100"
                                                 selectable
-                                                onSelectEvent={event => alert(event.title)} //TODO: implement
-                                                onSelectSlot={slotInfo => {console.log(slotInfo.start)}}
+                                                onSelectEvent={this.onSelectEvent}
+                                                onSelectSlot={slotInfo => { console.log(slotInfo.start) }}
                                                 localizer={momentLocalizer(Moment)}
-                                                events={calendar.events}
+                                                // events={calendar.events}
+                                                events={[{ start: new Date(), allDay: true, title: "test", end: new Date() }] as Event[]}
                                                 defaultDate={new Date()}
                                                 defaultView="month"
-                                                // onSelectEvent={function (ob, e) { console.log(ob, e) }}
                                                 onNavigate={function (newDate: Date) { onDateChange(newDate); }}
                                                 views={{
                                                     month: true
-                                                }} />
+                                                }}
+                                            />
                                         </>
                                     )
                                 }} />
