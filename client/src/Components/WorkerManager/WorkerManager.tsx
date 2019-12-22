@@ -7,6 +7,7 @@ import { History } from "history";
 import { CompanyState, Company } from "../../Store/Company/types";
 import { match } from "react-router";
 import { getHirePotential } from "../../Store/User/actions";
+import { hire, fire } from "../../Store/Company/actions";
 
 interface OwnProps {
     history: History<any>,
@@ -18,11 +19,12 @@ interface ReduxProps {
 }
 
 interface ReduxDispatch {
-    getHirePotential: () => Promise<UserState[]>
+    getHirePotential: () => Promise<UserState[]>,
+    hire: (company: Company, user: UserState) => Promise<Company>,
+    fire: (company: Company, user: UserState) => Promise<Company>
 }
 
 interface State {
-    company: Company,
     users: UserState[],
     email: string
 }
@@ -34,22 +36,40 @@ class WorkerManager extends Component<Props, State> {
         super(props);
         this.initializeState();
 
+        this.company = this.company.bind(this);
         this.onHire = this.onHire.bind(this);
         this.onSearch = this.onSearch.bind(this);
+        this.onSearchChange = this.onSearchChange.bind(this);
     }
 
     initializeState() {
-        const { boardId } = this.props.match.params;
-        const company = this.props.companies.find(x => x.id === boardId) as Company;
         this.state = {
-            company,
             users: [],
             email: ""
         };
     }
 
-    onHire(user: UserState) {
+    company() {
+        const { boardId } = this.props.match.params;
+        return this.props.companies.find(x => x._id === boardId) as Company;
+    }
 
+    onHire(user: UserState, isHired: boolean) {
+        const company = this.company();
+        const { hire, fire } = this.props;
+
+        if (isHired) {
+            fire(company, user);
+        } else {
+            hire(company, user);
+        }
+    }
+
+    onSearchChange(event: React.ChangeEvent<HTMLInputElement>) {
+        const { value: email } = event.target;
+        this.setState({
+            email
+        });
     }
 
     onSearch() {
@@ -58,9 +78,10 @@ class WorkerManager extends Component<Props, State> {
     }
 
     render() {
-        const { onHire, onSearch } = this;
+        const { onHire, onSearch, onSearchChange } = this;
+        const company = this.company();
         const { email } = this.state;
-        const users = this.state.users.filter(user => user.email.includes(this.state.email)); 
+        const users = this.state.users.filter(user => user.email.includes(this.state.email));
         return (
             <>
                 <div className="card d-flex flex-direction-column align-content-center mb-3">
@@ -69,13 +90,17 @@ class WorkerManager extends Component<Props, State> {
                             <section className="input-group-prepend">
                                 <span className="input-group-text"> Email: </span>
                             </section>
-                            <input type="text" className="form-control" placeholder="example@gmail.com" value={email} />
+                            <input type="text" className="form-control" onChange={onSearchChange} placeholder="example@gmail.com" value={email} />
                             <button className="btn btn-primary ml-3" onClick={onSearch}>Search</button>
                         </div>
                     </section>
                 </div>
                 <div className="container-fluid d-flex flex-wrap">
-                    {users.map((user) => <WorkerInformation user={user} onSelect={onHire} />)}
+                    {users.map((user) => {
+                        const { _id } = user;
+                        const isHired = company.workerIds.includes(_id);
+                        return <WorkerInformation key={_id} user={user} isHired={isHired} onSelect={onHire} />
+                    })}
                 </div>
             </>
         );
@@ -91,7 +116,9 @@ const mapStateToProps = (state: RootState): ReduxProps => {
 
 const mapDispatchToProps = (dispatch: AppDispatch): ReduxDispatch => {
     return {
-        getHirePotential: () => dispatch(getHirePotential())
+        getHirePotential: () => dispatch(getHirePotential()),
+        hire: (company: Company, user: UserState) => dispatch(hire(company, user)),
+        fire: (company: Company, user: UserState) => dispatch(fire(company, user))
     };
 }
 

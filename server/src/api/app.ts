@@ -17,6 +17,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use("/board", boardRouter);
 app.use("/user", userRouter);
 app.use("/concreteBoard", concreteBoardRouter);
+app.use("/constraints", testRouter);
 app.use("/algorithem", algorithemRouter);
 app.use("/test", testRouter);
 

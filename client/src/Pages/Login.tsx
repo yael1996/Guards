@@ -3,7 +3,6 @@ import { RootState, AppDispatch, AppAction } from "../Store/store";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import { History, Location } from "history";
-import { CalendarState } from "../Store/Calendar/types";
 import { JSONUser } from "../../../server/src/mongo/models/user";
 import { removeQuerySymbol, parseParams } from "../Utils/queryParamParse";
 import config from "../config/config";
@@ -15,7 +14,6 @@ interface OwnProps {
 }
 
 interface ReduxState {
-    calendar: CalendarState
 }
 
 interface ReduxDispatch {
@@ -53,10 +51,8 @@ class Login extends Component<Props> {
 }
 
 const mapStateToProps = (state: RootState): ReduxState => {
-    const { calendar } = state;
     return {
-        calendar
-    }
+    };
 }
 const mapDispatchToProps = (dispatch: AppDispatch): ReduxDispatch => {
     return {

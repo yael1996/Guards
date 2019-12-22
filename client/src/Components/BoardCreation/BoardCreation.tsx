@@ -16,7 +16,7 @@ interface ReduxProps {
 }
 
 interface ReduxDispatch {
-    create: (creationState: Company, withHolidays: boolean) => Promise<Company>
+    create: (creationState: Company) => Promise<Company>
 }
 
 type Props = OwnProps & ReduxProps & ReduxDispatch;
@@ -33,19 +33,31 @@ class BoardCreation extends Component<Props, CreationState> {
             standardShiftSettings: {
                 length: "",
                 amount: "",
-                workerCount: ""
+                workerCount: "",
+                startHour: {
+                    hour: "00",
+                    minute: "00"
+                }
             },
             specialDays: [false, false, false, false, true, false, false],
             specialShiftSettings: {
                 length: "",
                 amount: "",
-                workerCount: ""
+                workerCount: "",
+                startHour: {
+                    hour: "00",
+                    minute: "00"
+                }
             },
             withHolidays: false,
             holidayShiftSettings: {
                 length: "",
                 amount: "",
-                workerCount: ""
+                workerCount: "",
+                startHour: {
+                    hour: "00",
+                    minute: "00"
+                }
             }
         }
         this.markDay = this.markDay.bind(this);
@@ -53,6 +65,8 @@ class BoardCreation extends Component<Props, CreationState> {
         this.length = this.length.bind(this);
         this.amount = this.amount.bind(this);
         this.workerCount = this.workerCount.bind(this);
+        this.hour = this.hour.bind(this);
+        this.minute = this.minute.bind(this);
         this.updateStandardSettings = this.updateStandardSettings.bind(this);
         this.updateSpecialSettings = this.updateSpecialSettings.bind(this);
         this.updateHolidaySettings = this.updateHolidaySettings.bind(this);
@@ -110,6 +124,40 @@ class BoardCreation extends Component<Props, CreationState> {
         return Object.assign({}, settings, { workerCount: e.target.value });
     }
 
+    hour(settings: ShiftSettings, e: React.ChangeEvent<HTMLInputElement>) {
+        const formatHour = () => {
+            let hour = +e.target.value;
+            if (hour >= 24 || hour <= 0) {
+                return "00";
+            } else {
+                return hour.toString().padStart(2, "0");
+            }
+        }
+        return Object.assign({}, settings, {
+            startHour: {
+                hour: formatHour(),
+                minute: settings.startHour.minute
+            }
+        });
+    }
+
+    minute(settings: ShiftSettings, e: React.ChangeEvent<HTMLInputElement>) {
+        const formatMinute = () => {
+            let minute = +e.target.value;
+            if (minute >= 60 || minute <= 0) {
+                return "00";
+            } else {
+                return minute.toString().padStart(2, "0");
+            }
+        }
+        return Object.assign({}, settings, {
+            startHour: {
+                hour: settings.startHour.hour,
+                minute: formatMinute()
+            }
+        });
+    }
+
     updateStandardSettings(fn: ShiftUpdate) {
         const that = this;
         return function (e: React.ChangeEvent<HTMLInputElement>) {
@@ -155,9 +203,9 @@ class BoardCreation extends Component<Props, CreationState> {
 
         const { _id: ownerId } = this.props.user;
         const { name, description, standardDays, specialDays, withHolidays } = this.state;
-        const { amount: stdAmount, length: stdLength, workerCount: stdWorkerCount } = this.state.standardShiftSettings;
-        const { amount: spcAmount, length: spcLength, workerCount: spcWorkerCount } = this.state.specialShiftSettings;
-        const { amount: hdAmount, length: hdLength, workerCount: hdWorkerCount } = this.state.holidayShiftSettings;
+        const { amount: stdAmount, length: stdLength, workerCount: stdWorkerCount, startHour: { hour: stdHour, minute: stdMinute } } = this.state.standardShiftSettings;
+        const { amount: spcAmount, length: spcLength, workerCount: spcWorkerCount, startHour: { hour: spcHour, minute: spcMinute } } = this.state.specialShiftSettings;
+        const { amount: hdAmount, length: hdLength, workerCount: hdWorkerCount, startHour: { hour: hdHour, minute: hdMinute } } = this.state.holidayShiftSettings;
 
         const company: Company = {
             name,
@@ -169,7 +217,7 @@ class BoardCreation extends Component<Props, CreationState> {
                     days: toDaysArray(standardDays),
                     daySettings: {
                         numShiftsInDay: parseInt(stdAmount),
-                        startHour: { hour: 1, minute: 1 }
+                        startHour: { hour: parseInt(stdHour), minute: parseInt(stdMinute) }
                     },
                     shiftSettings: {
                         numWorkersInShift: parseInt(stdWorkerCount),
@@ -180,7 +228,7 @@ class BoardCreation extends Component<Props, CreationState> {
                     days: toDaysArray(specialDays),
                     daySettings: {
                         numShiftsInDay: parseInt(spcAmount),
-                        startHour: { hour: 1, minute: 1 }
+                        startHour: { hour: parseInt(spcHour), minute: parseInt(spcMinute) }
                     },
                     shiftSettings: {
                         numWorkersInShift: parseInt(spcWorkerCount),
@@ -189,19 +237,19 @@ class BoardCreation extends Component<Props, CreationState> {
                 },
                 specialDatesSettings: {
                     daySettings: {
-                        numShiftsInDay: parseInt(hdAmount),
-                        startHour: { hour: 1, minute: 1 }
+                        numShiftsInDay: withHolidays? parseInt(hdAmount) : 0,
+                        startHour: { hour: withHolidays? parseInt(hdHour) : 0,
+                                     minute: withHolidays? parseInt(hdMinute): 0 }
                     },
                     shiftSettings: {
-                        numWorkersInShift: parseInt(hdWorkerCount),
-                        shiftLengthInHours: parseInt(hdLength)
+                        numWorkersInShift: withHolidays? parseInt(hdWorkerCount) : 0,
+                        shiftLengthInHours: withHolidays? parseInt(hdLength) : 0
                     }
                 }
             }
         };
-        console.log(company);
-        this.props.create(company, withHolidays).then(() => {
-            this.props.history.push(`${config.backendUri}/dashboard`);
+        this.props.create(company).then(() => {
+            this.props.history.push(`/dashboard`);
         });
     }
 
@@ -228,7 +276,10 @@ class BoardCreation extends Component<Props, CreationState> {
     render() {
         const { name, description, standardDays, specialDays, withHolidays } = this.state;
         const { standardShiftSettings, specialShiftSettings, holidayShiftSettings } = this.state;
-        const { length, amount, workerCount } = this;
+        const { hour: stdHour, minute: stdMinute } = standardShiftSettings.startHour;
+        const { hour: spcHour, minute: spcMinute } = specialShiftSettings.startHour;
+        const { hour: hdhour, minute: hdMinute } = holidayShiftSettings.startHour;
+        const { length, amount, workerCount, hour, minute } = this;
         const markStandard = this.markDay("standard", [specialDays]);
         const markSpecial = this.markDay("special", [standardDays]);
         const standard = (fn: ShiftUpdate) => this.allowOnlyNumbers(this.updateStandardSettings(fn));
@@ -243,14 +294,20 @@ class BoardCreation extends Component<Props, CreationState> {
                         </section>
                         <section className="card-body">
                             <div className="input-group mb-3">
-                                <div className="input-group-prepend"><span>Board name:</span></div>
+                                <div className="input-group-prepend">
+                                    <span className="input-group-text">Board name:</span>
+                                </div>
+                                <input className="form-control" type="text" onChange={this.onNameChange} value={name} />
                             </div>
-                            <input type="text" onChange={this.onNameChange} value={name} />
                             <div className="input-group mb-3">
-                                <div className="input-group-prepend"><span>Board name:</span></div>
+                                <div className="input-group-prepend">
+                                    <span className="input-group-text">Board description:</span>
+                                </div>
+                                <input className="form-control" type="text" onChange={this.onDescriptionChange} value={description} />
                             </div>
-                            <input type="text" onChange={this.onDescriptionChange} value={description} />
                         </section>
+                    </section>
+                    <section className="card w-75 mb-3">
                         <section className="card-header d-flex">
                             <h4 className="mb-0">Standard days settings</h4>
                         </section>
@@ -269,6 +326,7 @@ class BoardCreation extends Component<Props, CreationState> {
                                 <p>Shift length: <input type="text" onChange={standard(length)} value={standardShiftSettings.length} /></p>
                                 <p>Number of shifts: <input type="text" onChange={standard(amount)} value={standardShiftSettings.amount} /></p>
                                 <p>Workers needed: <input type="text" onChange={standard(workerCount)} value={standardShiftSettings.workerCount} /></p>
+                                <p>Start time: <input type="text" value={stdHour} onChange={standard(hour)} /> <input type="text" value={stdMinute} onChange={standard(minute)} /></p>
                             </span>
                         </section>
                     </section>
@@ -291,6 +349,7 @@ class BoardCreation extends Component<Props, CreationState> {
                                 <p>Shift length: <input type="text" onChange={special(length)} value={specialShiftSettings.length} /></p>
                                 <p>Number of shifts: <input type="text" onChange={special(amount)} value={specialShiftSettings.amount} /></p>
                                 <p>Workers needed: <input type="text" onChange={special(workerCount)} value={specialShiftSettings.workerCount} /></p>
+                                <p>Start time: <input type="text" value={spcHour} onChange={special(hour)} /> <input type="text" value={spcMinute} onChange={special(minute)} /></p>
                             </span>
                         </section>
                     </section>
@@ -300,14 +359,15 @@ class BoardCreation extends Component<Props, CreationState> {
                         </section>
                         <section className="card-body">
                             <span className="d-flex flex-column align-content-center">
-                                <p>With holidays<input className="ml-2" type="radio" name="holiday" value="true" onChange={this.withHolidays(true)} /></p>
-                                <p>Without holidays<input className="ml-2" type="radio" name="holiday" value="false" onChange={this.withHolidays(false)} checked /></p>
+                                <p>With holidays<input className="ml-2" type="radio" name="holiday" value="true" onChange={this.withHolidays(true)} checked={withHolidays} /></p>
+                                <p>Without holidays<input className="ml-2" type="radio" name="holiday" value="false" onChange={this.withHolidays(false)} checked={!withHolidays} /></p>
                             </span>
-                            <span className="d-flex flex-column">
+                            {withHolidays && <span className="d-flex flex-column">
                                 <p>Shift length: <input type="text" onChange={holiday(length)} value={holidayShiftSettings.length} /></p>
                                 <p>Number of shifts: <input type="text" onChange={holiday(amount)} value={holidayShiftSettings.amount} /></p>
                                 <p>Workers needed: <input type="text" onChange={holiday(workerCount)} value={holidayShiftSettings.workerCount} /></p>
-                            </span>
+                                <p>Start time: <input type="text" value={hdhour} onChange={holiday(hour)} /> <input type="text" value={hdMinute} onChange={holiday(minute)} /></p>
+                            </span>}
                         </section>
                     </section>
                     <section className="card">
@@ -332,7 +392,7 @@ const mapStateToProps = (state: RootState): ReduxProps => {
 
 const mapDispatchToProps = (dispatch: AppDispatch): ReduxDispatch => {
     return {
-        create: (company: Company, withHolidays: boolean) => dispatch(createCompany(company, withHolidays))
+        create: (company: Company) => dispatch(createCompany(company))
     };
 }
 

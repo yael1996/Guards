@@ -15,8 +15,8 @@ class App extends Component {
             <Provider store={store}>
                 <Router>
                     <Switch>
-                        <Route path="/dashboard" children={({ history }) => (
-                            <DashBoard history={history} />
+                        <Route path="/dashboard" children={({ history, match }) => (
+                            <DashBoard history={history} match={match} />
                         )} />
                         <Route path="/register" children={({ history, location }) => (
                             <Register history={history} location={location} />

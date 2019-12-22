@@ -1,12 +1,17 @@
 import { ThunkAction } from "redux-thunk";
 import { BoardSettings } from "../../../../server/src/mongo/models/Board";
+import { UserState } from "../User/types";
 
 export type DayMap = [boolean, boolean, boolean, boolean, boolean, boolean, boolean];
 
 export interface ShiftSettings {
     length: string,
     amount: string,
-    workerCount: string
+    workerCount: string,
+    startHour: {
+        hour: string,
+        minute: string
+    }
 }
 
 export interface CreationState {
@@ -21,7 +26,7 @@ export interface CreationState {
 }
 
 export interface Company {
-    id?: string,
+    _id?: string,
     name: string,
     description: string,
     ownerId: string,

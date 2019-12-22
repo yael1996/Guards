@@ -17,6 +17,12 @@ export const NEXT_MONTH = "NEXT_MONTH";
 export const PREVIOUS_MONTH = "PREVIOUS_MONTH";
 export const SET_EVENTS = "SET_EVENTS";
 export const UPDATE_EVENTS = "UPDATE_EVENTS";
+export const SET = "SET";
+
+interface SetAction {
+    type: typeof SET,
+    payload: CalendarState
+}
 
 interface GetEventsAction {
     type: typeof GET_EVENTS,
@@ -54,6 +60,6 @@ interface UpdateEvents {
     }
 }
 
-export type CalendarAction = GetEventsAction | NextMonthAction | PreviousMonth | SetEvents | UpdateEvents;
+export type CalendarAction = GetEventsAction | NextMonthAction | PreviousMonth | SetEvents | UpdateEvents | SetAction;
 
 export type ThunkResult<result> = ThunkAction<result, CalendarStateWrapper, undefined, CalendarAction>;

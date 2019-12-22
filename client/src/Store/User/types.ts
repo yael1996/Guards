@@ -9,10 +9,9 @@ export interface UserState {
     firstname: string,
     lastname: string,
     email: string,
-    tokens: string[],
     type: USER_TYPE,
-    satisfiedConstraints: number,
-    monthlyConstraints: MonthlyConstraints,
+    unsatisfiedConstraints: number,
+    monthlyConstraints: MonthlyConstraints[],
     imageUrl: string
 }
 

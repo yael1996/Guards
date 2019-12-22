@@ -3,7 +3,8 @@ import { UserState } from "../../Store/User/types";
 
 interface Props {
     user: UserState
-    onSelect: (user: UserState) => void
+    isHired: boolean,
+    onSelect: (user: UserState, hire: boolean) => void
 }
 
 class WorkerInformation extends Component<Props> {
@@ -13,22 +14,25 @@ class WorkerInformation extends Component<Props> {
     }
 
     onClick() {
-        const { onSelect, user } = this.props;
-        onSelect && onSelect(user);
+        const { onSelect, user, isHired } = this.props;
+        onSelect && onSelect(user, isHired);
     }
 
     render() {
-        // const { firstname, lastname,  } = this.props.user;
+        const { isHired } = this.props;
+        const { firstname, lastname, email } = this.props.user;
+        const action = isHired? <button className="btn btn-link" onClick={this.onClick}>Fire</button>
+                                : <button className="btn btn-link" onClick={this.onClick}>Hire</button>;
         return (
-            <div className="card mx-3">
+            <div className="card mx-3 mb-4">
                 <section className="card-header">
-                    {/* <p>Name: {`${firstname} ${lastname}`}</p> */}
                 </section>
                 <section className="card-body">
-
+                    <p>{`${firstname} ${lastname}`}</p>
+                    <p>{email}</p>
                 </section>
                 <section className="card-footer">
-                    <button onClick={this.onClick}>Hire</button>
+                    {action}
                 </section>
             </div>
         );
