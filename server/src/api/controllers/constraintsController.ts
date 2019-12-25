@@ -11,14 +11,8 @@ router.post("/emptyBoard", async (req, res) => {
     const month = req.body.month as Month;
     const emptyBoard = new GeneratFirstPopulation(board, month);
     const result = emptyBoard.generateEmptyShifts();
-    res
-      .status(200)
-      .json(result)
-      .end();
+    res.status(201).end(JSON.stringify(result));
   } catch (error) {
-    res
-      .status(400)
-      .json({ error: error.message })
-      .end();
+    res.status(406).end(JSON.stringify({ error: error.message }));
   }
 });
