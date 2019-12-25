@@ -10,46 +10,14 @@ import { USER_TYPE } from "../userTypeEnum";
 import { ITestReasult } from "./ITestReasult";
 import { GeneticAlgorithm } from "../../geneticAlgorithem/geneticAlgorithem";
 import { Month, Shift } from "../../mongo/models/concreteBoard";
-import { Fitness } from "../../geneticAlgorithem/fitness";
 import { DBHelper } from "../DBHelper";
 import { MonthlyConstraints, Constraint } from "../../mongo/models/User";
 import { GeneratFirstPopulation } from "../bordCreator/generatFirstPopulation";
 
 export class TestAlgo {
-  private db: DBHelper;
   private algo: GeneticAlgorithm;
-  public NUM_WORKE_CONSTRAINTSR = 10;
   constructor() {
-    this.db = new DBHelper();
     this.algo = new GeneticAlgorithm();
-  }
-
-  public async getbest(boardId: string, month: Month, x, y, z) {
-    const best = await this.algo.runGeneticAlgorithm(boardId, month, x, y, z);
-    //const fitness = this.algo.getBestFitness();
-    return best;
-  }
-
-  private async getBestFitness(boardId, month, x, y, z, best) {
-    const workersIds = await this.db.getAllWorkers(boardId);
-    const workersDissatisfied = await this.db.getWorkerDissatisfieds(
-      workersIds
-    );
-    const workersConstraints = await this.db.getWorkerConstraints(
-      workersIds,
-      month
-    );
-
-    const fitness = new Fitness(
-      workersDissatisfied,
-      workersConstraints,
-      workersIds,
-      x,
-      y,
-      z
-    );
-
-    return await fitness.getFitness(best);
   }
 
   public async test(boardId: string, month: Month) {
@@ -60,15 +28,13 @@ export class TestAlgo {
         const y = j;
         const z = 1 - (i + j);
         if (x + y <= 1) {
-          const best = await this.getbest(boardId, month, x, y, z);
-          // const bestFitness = await this.getBestFitness(
-          //   boardId,
-          //   month,
-          //   x,
-          //   y,
-          //   z,
-          //   best
-          // );
+          const best = await this.algo.runGeneticAlgorithm(
+            boardId,
+            month,
+            x,
+            y,
+            z
+          );
           const bestFitness = this.algo.getBestFitness();
           testResult.push({ x: x, y: y, z: z, fitness: bestFitness });
         }
@@ -77,14 +43,7 @@ export class TestAlgo {
     return testResult;
   }
 
-  public async createFullBoard() {
-    const NUM_USERS = 8;
-    const board = await this.createBoard();
-    await this.createUsers(board.id, NUM_USERS);
-    return board.id;
-  }
-
-  private async createBoard() {
+  public async createBoard(boardName: string, ownerId: string) {
     let daySettings: DaySettings = {
       numShiftsInDay: 2,
       startHour: { hour: 10, minute: 0 }
@@ -101,28 +60,14 @@ export class TestAlgo {
       daySettings: daySettings
     };
 
-    let specialDaySettings: IndexSettings = {
-      days: null,
-      shiftSettings: shiftSettings,
-      daySettings: daySettings
-    };
-
-    let specialDateSettings: DateSettings = {
-      dates: null,
-      shiftSettings: shiftSettings,
-      daySettings: daySettings
-    };
-
     let settings: BoardSettings = {
-      regularDaySettings: regularDaySettings,
-      specialDaysSettings: specialDaySettings,
-      specialDatesSettings: specialDateSettings
+      regularDaySettings: regularDaySettings
     };
 
     let board = new models.board({
-      name: "test",
+      name: boardName,
       description: "test",
-      ownerId: "5deb83d26ab2e3d9e344343d",
+      ownerId: ownerId,
       boardSettings: settings,
       workerIds: []
     });
@@ -130,19 +75,23 @@ export class TestAlgo {
     return await models.board.create(board);
   }
 
-  private async createUsers(boardId: string, numUsers: number) {
+  public async createWorkersForBoard(
+    boardId: string,
+    numUsers: number,
+    unsetesfid?: number
+  ) {
     const users = [];
     for (let i = 0; i < numUsers; i++) {
-      let user = new models.user({
-        firstname: i.toString(),
-        lastname: i.toString(),
-        email: i.toString() + ".gmail.com",
-        type: USER_TYPE.MANAGER,
-        boardId: boardId,
-        unSatisfiedConstraints: 0
-      });
+      let unsetesfidConstraints = unsetesfid
+        ? unsetesfid
+        : Math.floor(Math.random() * 21);
 
-      const result = await models.user.create(user);
+      const result = await this.createUser(
+        i.toString(),
+        USER_TYPE.WORKER,
+        unsetesfidConstraints,
+        boardId
+      );
       users.push(result);
     }
 
@@ -151,16 +100,30 @@ export class TestAlgo {
     await board.save();
   }
 
-  public async updateUsersHistory(boardId) {
-    const board = await models.board.findById(boardId);
-    for (let workerId of board.workerIds) {
-      const user = await models.user.findById(workerId);
-      user.unSatisfiedConstraints = Math.floor(Math.random() * 21);
-      await user.save();
-    }
+  public async createUser(
+    name: string,
+    type: USER_TYPE,
+    unSatisfied = 0,
+    boardId?: string
+  ) {
+    let user = new models.user({
+      firstname: name,
+      lastname: name,
+      email: name + ".gmail.com",
+      type: type,
+      unSatisfiedConstraints: unSatisfied
+    });
+
+    if (boardId) user.boardId = boardId;
+
+    return await models.user.create(user);
   }
 
-  public async addUsersConstraints(boardId: string, month: Month) {
+  public async addRandomUsersConstraints(
+    boardId: string,
+    month: Month,
+    numConstraints = 10
+  ) {
     const board = await models.board.findById(boardId);
     const emptyBoard = new GeneratFirstPopulation(
       board,
@@ -168,8 +131,9 @@ export class TestAlgo {
     ).generateEmptyShifts();
     for (let workerId of board.workerIds) {
       const user = await models.user.findById(workerId);
-      const constraints: Constraint[] = await this.getUserConstraint(
-        emptyBoard
+      const constraints: Constraint[] = await this.createConstraints(
+        emptyBoard,
+        numConstraints
       );
       const monthConstraint: MonthlyConstraints = {
         month: month,
@@ -180,11 +144,11 @@ export class TestAlgo {
     }
   }
 
-  private async getUserConstraint(emptyBoard) {
+  private async createConstraints(emptyBoard, numConstraints: number) {
     const indexies = [];
     const constraints: Constraint[] = [];
 
-    for (let i = 0; i < this.NUM_WORKE_CONSTRAINTSR; i++) {
+    for (let i = 0; i < numConstraints; i++) {
       const index = this.getIndex(indexies, emptyBoard.length - 1);
       indexies.push(index);
       constraints.push(this.createConstraint(i, index, emptyBoard));

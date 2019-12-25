@@ -47,7 +47,7 @@ export class EmptyMonthBord {
   }
 
   private isDateSpecial(currDate: Date): boolean {
-    if (!this.bordSettings.specialDatesSettings.dates) {
+    if (!this.bordSettings.specialDatesSettings) {
       return false;
     } else {
       return this.holidays.isDateHoliday(currDate);
@@ -58,7 +58,7 @@ export class EmptyMonthBord {
   }
 
   private getIndexDates(settings: IndexSettings, numTotalDaysInMonth: number) {
-    if (!settings.days) return [];
+    if (!settings) return [];
     let indexes: number[] = settings.days;
     let dates: Date[] = [];
 

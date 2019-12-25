@@ -69,7 +69,7 @@ const schemaUser = new Schema<User>({
   },
   boardId: {
     type: Schema.Types.ObjectId,
-    required: true
+    required: false
   },
   unSatisfiedConstraints: {
     type: Schema.Types.Number,

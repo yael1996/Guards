@@ -44,21 +44,25 @@ export class GeneratFirstPopulation {
     let specialDays = this.emptyBord.specialDays;
     let regularDays = this.emptyBord.regularDays;
 
-    this.fillShiftsByType(
-      specialDates,
-      this.board.boardSettings.specialDatesSettings,
-      SHIFT_TYPE.SPECIAL_DATE,
-      monthShift,
-      isEmpty
-    );
+    if (specialDates) {
+      this.fillShiftsByType(
+        specialDates,
+        this.board.boardSettings.specialDatesSettings,
+        SHIFT_TYPE.SPECIAL_DATE,
+        monthShift,
+        isEmpty
+      );
+    }
 
-    this.fillShiftsByType(
-      specialDays,
-      this.board.boardSettings.specialDaysSettings,
-      SHIFT_TYPE.SPECIAL_DAY,
-      monthShift,
-      isEmpty
-    );
+    if (specialDays) {
+      this.fillShiftsByType(
+        specialDays,
+        this.board.boardSettings.specialDaysSettings,
+        SHIFT_TYPE.SPECIAL_DAY,
+        monthShift,
+        isEmpty
+      );
+    }
 
     this.fillShiftsByType(
       regularDays,

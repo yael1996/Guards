@@ -87,8 +87,8 @@ const schemaDateSettings = new Schema<DateSettings>({
 
 interface BoardSettings {
   regularDaySettings: IndexSettings;
-  specialDaysSettings: IndexSettings;
-  specialDatesSettings: DateSettings;
+  specialDaysSettings?: IndexSettings;
+  specialDatesSettings?: DateSettings;
 }
 const schemaBoardSettings = new Schema<BoardSettings>({
   regularDaySettings: {
