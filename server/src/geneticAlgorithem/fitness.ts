@@ -8,6 +8,7 @@ export class Fitness {
   private amount: AmountShifts;
   private equlity: Equlity;
   private satisfie: SatisfiedPeople;
+
   private amountShiftsPart;
   private equityPart;
   private satisfiedPeoplePart;
@@ -39,6 +40,8 @@ export class Fitness {
     // use phenotype and possibly some other information
     // to determine the fitness number.  Higher is better, lower is worse.
 
+    this.fixMonthDates(monthShifts);
+
     let fitness = 0;
     fitness += this.fitness(
       monthShifts,
@@ -48,6 +51,17 @@ export class Fitness {
     );
     return fitness;
   };
+
+  private fixMonthDates(monthShifts) {
+    for (let shift of monthShifts) {
+      if (!(shift.shiftTime.fromTime instanceof Date)) {
+        shift.shiftTime.fromTime = new Date(
+          Date.parse(shift.shiftTime.fromTime)
+        );
+        shift.shiftTime.toTime = new Date(Date.parse(shift.shiftTime.toTime));
+      }
+    }
+  }
 
   private fitness = (
     monthShifts: Shift[],

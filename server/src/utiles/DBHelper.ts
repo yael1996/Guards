@@ -15,7 +15,7 @@ export class DBHelper {
       const dissatisfieds = await this.getWorkerNotAppliedConstraints(
         worker,
         best,
-        workersConstraints[worker]
+        workersConstraints
       );
 
       const user = await this.getUserById(worker);
@@ -32,33 +32,23 @@ export class DBHelper {
   ): number {
     let workerNotApplied = 0;
 
-    for (let constraint of workersConstraints) {
+    for (let constraint of workersConstraints[workerId]) {
       let shift = this.getConstraintShift(constraint, monthShifts);
-      if (shift.workersId.some(x => x == workerId)) workerNotApplied++;
+      if (shift && shift.workersId.some(x => x == workerId)) workerNotApplied++;
     }
     return workerNotApplied;
   }
 
   private getConstraintShift(constraint: Constraint, monthShifts: Shift[]) {
-    let shift;
-    try {
-      shift = monthShifts.find((x, index) => {
-        console.log(index);
-
-        return (
-          x.shiftTime.fromTime.getTime() ==
-            constraint.time.fromTime.getTime() &&
-          x.shiftTime.toTime.getTime() == constraint.time.toTime.getTime()
-        );
-      });
-    } catch (e) {
-      console.log(e);
-    }
-    return shift;
+    return monthShifts.find(
+      x =>
+        x.shiftTime.fromTime.getTime() === constraint.time.fromTime.getTime() &&
+        x.shiftTime.toTime.getTime() === constraint.time.toTime.getTime()
+    );
   }
 
-  public async saveBestToDB(best: Shift[][], month: Month, bordId: string) {
-    return await new models.concreteBoard({
+  public async saveBestToDB(best: Shift[], month: Month, bordId: string) {
+    await new models.concreteBoard({
       bordId: bordId,
       month: month,
       shifts: best
@@ -74,6 +64,7 @@ export class DBHelper {
     if (!bord) {
       //ToDo
     }
+
     return bord.workerIds.map(x => x.toString());
   }
 
@@ -104,7 +95,7 @@ export class DBHelper {
         //ToDo
       }
       // ToDo - refactor or get from db
-      if (user.monthlyConstraints.length > 0) {
+      if (user.monthlyConstraints && user.monthlyConstraints.length > 0) {
         const usersConstraints = await user.monthlyConstraints.find(
           x => x.month.year == month.year && x.month.month == month.month
         ).constraints;

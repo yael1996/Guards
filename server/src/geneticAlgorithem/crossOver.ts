@@ -10,9 +10,15 @@ export class CrossOver {
 
   private combineShifts(phenoTypeA: Shift[], phenoTypeB: Shift[]) {
     // assume that phenoTypeA and phenoTypeB are the same length
+
     const index = phenoTypeA.length / 2;
-    const partOfA = phenoTypeA.slice(0, index);
-    const partOfB = phenoTypeB.slice(index, phenoTypeB.length);
-    return [partOfA, partOfB];
+    const firstPartOfA = phenoTypeA.slice(0, index);
+    const firstPartOfB = phenoTypeB.slice(0, index);
+    const secondpartOfA = phenoTypeA.slice(index, phenoTypeA.length);
+    const secondpartOfB = phenoTypeB.slice(index, phenoTypeB.length);
+
+    const result1 = firstPartOfA.concat(secondpartOfB);
+    const result2 = firstPartOfB.concat(secondpartOfA);
+    return [result1, result2];
   }
 }

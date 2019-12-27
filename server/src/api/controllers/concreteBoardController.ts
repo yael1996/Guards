@@ -3,13 +3,23 @@ import { models } from "../../mongo/connection";
 
 const router = Router();
 
-router.get("/:metaId/:year/:month", async (req, res) => {
+router.get("/:boardId/:year/:month", async (req, res) => {
   try {
+<<<<<<< HEAD
     const { metaId, year, month } = req.params;
     const result = await models.concreteBoard.findOne({ metaId, month: { year, month } });
     res.status(200).json(result || {}).end();
+=======
+    const { boardId, year, month } = req.params;
+    const result = await models.concreteBoard.findOne({
+      bordId: boardId,
+      "month.month": month,
+      "month.year": year
+    });
+    res.status(200).end(JSON.stringify(result));
+>>>>>>> algo
   } catch (error) {
-    res.status(400).json(error).end();
+    res.status(400).end(JSON.stringify({ error: error.message }));
   }
 });
 router.patch("/:id", async (req, res) => {
@@ -18,13 +28,13 @@ router.patch("/:id", async (req, res) => {
     if (!concreteBoard) {
       return res.sendStatus(404);
     }
-    Object.getOwnPropertyNames(req.body).forEach((prop) => {
+    Object.getOwnPropertyNames(req.body).forEach(prop => {
       concreteBoard[prop] = req.body[prop];
     });
     const result = await concreteBoard.save();
-    res.status(200).json(result).end();
+    res.status(200).end(JSON.stringify(result));
   } catch (error) {
-    res.status(400).json({ error: error.message }).end();
+    res.status(400).end(JSON.stringify({ error: error.message }));
   }
 });
 

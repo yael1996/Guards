@@ -13,9 +13,13 @@ export class Mutation {
 
   private switchTwoShifts(resultPhenotype) {
     // can do for and switch more then two
-    const index1 = this.getRandomShiftIndex(resultPhenotype);
-    const index2 = this.getRandomShiftIndex(resultPhenotype);
+    let index1 = this.getRandomShiftIndex(resultPhenotype);
+    let index2 = this.getRandomShiftIndex(resultPhenotype);
 
+    while (!this.areShiftsTheSameType(resultPhenotype, index1, index2)) {
+      index1 = this.getRandomShiftIndex(resultPhenotype);
+      index2 = this.getRandomShiftIndex(resultPhenotype);
+    }
     const temp = resultPhenotype[index1].workersIds;
     resultPhenotype[index1].workersIds = resultPhenotype[index2].workersIds;
     resultPhenotype[index2].workersIds = temp;
@@ -24,6 +28,17 @@ export class Mutation {
   }
 
   private getRandomShiftIndex(oldPhenotype: Shift[]): number {
+    //ToDo:Cheack if shifts is the same type
     return Math.floor(Math.random() * oldPhenotype.length);
+  }
+
+  private areShiftsTheSameType(
+    resultPhenotype,
+    index1: number,
+    index2: number
+  ) {
+    return (
+      resultPhenotype[index1].shiftType === resultPhenotype[index2].shiftType
+    );
   }
 }

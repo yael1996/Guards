@@ -76,11 +76,26 @@ export class GeneticAlgorithm {
   }
 
   private async getBestReasult() {
-    await this.algorithm.evolve();
+    await this.algorithm
+      .evolve()
+      .evolve()
+      .evolve()
+      .evolve()
+      .evolve()
+      .evolve()
+      .evolve()
+      .evolve()
+      .evolve()
+      .evolve()
+      .evolve();
     const best: Shift[] = await this.algorithm.best();
-    //best.map(x => x.workersId);
-    //await this.db.saveBestToDB(best, this.month, this.bordId);
+    await this.db.saveBestToDB(best, this.month, this.bordId);
     return best;
+  }
+
+  public getBestFitness() {
+    const bestFitness = this.algorithm.bestScore();
+    return bestFitness;
   }
 
   private async getFirstPopulation() {

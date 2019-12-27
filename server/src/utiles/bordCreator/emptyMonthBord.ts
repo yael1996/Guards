@@ -1,4 +1,4 @@
-import { BoardSettings } from "../../mongo/models/board";
+import { BoardSettings, IndexSettings } from "../../mongo/models/board";
 import { Month } from "../../mongo/models/concreteBoard";
 import { HolidaysDates } from "./holidaysDates";
 
@@ -14,7 +14,7 @@ export class EmptyMonthBord {
 
   constructor(month: Month, bordSettings: BoardSettings) {
     this.year = month.year;
-    this.month = month.month;
+    this.month = month.month - 1;
     this.bordSettings = bordSettings;
 
     this.holidays = new HolidaysDates();
@@ -30,17 +30,24 @@ export class EmptyMonthBord {
   }
 
   private orgenizeDatesByType(): void {
-    for (var i = 1; i <= this.numTotalDaysInMonth(); i++) {
-      var currDate = new Date(this.year, this.month, i);
-
+    const numTotalDaysInMonth = this.numTotalDaysInMonth();
+    for (var i = 1; i <= numTotalDaysInMonth; i++) {
+      let currDate = new Date(this.year, this.month, i);
       if (this.isDateSpecial(currDate)) this.specialDates.push(currDate);
-      else if (this.isDaySpecial(currDate)) this.specialDays.push(currDate);
-      else this.regularDays.push(currDate);
     }
+    this.specialDays = this.getIndexDates(
+      this.bordSettings.specialDaysSettings,
+      numTotalDaysInMonth
+    );
+
+    this.regularDays = this.getIndexDates(
+      this.bordSettings.regularDaySettings,
+      numTotalDaysInMonth
+    );
   }
 
   private isDateSpecial(currDate: Date): boolean {
-    if (!this.bordSettings.specialDatesSettings.dates) {
+    if (!this.bordSettings.specialDatesSettings) {
       return false;
     } else {
       return this.holidays.isDateHoliday(currDate);
@@ -50,17 +57,22 @@ export class EmptyMonthBord {
     }
   }
 
-  private isDaySpecial(currDate: Date): boolean {
-    if (!this.bordSettings.specialDaysSettings.days) {
-      return false;
-    } else {
-      return this.bordSettings.specialDaysSettings.days.includes(
-        currDate.getDay()
-      );
+  private getIndexDates(settings: IndexSettings, numTotalDaysInMonth: number) {
+    if (!settings) return [];
+    let indexes: number[] = settings.days;
+    let dates: Date[] = [];
+
+    for (let index of indexes) {
+      let i = index;
+      while (i <= numTotalDaysInMonth) {
+        dates.push(new Date(this.year, this.month, i));
+        i += 7;
+      }
     }
+    return dates;
   }
 
   private numTotalDaysInMonth(): number {
-    return new Date(this.year, this.month, 0).getDate();
+    return new Date(this.year, this.month + 1, 0).getDate();
   }
 }
