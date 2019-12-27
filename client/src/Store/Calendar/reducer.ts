@@ -18,6 +18,8 @@ export function reducer(state: CalendarState = initialState, action: CalendarAct
             const { payload } = action;
             const newState = Object.assign({}, state);
             newState.events = payload;
+            console.log("New state is");
+            console.log(newState.events);
             return newState;
         case SET:
             return action.payload;

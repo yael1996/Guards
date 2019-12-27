@@ -4,16 +4,18 @@ import "./Company.css";
 import { History } from "history";
 import { CalendarState, CalendarAction } from "../../Store/Calendar/types";
 import { RootState, AppDispatch } from "../../Store/store";
-import { set } from "../../Store/Calendar/actions";
+import { set, getEvents } from "../../Store/Calendar/actions";
 import { connect } from "react-redux";
 import { UserState } from "../../Store/User/types";
+import { Event } from "react-big-calendar";
 
 interface ReduxProps {
     user: UserState
 }
 
 interface ReduxDispatch {
-    select: (state: CalendarState) => CalendarAction
+    select: (state: CalendarState) => CalendarAction,
+    getEvents: (boardId: string, year: number, month: number) => Promise<Event[]>
 }
 
 interface OwnProps {
@@ -31,7 +33,7 @@ class CompanyComp extends Component<Props> {
     }
 
     onMouseDown() {
-        const { history } = this.props;
+        const { getEvents, history } = this.props;
         const { _id } = this.props.company;
         const today = new Date();
         const year = today.getFullYear();
@@ -41,7 +43,9 @@ class CompanyComp extends Component<Props> {
             currentDate: new Date(year, month),
             events: [] 
         });
-        history.push(`/dashboard/${_id}/${year}/${month}`);
+        getEvents(_id || "", year, month).then(
+            () => history.push(`/dashboard/${_id}/${year}/${month}`)
+        );
     }
 
     onWorkers() {
@@ -74,7 +78,8 @@ const mapStateToProps = (state: RootState, props: OwnProps): ReduxProps => {
 
 const mapDispatchToProps = (dispatch: AppDispatch, props: OwnProps): ReduxDispatch => {
     return {
-        select: (state: CalendarState) => dispatch(set(state))
+        select: (state: CalendarState) => dispatch(set(state)),
+        getEvents: (boardId: string, year: number, month: number) => dispatch(getEvents(boardId, year, month)),
     }
 }
 

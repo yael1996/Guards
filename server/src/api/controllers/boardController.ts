@@ -32,6 +32,8 @@ router.get("/user/:id", async (req, res) => {
 })
 router.get("/manager/:id", async (req, res) => {
   try {
+    console.log(models.board);
+    console.log(models.board.find);
     const result = await models.board.find({ ownerId: req.params.id });
     res.status(200).json(result || []).end();
   } catch (error) {

@@ -131,7 +131,6 @@ class DashBoard extends Component<Props, State> {
         const handleSelect = this.handleSelect;
 
         // const onCalendarEventClick = this.onDoubleClick;
-        console.log(user);
 
         return (
             <div className="App">
@@ -196,7 +195,7 @@ class DashBoard extends Component<Props, State> {
                                                 onSelectSlot={slotInfo => { console.log(slotInfo.start) }}
                                                 localizer={momentLocalizer(Moment)}
                                                 // events={calendar.events}
-                                                events={[{ start: new Date(), allDay: true, title: "test", end: new Date() }] as Event[]}
+                                                events={calendar.events}
                                                 defaultDate={new Date()}
                                                 defaultView="month"
                                                 onNavigate={function (newDate: Date) { onDateChange(newDate); }}

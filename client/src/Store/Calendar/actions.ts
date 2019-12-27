@@ -4,21 +4,26 @@ import { JSONConcreteBoard } from "../../../../server/src/mongo/models/concreteB
 import Axios, { AxiosResponse } from "axios";
 import config from "../../config/config";
 import moment from "moment";
+import { Shift } from "../../../../server/src/mongo/models/concreteBoard";
+
+function eventsFromShifts(shifts: Shift[]) {
+    return shifts.reduce((events, shift) => {
+        const { fromTime: start, toTime: end } = shift.shiftTime;
+        events.push({
+            start: moment(start).add(1, "month").toDate(),
+            end: moment(end).add(1, "month").toDate(),
+            title: shift.shiftType.toString(),
+            resource: shift
+        });
+        return events;
+    }, [] as Event[]);
+}
 
 function events(concreteBoard: JSONConcreteBoard) {
     if (!concreteBoard.shifts) {
         return [];
     } else {
-        return concreteBoard.shifts.reduce((events, shift) => {
-            const { fromTime: start, toTime: end } = shift.shiftTime;
-            events.push({
-                start,
-                end,
-                title: shift.shiftType.toString(),
-                resource: shift
-            });
-            return events;
-        }, [] as Event[]);
+        return eventsFromShifts(concreteBoard.shifts);
     }
 }
 
@@ -31,9 +36,17 @@ export function set(state: CalendarState): CalendarAction {
 
 export function getEvents(metaId: string, year: number, month: number): ThunkResult<Promise<Event[]>> {
     return async (dispatch, getState) => {
-        const reqUrl = `${config.backendUri}/concreteBoard/${metaId}/${year}/${month}`;
+        let reqUrl = `${config.backendUri}/concreteBoard/${metaId}/${year}/${month}`;
         const result = (await Axios.get(reqUrl)) as AxiosResponse<JSONConcreteBoard>;
-        dispatch(setEvents(events(result.data)));
+        if (result.data && result.data.shifts !== []) {
+            dispatch(setEvents(events(result.data)));
+        } else {
+            console.log("Entered else");
+            reqUrl = `${config.backendUri}/constraints/emptyBoard`;
+            console.log(`Created URL ${reqUrl}`);
+            const empty = (await Axios.get(reqUrl, { params: { board: metaId, year, month } })) as AxiosResponse<Shift[]>;
+            dispatch(setEvents(eventsFromShifts(empty.data)));
+        }
         return getState().calendar.events;
     }
 }
@@ -63,6 +76,8 @@ export function previousMonth(boardId: string): ThunkResult<Promise<Event[]>> {
 }
 
 export function setEvents(events: Event[]): CalendarAction {
+    console.log("from set events");
+    console.log(events);
     return {
         type: SET_EVENTS,
         payload: events
