@@ -5,11 +5,6 @@ const router = Router();
 
 router.get("/:boardId/:year/:month", async (req, res) => {
   try {
-<<<<<<< HEAD
-    const { metaId, year, month } = req.params;
-    const result = await models.concreteBoard.findOne({ metaId, month: { year, month } });
-    res.status(200).json(result || {}).end();
-=======
     const { boardId, year, month } = req.params;
     const result = await models.concreteBoard.findOne({
       bordId: boardId,
@@ -17,7 +12,6 @@ router.get("/:boardId/:year/:month", async (req, res) => {
       "month.year": year
     });
     res.status(200).end(JSON.stringify(result));
->>>>>>> algo
   } catch (error) {
     res.status(400).end(JSON.stringify({ error: error.message }));
   }
