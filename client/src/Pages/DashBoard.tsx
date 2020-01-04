@@ -193,6 +193,14 @@ class DashBoard extends Component<Props, State> {
                                                 selectable
                                                 onSelectEvent={this.onSelectEvent}
                                                 onSelectSlot={slotInfo => { console.log(slotInfo.start) }}
+                                                eventPropGetter={event => {
+                                                    if(event.title === "Constraint"){
+                                                        return{
+                                                            style:{
+                                                                backgroundColor: 'red',
+                                                                border:'solid 3px'
+                                                            }}
+                                                        } else return {} }}
                                                 localizer={momentLocalizer(Moment)}
                                                 // events={calendar.events}
                                                 events={calendar.events}

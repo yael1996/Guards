@@ -29,7 +29,7 @@ class BoardCreation extends Component<Props, CreationState> {
         this.state = {
             name: "",
             description: "",
-            standardDays: [false, false, true, false, false, false, false],
+            standardDays: [false, false, false, false, false, false, false],
             standardShiftSettings: {
                 length: "",
                 amount: "",
@@ -39,7 +39,7 @@ class BoardCreation extends Component<Props, CreationState> {
                     minute: "00"
                 }
             },
-            specialDays: [false, false, false, false, true, false, false],
+            specialDays: [false, false, false, false, false, false, false],
             specialShiftSettings: {
                 length: "",
                 amount: "",
