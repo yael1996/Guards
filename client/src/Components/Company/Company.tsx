@@ -15,7 +15,7 @@ interface ReduxProps {
 
 interface ReduxDispatch {
     select: (state: CalendarState) => CalendarAction,
-    getEvents: (boardId: string, year: number, month: number) => Promise<Event[]>
+    getEvents: (boardId: string, year: number, month: number, user: UserState) => Promise<Event[]>
 }
 
 interface OwnProps {
@@ -43,7 +43,7 @@ class CompanyComp extends Component<Props> {
             currentDate: new Date(year, month),
             events: [] 
         });
-        getEvents(_id || "", year, month).then(
+        getEvents(_id || "", year, month, this.props.user).then(
             () => history.push(`/dashboard/${_id}/${year}/${month}`)
         );
     }
@@ -74,13 +74,13 @@ const mapStateToProps = (state: RootState, props: OwnProps): ReduxProps => {
     return {
         user: state.user
     };
-}
+};
 
 const mapDispatchToProps = (dispatch: AppDispatch, props: OwnProps): ReduxDispatch => {
     return {
         select: (state: CalendarState) => dispatch(set(state)),
-        getEvents: (boardId: string, year: number, month: number) => dispatch(getEvents(boardId, year, month)),
+        getEvents: (boardId: string, year: number, month: number, user: UserState) => dispatch(getEvents(boardId, year, month, user)),
     }
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(CompanyComp);

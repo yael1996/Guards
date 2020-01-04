@@ -1,5 +1,5 @@
 import { UserAction, SET_USER, UserState, LOGOUT, USER_TYPE } from "./types";
-import { JSONUser } from "../../../../server/src/mongo/models/user";
+import {JSONUser, MonthlyConstraints} from "../../../../server/src/mongo/models/user";
 import { ThunkResult } from "./types";
 import Axios, { AxiosResponse } from "axios";
 import config from "../../config/config";

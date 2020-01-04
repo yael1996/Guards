@@ -34,7 +34,7 @@ interface ReduxState {
 }
 
 interface ReduxDispatch {
-    getEvents: (boardId: string, year: number, month: number) => Promise<Event[]>,
+    getEvents: (boardId: string, year: number, month: number, user: UserState) => Promise<Event[]>,
     getMenu: (user: UserState) => AppAction,
     getCompanies: (user: UserState) => Promise<CompanyState>,
     optimise: (boardId: string, year: number, month: number) => Promise<void>
@@ -86,7 +86,7 @@ class DashBoard extends Component<Props, State> {
         const { boardId } = this.props.calendar;
         const year = date.getFullYear();
         const month = date.getMonth();
-        this.props.getEvents(boardId, year, month).then(() => {
+        this.props.getEvents(boardId, year, month, this.props.user).then(() => {
             history.push(`/dashboard/${boardId}/${year}/${month}`);
         });
     }
@@ -237,7 +237,7 @@ const mapStateToProps = (state: RootState): ReduxState => {
 
 const mapDispatchToProps = (dispatch: AppDispatch): ReduxDispatch => {
     return {
-        getEvents: (boardId: string, year: number, month: number) => dispatch(getEvents(boardId, year, month)),
+        getEvents: (boardId: string, year: number, month: number, user: UserState) => dispatch(getEvents(boardId, year, month, user)),
         getMenu: (user: UserState) => dispatch(loadPages(user)),
         getCompanies: (user: UserState) => dispatch(getCompanies(user)),
         optimise: (boardId: string, year: number, month: number) => dispatch(optimise(boardId, year, month))

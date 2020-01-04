@@ -5,6 +5,7 @@ import Axios, { AxiosResponse } from "axios";
 import config from "../../config/config";
 import moment from "moment";
 import { Shift } from "../../../../server/src/mongo/models/concreteBoard";
+import {UserState} from "../User/types";
 
 function eventsFromShifts(shifts: Shift[]) {
     return shifts.reduce((events, shift) => {
@@ -34,42 +35,42 @@ export function set(state: CalendarState): CalendarAction {
     };
 }
 
-export function getEvents(metaId: string, year: number, month: number): ThunkResult<Promise<Event[]>> {
+export function getEvents(metaId: string, year: number, month: number, user: UserState): ThunkResult<Promise<Event[]>> {
     return async (dispatch, getState) => {
         let reqUrl = `${config.backendUri}/concreteBoard/${metaId}/${year}/${month}`;
         const result = (await Axios.get(reqUrl)) as AxiosResponse<JSONConcreteBoard>;
         if (result.data && result.data.shifts !== []) {
-            dispatch(setEvents(events(result.data)));
+            dispatch(setEvents(mergeUserConstraintsIntoCalendarEvents(events(result.data),user)));
         } else {
             console.log("Entered else");
             reqUrl = `${config.backendUri}/constraints/emptyBoard`;
             console.log(`Created URL ${reqUrl}`);
             const empty = (await Axios.get(reqUrl, { params: { board: metaId, year, month } })) as AxiosResponse<Shift[]>;
-            dispatch(setEvents(eventsFromShifts(empty.data)));
+            dispatch(setEvents(mergeUserConstraintsIntoCalendarEvents(eventsFromShifts(empty.data),user)));
         }
         return getState().calendar.events;
     }
 }
 
-export function nextMonth(boardId: string): ThunkResult<Promise<Event[]>> {
+export function nextMonth(boardId: string, user: UserState): ThunkResult<Promise<Event[]>> {
     return async (dispatch, getState) => {
         const { currentDate } = getState().calendar;
         const newDate = moment(currentDate).add(1, "month").toDate();
         const year = newDate.getFullYear();
         const month = newDate.getMonth();
-        const events = await dispatch(getEvents(boardId, year, month));
+        const events = await dispatch(getEvents(boardId, year, month, user));
         dispatch(setEvents(events));
         return getState().calendar.events;
     }
 }
 
-export function previousMonth(boardId: string): ThunkResult<Promise<Event[]>> {
+export function previousMonth(boardId: string, user: UserState): ThunkResult<Promise<Event[]>> {
     return async (dispatch, getState) => {
         const { currentDate } = getState().calendar;
         const newDate = moment(currentDate).subtract(1, "month").toDate();
         const year = newDate.getFullYear();
         const month = newDate.getMonth();
-        const events = await dispatch(getEvents(boardId, year, month));
+        const events = await dispatch(getEvents(boardId, year, month, user));
         dispatch(setEvents(events));
         return getState().calendar.events;
     }
@@ -105,4 +106,23 @@ export function optimise(boardId: string, year: number, month: number): ThunkRes
             }
         });
     }
+}
+
+function mergeUserConstraintsIntoCalendarEvents(calendarEvents: Event[],user: UserState,): Event[] {
+    let eventsFromUserConstraints: Event[] = [];
+    user.monthlyConstraints.forEach( monthlyConstraint => {
+        monthlyConstraint.constraints.forEach( constraint => {
+            const { fromTime: start, toTime: end } = constraint.time;
+            eventsFromUserConstraints.push(<Event>{
+                start: moment(start).add(1, "month").toDate(),
+                end: moment(end).add(1, "month").toDate(),
+                title: "Constraint",
+                resource: constraint,
+            })
+        })
+    });
+    let merged = [...calendarEvents,...eventsFromUserConstraints];
+    console.log("merged:");
+    console.log(merged);
+    return merged
 }
