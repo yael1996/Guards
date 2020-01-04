@@ -14,7 +14,7 @@ export class EmptyMonthBord {
 
   constructor(month: Month, bordSettings: BoardSettings) {
     this.year = month.year;
-    this.month = month.month - 1;
+    this.month = month.month;
     this.bordSettings = bordSettings;
 
     this.holidays = new HolidaysDates();
@@ -63,13 +63,23 @@ export class EmptyMonthBord {
     let dates: Date[] = [];
 
     for (let index of indexes) {
-      let i = index;
+      let i = this.firstDay(index, numTotalDaysInMonth);
       while (i <= numTotalDaysInMonth) {
         dates.push(new Date(this.year, this.month, i));
         i += 7;
       }
     }
     return dates;
+  }
+
+  firstDay(index: number, totalDays: number): number {
+    for (let i = 1; i <= totalDays; i++) {
+      const date = new Date(this.year, this.month, i);
+      const day = date.getDay();
+      if (day === index) {
+        return date.getDate();
+      }
+    }
   }
 
   private numTotalDaysInMonth(): number {

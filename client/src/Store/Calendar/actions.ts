@@ -10,8 +10,8 @@ function eventsFromShifts(shifts: Shift[]) {
     return shifts.reduce((events, shift) => {
         const { fromTime: start, toTime: end } = shift.shiftTime;
         events.push({
-            start: moment(start).add(1, "month").toDate(),
-            end: moment(end).add(1, "month").toDate(),
+            start: new Date(start),
+            end: new Date(end),
             title: shift.shiftType.toString(),
             resource: shift
         });
@@ -55,8 +55,9 @@ export function nextMonth(boardId: string): ThunkResult<Promise<Event[]>> {
     return async (dispatch, getState) => {
         const { currentDate } = getState().calendar;
         const newDate = moment(currentDate).add(1, "month").toDate();
+        console.log("next", newDate);
         const year = newDate.getFullYear();
-        const month = newDate.getMonth();
+        const month = newDate.getMonth() + 1;
         const events = await dispatch(getEvents(boardId, year, month));
         dispatch(setEvents(events));
         return getState().calendar.events;
@@ -67,8 +68,9 @@ export function previousMonth(boardId: string): ThunkResult<Promise<Event[]>> {
     return async (dispatch, getState) => {
         const { currentDate } = getState().calendar;
         const newDate = moment(currentDate).subtract(1, "month").toDate();
+        console.log("prev", newDate);
         const year = newDate.getFullYear();
-        const month = newDate.getMonth();
+        const month = newDate.getMonth() + 1;
         const events = await dispatch(getEvents(boardId, year, month));
         dispatch(setEvents(events));
         return getState().calendar.events;
