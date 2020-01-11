@@ -208,7 +208,9 @@ class DashBoard extends Component<Props, State> {
                                                 defaultView="month"
                                                 onNavigate={function (newDate: Date) { onDateChange(newDate); }}
                                                 views={{
-                                                    month: true
+                                                    month: true,
+                                                    week: true,
+                                                    day: true
                                                 }}
                                             />
                                         </>

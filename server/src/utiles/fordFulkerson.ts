@@ -61,22 +61,7 @@ const createGraph = (
   const target = graphSize;
   const graph = new FlowNetwork(graphSize);
 
-  // Connect source edge to worker edges
-  for (let i = 0; i < numOfWorkers; i++) {
-    graph.addEdge(new FlowEdge(source, workersBaseIndex + i, 1));
-  }
-
-  // Connect shift edges to worker edges
-  shifts.forEach(({ workersId }, index) => {
-    workersId.forEach(workerId => {
-      const workerIndex = workersBaseIndex + workers[workerId];
-      graph.addEdge(new FlowEdge(workerIndex, shiftBaseIndex + index, 1));
-    });
-  });
-
-  let neededMaxFlow = 0;
-
-  // Connect the shift edges to target edge
+  // Connect the shift edges to source edge
   shifts.forEach(({ shiftType }, index) => {
     let neededWorkers;
     switch (shiftType) {
@@ -91,8 +76,23 @@ const createGraph = (
         break;
     }
     neededMaxFlow += neededWorkers;
-    graph.addEdge(new FlowEdge(shiftBaseIndex + index, target, neededWorkers));
+    graph.addEdge(new FlowEdge(source, shiftBaseIndex + index, neededWorkers));
   });
+
+  let neededMaxFlow = 0;
+  // TODO: Should connect only when there is no contraint present
+  // Connect shift edges to worker edges
+  shifts.forEach(({ workersId }, index) => {
+    workersId.forEach(workerId => {
+      const workerIndex = workersBaseIndex + workers[workerId];
+      graph.addEdge(new FlowEdge(shiftBaseIndex + index, workerIndex, 1));
+    });
+  });
+
+  // Connect target edge to worker edges
+  for (let i = 0; i < numOfWorkers; i++) {
+    graph.addEdge(new FlowEdge(workersBaseIndex + i, target, 1));
+  }
 
   return [() => new FordFulkerson(graph, source, target), neededMaxFlow];
 };

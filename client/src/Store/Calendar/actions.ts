@@ -5,7 +5,19 @@ import Axios, { AxiosResponse } from "axios";
 import config from "../../config/config";
 import moment from "moment";
 import { Shift } from "../../../../server/src/mongo/models/concreteBoard";
-import {UserState} from "../User/types";
+import { UserState } from "../User/types";
+import { SHIFT_TYPE } from "../../../../server/src/utiles/shiftTypeEnum";
+
+function mapShiftTypeToText(shiftType: SHIFT_TYPE) {
+    switch (shiftType) {
+        case 1:
+            return "Regular shift";
+        case 2:
+            return "Special shift";
+        case 3:
+            return "Holiday shift";
+    }
+}
 
 function eventsFromShifts(shifts: Shift[]) {
     return shifts.reduce((events, shift) => {
@@ -13,7 +25,7 @@ function eventsFromShifts(shifts: Shift[]) {
         events.push({
             start: new Date(start),
             end: new Date(end),
-            title: shift.shiftType.toString(),
+            title: mapShiftTypeToText(shift.shiftType),
             resource: shift
         });
         return events;
@@ -40,13 +52,13 @@ export function getEvents(metaId: string, year: number, month: number, user: Use
         let reqUrl = `${config.backendUri}/concreteBoard/${metaId}/${year}/${month}`;
         const result = (await Axios.get(reqUrl)) as AxiosResponse<JSONConcreteBoard>;
         if (result.data && result.data.shifts !== []) {
-            dispatch(setEvents(mergeUserConstraintsIntoCalendarEvents(events(result.data),user)));
+            dispatch(setEvents(mergeUserConstraintsIntoCalendarEvents(events(result.data), user)));
         } else {
             console.log("Entered else");
             reqUrl = `${config.backendUri}/constraints/emptyBoard`;
             console.log(`Created URL ${reqUrl}`);
             const empty = (await Axios.get(reqUrl, { params: { board: metaId, year, month } })) as AxiosResponse<Shift[]>;
-            dispatch(setEvents(mergeUserConstraintsIntoCalendarEvents(eventsFromShifts(empty.data),user)));
+            dispatch(setEvents(mergeUserConstraintsIntoCalendarEvents(eventsFromShifts(empty.data), user)));
         }
         return getState().calendar.events;
     }
@@ -110,10 +122,10 @@ export function optimise(boardId: string, year: number, month: number): ThunkRes
     }
 }
 
-function mergeUserConstraintsIntoCalendarEvents(calendarEvents: Event[],user: UserState,): Event[] {
+function mergeUserConstraintsIntoCalendarEvents(calendarEvents: Event[], user: UserState, ): Event[] {
     let eventsFromUserConstraints: Event[] = [];
-    user.monthlyConstraints.forEach( monthlyConstraint => {
-        monthlyConstraint.constraints.forEach( constraint => {
+    user.monthlyConstraints.forEach(monthlyConstraint => {
+        monthlyConstraint.constraints.forEach(constraint => {
             const { fromTime: start, toTime: end } = constraint.time;
             eventsFromUserConstraints.push(<Event>{
                 start: moment(start).add(1, "month").toDate(),
@@ -123,7 +135,7 @@ function mergeUserConstraintsIntoCalendarEvents(calendarEvents: Event[],user: Us
             })
         })
     });
-    let merged = [...calendarEvents,...eventsFromUserConstraints];
+    let merged = [...calendarEvents, ...eventsFromUserConstraints];
     console.log("merged:");
     console.log(merged);
     return merged
