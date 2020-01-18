@@ -15,12 +15,13 @@ import BoardCreation from "../Components/BoardCreation/BoardCreation";
 import Companies from "../Components/Companies/Companies";
 import { getEvents, optimise } from "../Store/Calendar/actions";
 import { History } from "history";
-import { JSONBoard } from "../../../server/src/mongo/models/Board";
 import WorkerManager from "../Components/WorkerManager/WorkerManager";
 import { loadPages } from "../Store/Menu/actions";
 import { getCompanies } from "../Store/Company/actions";
 import { Tooltip } from "react-tippy";
-// import Constraint from "../Components/Constraint/Constraint"
+import { Shift } from "../../../server/src/mongo/models/concreteBoard";
+import { addConstraint } from "../Store/User/actions";
+
 interface OwnProps {
     history: History<any>,
     match: match<any>
@@ -37,13 +38,14 @@ interface ReduxDispatch {
     getEvents: (boardId: string, year: number, month: number, user: UserState) => Promise<Event[]>,
     getMenu: (user: UserState) => AppAction,
     getCompanies: (user: UserState) => Promise<CompanyState>,
-    optimise: (boardId: string, year: number, month: number) => Promise<void>
+    optimise: (boardId: string, year: number, month: number) => Promise<void>,
+    addConstraint: (year: number, month: number, text: string, shift: Shift) => Promise<void>
 }
 
 interface State {
     isTooltipOpen: boolean,
-    fromTime: string,
-    toTime: string
+    shift: Shift | null,
+    text: string
 }
 
 type Props = OwnProps & ReduxState & ReduxDispatch;
@@ -62,8 +64,8 @@ class DashBoard extends Component<Props, State> {
 
         this.state = {
             isTooltipOpen: false,
-            fromTime: "",
-            toTime: ""
+            shift: null,
+            text: ''
         }
     }
 
@@ -111,8 +113,18 @@ class DashBoard extends Component<Props, State> {
         }
     }
 
-    submitConstraint() {
-        this.setState({ isTooltipOpen: false });
+    submitConstraint(match: match<any> | null) {
+        return () => {
+            const { text, shift } = this.state;
+            if (match !== null) {
+                const { year, month } = match.params;
+                if (shift !== null) {
+                    this.props.addConstraint(year, month, text, shift).then(
+                        () => this.setState({ isTooltipOpen: false })
+                    )
+                }
+            }
+        }
     }
 
     closePopup() {
@@ -120,7 +132,11 @@ class DashBoard extends Component<Props, State> {
     }
 
     onSelectEvent(event: Event) {
-        this.setState({ isTooltipOpen: true });
+        const { type } = this.props.user;
+        if (type === 'user') {
+            const shift: Shift = event.resource;
+            this.setState({ isTooltipOpen: true, shift });
+        }
     }
 
     render() {
@@ -167,23 +183,15 @@ class DashBoard extends Component<Props, State> {
                                                     <article className="card border border-primary px-2 py-2">
                                                         <p>test</p>
                                                         <div className={"form-group"}>
-                                                            <label>From Time:</label>
+                                                            <label>Reason:</label>
                                                             <input
                                                                 type="text"
-                                                                onChange={(e) => this.setState({ fromTime: e.target.value })}
-                                                                value={this.state.fromTime}
-                                                                className={"form-control"} />
-                                                        </div>
-                                                        <div className={"form-group"}>
-                                                            <label>To Time:</label>
-                                                            <input
-                                                                type="text"
-                                                                onChange={(e) => this.setState({ toTime: e.target.value })}
-                                                                value={this.state.toTime}
+                                                                onChange={(e) => this.setState({ text: e.target.value })}
+                                                                value={this.state.text}
                                                                 className={"form-control"} />
                                                         </div>
                                                         <section className="d-flex justify-content-around">
-                                                            <button className="btn btn-primary" onClick={this.submitConstraint}>Submit</button>
+                                                            <button className="btn btn-primary" onClick={this.submitConstraint(match)}>Submit</button>
                                                             <button className="btn btn-primary" onClick={this.closePopup}>Close</button>
                                                         </section>
                                                     </article>
@@ -194,13 +202,15 @@ class DashBoard extends Component<Props, State> {
                                                 onSelectEvent={this.onSelectEvent}
                                                 onSelectSlot={slotInfo => { console.log(slotInfo.start) }}
                                                 eventPropGetter={event => {
-                                                    if(event.title === "Constraint"){
-                                                        return{
-                                                            style:{
+                                                    if (event.title === "Constraint") {
+                                                        return {
+                                                            style: {
                                                                 backgroundColor: 'red',
-                                                                border:'solid 3px'
-                                                            }}
-                                                        } else return {} }}
+                                                                border: 'solid 3px'
+                                                            }
+                                                        }
+                                                    } else return {}
+                                                }}
                                                 localizer={momentLocalizer(Moment)}
                                                 // events={calendar.events}
                                                 events={calendar.events}
@@ -250,7 +260,8 @@ const mapDispatchToProps = (dispatch: AppDispatch): ReduxDispatch => {
         getEvents: (boardId: string, year: number, month: number, user: UserState) => dispatch(getEvents(boardId, year, month, user)),
         getMenu: (user: UserState) => dispatch(loadPages(user)),
         getCompanies: (user: UserState) => dispatch(getCompanies(user)),
-        optimise: (boardId: string, year: number, month: number) => dispatch(optimise(boardId, year, month))
+        optimise: (boardId: string, year: number, month: number) => dispatch(optimise(boardId, year, month)),
+        addConstraint: (year: number, month: number, text: string, shift: Shift) => dispatch(addConstraint(year, month, text, shift))
     }
 }
 

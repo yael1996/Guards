@@ -3,6 +3,8 @@ import { AmountShifts } from "../utiles/calculateFitness/amountShifts";
 import { Equlity } from "../utiles/calculateFitness/equlity";
 import { SatisfiedPeople } from "../utiles/calculateFitness/satisfiedPeople";
 import { Constraint } from "../mongo/models/User";
+import { createGraph } from "../utiles/fordFulkerson";
+import { Board } from "../mongo/models/board";
 
 export class Fitness {
   private amount: AmountShifts;
@@ -17,13 +19,16 @@ export class Fitness {
   private workersConstraints;
   private workersIds;
 
+  private board: Board;
+
   constructor(
     workersDissatisfied,
     workersConstraints,
     workersIds,
     amountShiftsPart,
     equityPart,
-    satisfiedPeoplePart
+    satisfiedPeoplePart,
+    board: Board
   ) {
     this.amount = new AmountShifts();
     this.equlity = new Equlity();
@@ -34,6 +39,7 @@ export class Fitness {
     this.amountShiftsPart = amountShiftsPart;
     this.equityPart = equityPart;
     this.satisfiedPeoplePart = satisfiedPeoplePart;
+    this.board = board;
   }
 
   getFitness = (monthShifts: Shift[]): number => {
@@ -75,13 +81,33 @@ export class Fitness {
       monthShifts,
       workersConstraints
     );
+    
+    const { boardSettings: {
+              regularDaySettings: { shiftSettings: regularSettings },
+              specialDaysSettings: { shiftSettings: specialSettings },
+              specialDatesSettings: { shiftSettings: holidaySettings }
+            } } = this.board;
+    
+    const [ff, maxFlow] = createGraph(
+      monthShifts,
+      regularSettings,
+      specialSettings,
+      holidaySettings,
+      workersConstraints
+    );
 
-    const fitness =
+    const { value } = ff();
+    
+    let fitness = value;
+    if (value === maxFlow) return Number.MAX_SAFE_INTEGER;
+
+    fitness -= (
       amountShifts * this.amountShiftsPart +
       equit * this.equityPart +
-      satisfiedPeople * this.satisfiedPeoplePart;
+      satisfiedPeople * this.satisfiedPeoplePart
+    );
 
-    return -fitness;
+    return fitness;
   };
 
   private getAmountShifts = (

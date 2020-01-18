@@ -3,7 +3,7 @@ import {JSONUser, MonthlyConstraints} from "../../../../server/src/mongo/models/
 import { ThunkResult } from "./types";
 import Axios, { AxiosResponse } from "axios";
 import config from "../../config/config";
-import { Event } from "react-big-calendar";
+import { Shift } from "../../../../server/src/mongo/models/concreteBoard";
 
 export function registerUser(user: UserState, type: USER_TYPE): ThunkResult<Promise<UserState>> {
     return async (dispatch, getState) => {
@@ -37,14 +37,16 @@ export function logout(): UserAction {
 export function getHirePotential(): ThunkResult<Promise<UserState[]>> {
     return async (dispatch, getState) => {
         const result = (await Axios.get(`${config.backendUri}/user`)) as AxiosResponse<UserState[]>;
-        return result.data;
+        const state = getState();
+        return result.data.filter((user) => user._id !== state.user._id);
     }
 }
 
-export function addConstraint(year: number, month: number, text: string, event: Event): ThunkResult<Promise<void>> {
+export function addConstraint(year: number, month: number, text: string, shift: Shift): ThunkResult<Promise<void>> {
     return async (dispatch, getState) => {
         const { user } = getState();
-        const { start: fromTime, end: toTime } = event;
+        const { fromTime, toTime } = shift.shiftTime;
+        
         const modified = Object.assign({}, user, {
             monthlyConstraints: [
                 ...user.monthlyConstraints,

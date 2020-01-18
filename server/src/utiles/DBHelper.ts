@@ -97,10 +97,15 @@ export class DBHelper {
       // ToDo - refactor or get from db
       if (user.monthlyConstraints && user.monthlyConstraints.length > 0) {
         const usersConstraints = await user.monthlyConstraints.find(
-          x => x.month.year == month.year && x.month.month == month.month
-        ).constraints;
-
-        workersConstraints[workerId] = usersConstraints;
+          x => {
+            return ((x.month.year == month.year) && (x.month.month == month.month))
+          }
+        );
+        if (usersConstraints) {
+          workersConstraints[workerId] = usersConstraints.constraints;
+        } else {
+          workersConstraints[workerId] = [];
+        }
       } else {
         workersConstraints[workerId] = [];
       }

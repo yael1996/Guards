@@ -2,6 +2,7 @@ import { FlowNetwork, FordFulkerson, FlowEdge } from "js-graph-algorithms";
 import { Shift } from "../mongo/models/concreteBoard";
 import { ShiftSettings } from "../mongo/models/board";
 import { SHIFT_TYPE } from "./shiftTypeEnum";
+import { Constraint } from "../mongo/models/User";
 
 const shiftWorkers = (shifts: Shift[]): string[] => {
   return shifts.reduce((base: string[], { workersId }) => {
@@ -37,9 +38,7 @@ const indexWorkers = (shifts: Shift[]): {} => {
 
 /**
  * Generate a tuple whose 1st element is a function that calculates ford-fulkerson
- * on the given dataset and the 2nd element is the needed maximal flow in order
- * to achieve maximal flow.
- * Maximal flow can be get by running the 1st element and checking the property value
+ * on the given dataset and the 2nd element is the needed maximal flow.
  * @example result[0]().value === result[1] // Checks if achieved maximal flow
  * @param shifts Shifts to work with
  * @param regularShiftSettings The settings of the regular shifts
@@ -50,18 +49,20 @@ const createGraph = (
   shifts: Shift[],
   regularShiftSettings: ShiftSettings,
   specialShiftSettings: ShiftSettings,
-  specialDaySettings: ShiftSettings
+  specialDaySettings: ShiftSettings,
+  workersConstraints: { [id: string]: Constraint[] }
 ): [() => FordFulkerson, number] => {
   const workers = indexWorkers(shifts);
+  const source = 0;
   const workersBaseIndex = 1;
   const numOfWorkers = Object.getOwnPropertyNames(workers).length;
   const shiftBaseIndex = workersBaseIndex + numOfWorkers;
-  const graphSize = shiftBaseIndex + shifts.length;
-  const source = 0;
-  const target = graphSize;
+  const target = shiftBaseIndex + shifts.length;
+  const graphSize = target + 1;
+  const shiftsPerWorker = Math.ceil(shifts.length / numOfWorkers);
   const graph = new FlowNetwork(graphSize);
 
-  // Connect the shift edges to source edge
+  // Connect the shift edges to target edge
   shifts.forEach(({ shiftType }, index) => {
     let neededWorkers;
     switch (shiftType) {
@@ -76,23 +77,30 @@ const createGraph = (
         break;
     }
     neededMaxFlow += neededWorkers;
-    graph.addEdge(new FlowEdge(source, shiftBaseIndex + index, neededWorkers));
+    graph.addEdge(new FlowEdge(shiftBaseIndex + index, target, neededWorkers));
   });
 
+  // Connect source edge to worker edges
+  for (let i = 0; i < numOfWorkers; i++) {
+    graph.addEdge(new FlowEdge(source, workersBaseIndex + i, shiftsPerWorker));
+  }
+
   let neededMaxFlow = 0;
-  // TODO: Should connect only when there is no contraint present
-  // Connect shift edges to worker edges
-  shifts.forEach(({ workersId }, index) => {
-    workersId.forEach(workerId => {
+  shifts.forEach((shift, index) => {
+    const constraintExists = (workerId: string, shift: Shift) => {
+      const workerConstraints = workersConstraints[workerId];
+      const { fromTime: shiftFrom, toTime: shiftTo } = shift.shiftTime;
+      return workerConstraints.some(({ time: { fromTime, toTime } }) => {
+        return (fromTime.getTime() === shiftFrom.getTime() &&
+                toTime.getTime() === shiftFrom.getTime());
+      })
+    }
+    shift.workersId.forEach(workerId => {
+      if (constraintExists(workerId, shift)) return;
       const workerIndex = workersBaseIndex + workers[workerId];
       graph.addEdge(new FlowEdge(shiftBaseIndex + index, workerIndex, 1));
     });
   });
-
-  // Connect target edge to worker edges
-  for (let i = 0; i < numOfWorkers; i++) {
-    graph.addEdge(new FlowEdge(workersBaseIndex + i, target, 1));
-  }
 
   return [() => new FordFulkerson(graph, source, target), neededMaxFlow];
 };
